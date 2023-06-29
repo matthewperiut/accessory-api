@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "accessoryapi",
+  "version": "${version}",
+
+  "name": "Accessory API",
+  "description": "Adds inventory slots for various accessories",
+  "authors": [
+    "matthewperiut"
+  ],
+  "contact": {
+    "homepage": "https://github.com/matthewperiut/accessory-api",
+    "issues": "https://github.com/matthewperiut/accessory-api/issues"
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/accessoryapi/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.matthewperiut.accessoryapi.impl.AccessoryEntry"
+    ]
+  },
+  "mixins": [
+    "accessoryapi.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.13.3",
+    "minecraft": "1.0.0-beta.7.3"
+  },
+  "custom": {
+    "modmenu:api": true
+  }
+}

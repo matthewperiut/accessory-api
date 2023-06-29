@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.matthewperiut.accessoryapi.impl.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "PlayerBaseMixin",
+    "PlayerContainerMixin",
+    "PlayerInventoryMixin"
+  ],
+  "client": [
+    "PlayerInventoryGuiMixin",
+    "PlayerRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
