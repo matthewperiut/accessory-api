@@ -7,14 +7,10 @@ import net.minecraft.item.ItemInstance;
 
 public class AccessorySlot extends Slot
 {
-    private final int slot;
-    private final InventoryBase inv;
     int type;
     public AccessorySlot(InventoryBase arg, int i, int j, int k, int type)
     {
         super(arg, i, j, k);
-        inv = arg;
-        slot = i;
         this.type = type;
     }
 

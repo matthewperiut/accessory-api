@@ -6,24 +6,15 @@ import net.minecraft.container.slot.Slot;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.entity.player.PlayerContainer;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Crafting;
-import net.minecraft.item.ItemInstance;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerContainer.class)
 public class PlayerContainerMixin extends ContainerBase
 {
-    @Shadow
-    public Crafting craftingInv;
-
-    //public InventoryBase resultInv;
-    //public boolean local;
     int slotCounter = 0;
     @ModifyArg(method = "<init>(Lnet/minecraft/entity/player/PlayerInventory;Z)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerContainer;addSlot(Lnet/minecraft/container/slot/Slot;)V"), index = 0)
     private Slot changeTopSlots(Slot par1) {
@@ -69,13 +60,8 @@ public class PlayerContainerMixin extends ContainerBase
                         continue;
                     }
                 }
-                int type = i * 3 + j;
-                if (type > 3)
-                {
-                    type--;
-                }
-                int finalType = type;
-                this.addSlot(new AccessorySlot(arg, slotnum, 80 + 18 * i, 8 + j * 18, finalType));
+
+                this.addSlot(new AccessorySlot(arg, slotnum, 80 + 18 * i, 8 + j * 18, slotnum - 40));
                 slotnum++;
             }
         }
@@ -83,7 +69,7 @@ public class PlayerContainerMixin extends ContainerBase
         // ring slots
         for (int i = 0; i < 2; i++)
         {
-            this.addSlot(new AccessorySlot(arg, slotnum, 98, 8 + i * 18, 3));
+            this.addSlot(new AccessorySlot(arg, slotnum, 98, 8 + i * 18, 4));
             slotnum++;
         }
 

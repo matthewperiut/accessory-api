@@ -1,9 +1,10 @@
 package com.matthewperiut.accessoryapi.api;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.entity.PlayerRenderer;
 import net.minecraft.client.render.entity.model.Biped;
 import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.item.ItemBase;
 import net.minecraft.item.ItemInstance;
 
 public interface Accessory
@@ -18,8 +19,9 @@ public interface Accessory
         /**
          * ring has secondary slot
          */
-        ring,
         glove,
+        ring,
+
         /**
          * misc has secondary slot
          */
@@ -41,6 +43,7 @@ public interface Accessory
      * @param playerRenderData specific data pertaining to what you're rendering, usually contains:
      *                         { x, y, z, h, v } for most accessories, but capes only have { f }
      */
+    @Environment(EnvType.CLIENT)
     void renderWhileWorn(PlayerBase player, PlayerRenderer renderer, ItemInstance accessory, Biped model, final Object[] playerRenderData);
     void onAccessoryAdded(PlayerBase player, ItemInstance accessory);
     void onAccessoryRemoved(PlayerBase player, ItemInstance accessory);

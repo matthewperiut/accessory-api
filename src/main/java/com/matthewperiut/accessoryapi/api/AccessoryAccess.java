@@ -9,7 +9,7 @@ public class AccessoryAccess
     public static int getSlot(Accessory.Type type)
     {
         int result = type.ordinal() + 4;
-        if (type.ordinal() > 3)
+        if (type.ordinal() > 4)
         {
             result += 1;
         }
@@ -64,7 +64,7 @@ public class AccessoryAccess
      */
     public static boolean hasThisAccessory(PlayerBase player, ItemBase item, Accessory.Type type)
     {
-        if (type.ordinal() == 3 || type.ordinal() == 5)
+        if (type.ordinal() > 3)
         {
             return hasThisAccessory(player, item, getSlot(type)) ||
                     hasThisAccessory(player, item, getSlot(type) + 1);

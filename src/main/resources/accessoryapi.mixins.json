@@ -9,6 +9,7 @@
     "PlayerInventoryMixin"
   ],
   "client": [
+    "LivingEntityRendererAccessor",
     "PlayerInventoryGuiMixin",
     "PlayerRendererMixin"
   ],
