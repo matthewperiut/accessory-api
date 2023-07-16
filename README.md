@@ -1,6 +1,3 @@
-# Example Ring accessory
-demonstrates how to use accessory api
-
 # Developer Usage
 
 Put the accessory-(version).jar inside of "(mod directory)/lib/"
@@ -52,5 +49,5 @@ Methods to implement functionality for accessory:
 ```
 All the methods must exist, but you can leave them empty.
 
-renderWhileWorn is complicated, see ![Aether STAPI](https://github.com/matthewperiut/The-Aether) for usage (until I make a tutorial)
+renderWhileWorn is complicated, see [Aether STAPI](https://github.com/matthewperiut/The-Aether) for usage (until I make a tutorial)
 
