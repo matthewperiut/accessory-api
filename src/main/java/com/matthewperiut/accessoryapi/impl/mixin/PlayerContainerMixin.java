@@ -1,5 +1,6 @@
 package com.matthewperiut.accessoryapi.impl.mixin;
 
+import com.matthewperiut.accessoryapi.api.Accessory;
 import com.matthewperiut.accessoryapi.impl.AccessorySlot;
 import net.minecraft.container.ContainerBase;
 import net.minecraft.container.slot.Slot;
@@ -61,7 +62,7 @@ public class PlayerContainerMixin extends ContainerBase
                     }
                 }
 
-                this.addSlot(new AccessorySlot(arg, slotnum, 80 + 18 * i, 8 + j * 18, slotnum - 40));
+                this.addSlot(new AccessorySlot(arg, slotnum, 80 + 18 * i, 8 + j * 18, Accessory.Type.values()[slotnum - 40]));
                 slotnum++;
             }
         }
@@ -69,14 +70,14 @@ public class PlayerContainerMixin extends ContainerBase
         // ring slots
         for (int i = 0; i < 2; i++)
         {
-            this.addSlot(new AccessorySlot(arg, slotnum, 98, 8 + i * 18, 4));
+            this.addSlot(new AccessorySlot(arg, slotnum, 98, 8 + i * 18, Accessory.Type.ring));
             slotnum++;
         }
 
         // misc slots
         for (int i = 0; i < 2; i++)
         {
-            this.addSlot(new AccessorySlot(arg, slotnum, 80 + 18 * i, 62, 5));
+            this.addSlot(new AccessorySlot(arg, slotnum, 80 + 18 * i, 62, Accessory.Type.misc));
             slotnum++;
         }
     }

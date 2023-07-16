@@ -7,8 +7,8 @@ import net.minecraft.item.ItemInstance;
 
 public class AccessorySlot extends Slot
 {
-    int type;
-    public AccessorySlot(InventoryBase arg, int i, int j, int k, int type)
+    Accessory.Type type;
+    public AccessorySlot(InventoryBase arg, int i, int j, int k, Accessory.Type type)
     {
         super(arg, i, j, k);
         this.type = type;
@@ -23,7 +23,7 @@ public class AccessorySlot extends Slot
     {
         if (item.getType() instanceof Accessory)
         {
-            return ((Accessory)item.getType()).getType() == Accessory.Type.values()[type];
+            return ((Accessory)item.getType()).getType() == type;
         }
         else
         {

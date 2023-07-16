@@ -34,7 +34,7 @@ public interface Accessory
      */
     Type getType();
 
-    void tickWhileWorn(PlayerBase player, ItemInstance accessory);
+    default void tickWhileWorn(PlayerBase player, ItemInstance accessory) {}
     /**
      * Render function for a specific player, providing cuboids or bipeds for use
      * @param player Player you're rendering
@@ -44,7 +44,7 @@ public interface Accessory
      *                         { x, y, z, h, v } for most accessories, but capes only have { f }
      */
     @Environment(EnvType.CLIENT)
-    void renderWhileWorn(PlayerBase player, PlayerRenderer renderer, ItemInstance accessory, Biped model, final Object[] playerRenderData);
-    void onAccessoryAdded(PlayerBase player, ItemInstance accessory);
-    void onAccessoryRemoved(PlayerBase player, ItemInstance accessory);
+    default void renderWhileWorn(PlayerBase player, PlayerRenderer renderer, ItemInstance accessory, Biped model, final Object[] playerRenderData) {}
+    default void onAccessoryAdded(PlayerBase player, ItemInstance accessory) {}
+    default void onAccessoryRemoved(PlayerBase player, ItemInstance accessory) {}
 }
