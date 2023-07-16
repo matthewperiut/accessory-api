@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerContainer.class)
-public class PlayerContainerMixin extends ContainerBase
+public abstract class PlayerContainerMixin extends ContainerBase
 {
     int slotCounter = 0;
     @ModifyArg(method = "<init>(Lnet/minecraft/entity/player/PlayerInventory;Z)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerContainer;addSlot(Lnet/minecraft/container/slot/Slot;)V"), index = 0)
@@ -81,10 +81,5 @@ public class PlayerContainerMixin extends ContainerBase
             this.addSlot(new AccessorySlot(arg, slotnum, 80 + 18 * i, 62, AccessoryType.misc));
             slotnum++;
         }
-    }
-
-    @Override
-    public boolean canUse(PlayerBase arg) {
-        return true;
     }
 }
