@@ -6,7 +6,7 @@ import net.minecraft.item.ItemInstance;
 
 public class AccessoryAccess
 {
-    public static int getSlot(Accessory.Type type)
+    public static int getSlot(AccessoryType type)
     {
         int result = type.ordinal() + 4;
         if (type.ordinal() > 4)
@@ -16,12 +16,12 @@ public class AccessoryAccess
         return result;
     }
 
-    public static ItemInstance getAccessory(PlayerBase player, Accessory.Type type)
+    public static ItemInstance getAccessory(PlayerBase player, AccessoryType type)
     {
         return getAccessory(player, type, false);
     }
 
-    public static ItemInstance getAccessory(PlayerBase player, Accessory.Type type, boolean secondary)
+    public static ItemInstance getAccessory(PlayerBase player, AccessoryType type, boolean secondary)
     {
         int slot = getSlot(type);
         if (secondary)
@@ -31,12 +31,12 @@ public class AccessoryAccess
         return player.inventory.armour[slot];
     }
 
-    public static void setAccessory(PlayerBase player, Accessory.Type type, ItemInstance item)
+    public static void setAccessory(PlayerBase player, AccessoryType type, ItemInstance item)
     {
         setAccessory(player, type, item, false);
     }
 
-    public static void setAccessory(PlayerBase player, Accessory.Type type, ItemInstance item, boolean secondary)
+    public static void setAccessory(PlayerBase player, AccessoryType type, ItemInstance item, boolean secondary)
     {
         int slot = getSlot(type);
         if (secondary)
@@ -62,7 +62,7 @@ public class AccessoryAccess
      * @param item The accessory you're looking for
      * @return whether the player has the specified accessory
      */
-    public static boolean hasThisAccessory(PlayerBase player, ItemBase item, Accessory.Type type)
+    public static boolean hasThisAccessory(PlayerBase player, ItemBase item, AccessoryType type)
     {
         if (type.ordinal() > 3)
         {
@@ -84,7 +84,7 @@ public class AccessoryAccess
      * @param type The accessory type you're checking for
      * @return whether the player has the specified accessory type
      */
-    public static boolean hasAccessoryType (PlayerBase player, Accessory.Type type)
+    public static boolean hasAccessoryType (PlayerBase player, AccessoryType type)
     {
         if (type.ordinal() == 3 || type.ordinal() == 5)
         {
@@ -103,7 +103,7 @@ public class AccessoryAccess
      * @param amount The amount of damage the accessory should take
      * @return whether the item has broken or doesn't exist
      */
-    public static boolean damageThisAccessory(PlayerBase player, ItemBase item, Accessory.Type type, int amount)
+    public static boolean damageThisAccessory(PlayerBase player, ItemBase item, AccessoryType type, int amount)
     {
         int slot = getSlot(type);
         if (type.ordinal() == 3 || type.ordinal() == 5)

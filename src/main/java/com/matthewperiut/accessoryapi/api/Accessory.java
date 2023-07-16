@@ -10,29 +10,10 @@ import net.minecraft.item.ItemInstance;
 public interface Accessory
 {
     /**
-     * Provides different accessory types, must use one if implementing accessory
-     */
-    enum Type {
-        pendant,
-        cape,
-        shield,
-        /**
-         * ring has secondary slot
-         */
-        glove,
-        ring,
-
-        /**
-         * misc has secondary slot
-         */
-        misc
-    }
-
-    /**
      * Determines what accessory slot your item goes to
      * @return Accessory Slot Type
      */
-    Type getType();
+    AccessoryType getAccessoryType();
 
     default void tickWhileWorn(PlayerBase player, ItemInstance accessory) {}
     /**
