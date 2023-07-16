@@ -3,7 +3,7 @@ demonstrates how to use accessory api
 
 # Developer Usage
 
-Put the accessory-(version).jar inside of "(mod directory)/"
+Put the accessory-(version).jar inside of "(mod directory)/lib/"
 
 And then to add Trinkets you add it as a dependency in your build.gradle
 ```gradle
