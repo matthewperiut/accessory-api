@@ -10,31 +10,12 @@ import net.minecraft.item.ItemInstance;
 public interface Accessory
 {
     /**
-     * Provides different accessory types, must use one if implementing accessory
-     */
-    enum Type {
-        pendant,
-        cape,
-        shield,
-        /**
-         * ring has secondary slot
-         */
-        glove,
-        ring,
-
-        /**
-         * misc has secondary slot
-         */
-        misc
-    }
-
-    /**
      * Determines what accessory slot your item goes to
      * @return Accessory Slot Type
      */
-    Type getType();
+    AccessoryType getAccessoryType();
 
-    void tickWhileWorn(PlayerBase player, ItemInstance accessory);
+    default void tickWhileWorn(PlayerBase player, ItemInstance accessory) {}
     /**
      * Render function for a specific player, providing cuboids or bipeds for use
      * @param player Player you're rendering
@@ -44,7 +25,7 @@ public interface Accessory
      *                         { x, y, z, h, v } for most accessories, but capes only have { f }
      */
     @Environment(EnvType.CLIENT)
-    void renderWhileWorn(PlayerBase player, PlayerRenderer renderer, ItemInstance accessory, Biped model, final Object[] playerRenderData);
-    void onAccessoryAdded(PlayerBase player, ItemInstance accessory);
-    void onAccessoryRemoved(PlayerBase player, ItemInstance accessory);
+    default void renderWhileWorn(PlayerBase player, PlayerRenderer renderer, ItemInstance accessory, Biped model, final Object[] playerRenderData) {}
+    default void onAccessoryAdded(PlayerBase player, ItemInstance accessory) {}
+    default void onAccessoryRemoved(PlayerBase player, ItemInstance accessory) {}
 }
