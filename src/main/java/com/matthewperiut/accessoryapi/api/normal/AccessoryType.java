@@ -1,9 +1,10 @@
-package com.matthewperiut.accessoryapi.api;
+package com.matthewperiut.accessoryapi.api.normal;
 
 /**
  * Provides different accessory types, must use one if implementing accessory
  */
-public enum AccessoryType {
+public enum AccessoryType
+{
     pendant,
     cape,
     shield,
@@ -16,5 +17,6 @@ public enum AccessoryType {
     /**
      * misc has secondary slot
      */
-    misc
+    misc,
+    none
 }

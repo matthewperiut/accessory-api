@@ -1,7 +1,7 @@
 package com.matthewperiut.accessoryapi.impl.mixin;
 
-import com.matthewperiut.accessoryapi.api.Accessory;
-import com.matthewperiut.accessoryapi.api.BipedHelper;
+import com.matthewperiut.accessoryapi.api.helper.BipedHelper;
+import com.matthewperiut.accessoryapi.api.normal.Accessory;
 import com.matthewperiut.accessoryapi.impl.AccessoryEntry;
 import com.matthewperiut.accessoryapi.impl.PlayerInfo;
 import net.minecraft.client.render.entity.PlayerRenderer;
@@ -18,7 +18,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(PlayerRenderer.class)
 public class PlayerRendererMixin
 {
-    @Shadow private Biped field_294; // cape
+    @Shadow
+    private Biped field_294; // cape
 
     @Inject(method = "method_827", at = @At(value = "TAIL")) // cape
     private void capeHandle(Living f, float par2, CallbackInfo ci)
@@ -27,15 +28,17 @@ public class PlayerRendererMixin
 
         if (player.inventory.armour[5] != null)
         {
-            ((Accessory) player.inventory.armour[5].getType()).renderWhileWorn(player, (PlayerRenderer) (Object)this, player.inventory.armour[5], field_294, new Object[]{ par2 });
+            ((Accessory) player.inventory.armour[5].getType()).renderWhileWorn(player, (PlayerRenderer) (Object) this, player.inventory.armour[5], field_294, new Object[]{par2});
         }
     }
 
     @Inject(method = "render(Lnet/minecraft/entity/EntityBase;DDDFF)V", at = @At(value = "TAIL"))
-    private void renderEntityCustom(EntityBase d, double x, double y, double z, float h, float v, CallbackInfo ci) {
-        try {
-            final PlayerRenderer renderer = (PlayerRenderer) (Object)this;
-            final Object[] pkgedData = new Object[]{ x, y, z, h, v };
+    private void renderEntityCustom(EntityBase d, double x, double y, double z, float h, float v, CallbackInfo ci)
+    {
+        try
+        {
+            final PlayerRenderer renderer = (PlayerRenderer) (Object) this;
+            final Object[] pkgedData = new Object[]{x, y, z, h, v};
             PlayerBase player = (PlayerBase) d;
             PlayerInfo models = AccessoryEntry.PlayersAccessoriesModels.computeIfAbsent(player.name, k -> new PlayerInfo());
 
@@ -73,6 +76,10 @@ public class PlayerRendererMixin
                 // misc 2
                 ((Accessory) player.inventory.armour[11].getType()).renderWhileWorn(player, renderer, player.inventory.armour[11], models.misc2, pkgedData);
             }
-        }catch(Exception ex) {ex.printStackTrace();}
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
 }

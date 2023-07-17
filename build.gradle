@@ -1,9 +1,12 @@
 plugins {
     id 'babric-loom' version '1.1-SNAPSHOT'
     id 'maven-publish'
+    id 'java'
+    id 'eclipse'
+    id 'idea'
 }
 
-sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
@@ -13,6 +16,13 @@ loom {
     gluedMinecraftJar()
     customMinecraftManifest.set("https://babric.github.io/manifest-polyfill/${minecraft_version}.json")
     intermediaryUrl.set("https://maven.glass-launcher.net/babric/babric/intermediary/%1\$s/intermediary-%1\$s-v2.jar")
+}
+
+sourceSets {
+    test {
+        compileClasspath += main.compileClasspath + main.output
+        runtimeClasspath += main.runtimeClasspath + main.output
+    }
 }
 
 repositories {
@@ -35,6 +45,7 @@ repositories {
     maven {
         url 'https://maven.minecraftforge.net/'
     }
+    jcenter() // for junit
 }
 
 dependencies {
@@ -43,19 +54,29 @@ dependencies {
     modImplementation "babric:fabric-loader:${project.loader_version}"
 
     implementation "org.slf4j:slf4j-api:1.8.0-beta4"
-    implementation "org.apache.logging.log4j:log4j-slf4j18-impl:2.16.0"
+    implementation "org.apache.logging.log4j:log4j-slf4j18-impl:2.17.2"
 
-    //modImplementation "net.modificationstation:StationAPI:${project.stapi_version}"
+    // Add testing dependencies
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:3.11.2'
 
-    /*modLocalRuntime("com.github.calmilamsy:ModMenu:${project.modmenu_version}") {
+    modImplementation "net.modificationstation:StationAPI:${project.stapi_version}"
+
+    // Optional, but convenient mods for mod creators and users alike.
+    modImplementation("com.github.calmilamsy:ModMenu:${project.modmenu_version}") {
         transitive false
     }
-    modLocalRuntime("net.glasslauncher.mods:GlassConfigAPI:${project.gcapi_version}") {
+    modImplementation("net.glasslauncher.mods:GlassConfigAPI:${project.gcapi_version}") {
         transitive false
     }
-    modLocalRuntime("net.glasslauncher:HowManyItems-Fabric-Unofficial:5.0.12") {
+    modImplementation("net.glasslauncher:HowManyItems-Fabric-Unofficial:${project.howmanyitems_version}") {
         transitive false
-    }*/
+    }
+}
+
+// add test tasks
+test {
+    useJUnit()
 }
 
 processResources {
@@ -94,4 +115,24 @@ publishing {
         // The repositories here will be used for publishing your artifact, not for
         // retrieving dependencies.
     }
+}
+
+loom {
+    runs {
+        register("runTestmodClient") {
+            source("test")
+            //noinspection GroovyImplicitNullArgumentCall
+            client()
+        }
+        register("runTestmodServer") {
+            source("test")
+            //noinspection GroovyImplicitNullArgumentCall
+            server()
+        }
+    }
+}
+
+task testJar(type: Jar) {
+    from sourceSets.test.output
+    classifier 'test'
 }

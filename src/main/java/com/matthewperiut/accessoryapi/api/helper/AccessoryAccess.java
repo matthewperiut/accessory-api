@@ -1,5 +1,6 @@
-package com.matthewperiut.accessoryapi.api;
+package com.matthewperiut.accessoryapi.api.helper;
 
+import com.matthewperiut.accessoryapi.api.normal.AccessoryType;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemBase;
 import net.minecraft.item.ItemInstance;
@@ -58,8 +59,8 @@ public class AccessoryAccess
      * Checks whether a player has a specific accessory
      *
      * @param player The player that you're checking the accessory from
-     * @param type The accessory type you're checking for
-     * @param item The accessory you're looking for
+     * @param type   The accessory type you're checking for
+     * @param item   The accessory you're looking for
      * @return whether the player has the specified accessory
      */
     public static boolean hasThisAccessory(PlayerBase player, ItemBase item, AccessoryType type)
@@ -72,7 +73,7 @@ public class AccessoryAccess
         return hasThisAccessory(player, item, getSlot(type));
     }
 
-    private static boolean hasAccessoryType (PlayerBase player, int slot)
+    private static boolean hasAccessoryType(PlayerBase player, int slot)
     {
         return player.inventory.getArmourItem(slot) != null;
     }
@@ -81,10 +82,10 @@ public class AccessoryAccess
      * Checks whether a player has any of a specific accessory type
      *
      * @param player The player that you're checking the accessory from
-     * @param type The accessory type you're checking for
+     * @param type   The accessory type you're checking for
      * @return whether the player has the specified accessory type
      */
-    public static boolean hasAccessoryType (PlayerBase player, AccessoryType type)
+    public static boolean hasAccessoryType(PlayerBase player, AccessoryType type)
     {
         if (type.ordinal() == 3 || type.ordinal() == 5)
         {
@@ -98,8 +99,8 @@ public class AccessoryAccess
      * Damages an accessory that a player is wearing
      *
      * @param player The player that you're checking the accessory from
-     * @param item The accessory you want damaged
-     * @param type The accessory type you want damaged
+     * @param item   The accessory you want damaged
+     * @param type   The accessory type you want damaged
      * @param amount The amount of damage the accessory should take
      * @return whether the item has broken or doesn't exist
      */
@@ -115,14 +116,14 @@ public class AccessoryAccess
             }
             else if (hasThisAccessory(player, item, slot + 1))
             {
-                player.inventory.armour[slot+1].applyDamage(amount, player);
+                player.inventory.armour[slot + 1].applyDamage(amount, player);
                 return true;
             }
         }
 
         if (hasThisAccessory(player, item, slot))
         {
-            player.inventory.armour[slot+1].applyDamage(amount, player);
+            player.inventory.armour[slot + 1].applyDamage(amount, player);
             return true;
         }
 

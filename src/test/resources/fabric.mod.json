@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "testmod",
+  "version": "1.0.0",
+  "name": "Accessory Test Mod",
+  "description": "Tests Accessory API",
+  "authors": [
+    "matthewperiut"
+  ],
+  "contact": {
+  },
+  "license": "CC0-1.0",
+  "icon": "assets/testmod/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "stationapi:event_bus": [
+      "com.matthewperiut.testmod.ItemListener"
+    ],
+    "stationapi:event_bus_client": [
+      "com.matthewperiut.testmod.TextureListener"
+    ]
+  },
+  "mixins": [
+    "testmod.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.13.3",
+    "minecraft": "1.0.0-beta.7.3",
+    "stationapi": "*"
+  }
+}

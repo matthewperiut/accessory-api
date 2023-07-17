@@ -1,6 +1,6 @@
 package com.matthewperiut.accessoryapi.impl.mixin;
 
-import com.matthewperiut.accessoryapi.api.Accessory;
+import com.matthewperiut.accessoryapi.api.normal.Accessory;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemInstance;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,7 +14,7 @@ public abstract class PlayerBaseMixin
     int updateAccessoryTick = 0;
     ItemInstance[] hasItem = new ItemInstance[8];
 
-    @Inject(method = "tick", at=@At("TAIL"))
+    @Inject(method = "tick", at = @At("TAIL"))
     public void tick(CallbackInfo ci)
     {
         PlayerBase player = (PlayerBase) ((Object) this);
@@ -32,14 +32,14 @@ public abstract class PlayerBaseMixin
         {
             for (int i = 0; i < 8; i++)
             {
-                if (player.inventory.armour[i+4] != null)
-                    if (player.inventory.armour[i+4].count < 1)
+                if (player.inventory.armour[i + 4] != null)
+                    if (player.inventory.armour[i + 4].count < 1)
                     {
-                        player.inventory.armour[i+4] = null;
+                        player.inventory.armour[i + 4] = null;
                     }
-                if (player.inventory.armour[i+4] != hasItem[i])
+                if (player.inventory.armour[i + 4] != hasItem[i])
                 {
-                    if (player.inventory.armour[i+4] == null)
+                    if (player.inventory.armour[i + 4] == null)
                     {
                         if (hasItem[i] != null)
                         {
@@ -51,15 +51,15 @@ public abstract class PlayerBaseMixin
                     else if (hasItem[i] == null)
                     {
                         // now has
-                        ((Accessory)player.inventory.armour[i+4].getType()).onAccessoryAdded(player, player.inventory.armour[i+4]);
-                        hasItem[i] = player.inventory.armour[i+4];
+                        ((Accessory) player.inventory.armour[i + 4].getType()).onAccessoryAdded(player, player.inventory.armour[i + 4]);
+                        hasItem[i] = player.inventory.armour[i + 4];
                     }
                     else
                     {
 
                         ((Accessory) hasItem[i].getType()).onAccessoryRemoved(player, hasItem[i]);
-                        ((Accessory)player.inventory.armour[i+4].getType()).onAccessoryAdded(player, player.inventory.armour[i+4]);
-                        hasItem[i] = player.inventory.armour[i+4];
+                        ((Accessory) player.inventory.armour[i + 4].getType()).onAccessoryAdded(player, player.inventory.armour[i + 4]);
+                        hasItem[i] = player.inventory.armour[i + 4];
                     }
                 }
             }

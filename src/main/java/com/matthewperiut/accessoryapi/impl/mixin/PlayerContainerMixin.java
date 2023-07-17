@@ -1,11 +1,9 @@
 package com.matthewperiut.accessoryapi.impl.mixin;
 
-import com.matthewperiut.accessoryapi.api.Accessory;
-import com.matthewperiut.accessoryapi.api.AccessoryType;
+import com.matthewperiut.accessoryapi.api.normal.AccessoryType;
 import com.matthewperiut.accessoryapi.impl.AccessorySlot;
 import net.minecraft.container.ContainerBase;
 import net.minecraft.container.slot.Slot;
-import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.entity.player.PlayerContainer;
 import net.minecraft.entity.player.PlayerInventory;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,8 +16,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class PlayerContainerMixin extends ContainerBase
 {
     int slotCounter = 0;
+
     @ModifyArg(method = "<init>(Lnet/minecraft/entity/player/PlayerInventory;Z)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerContainer;addSlot(Lnet/minecraft/container/slot/Slot;)V"), index = 0)
-    private Slot changeTopSlots(Slot par1) {
+    private Slot changeTopSlots(Slot par1)
+    {
 
         if (par1.x == 144) // x of crafting result
         {
@@ -38,7 +38,6 @@ public abstract class PlayerContainerMixin extends ContainerBase
         {
             par1.x += 54;
         }
-
 
 
         slotCounter++;

@@ -1,7 +1,7 @@
 package com.matthewperiut.accessoryapi.impl;
 
-import com.matthewperiut.accessoryapi.api.Accessory;
-import com.matthewperiut.accessoryapi.api.AccessoryType;
+import com.matthewperiut.accessoryapi.api.normal.Accessory;
+import com.matthewperiut.accessoryapi.api.normal.AccessoryType;
 import net.minecraft.container.slot.Slot;
 import net.minecraft.inventory.InventoryBase;
 import net.minecraft.item.ItemInstance;
@@ -9,6 +9,7 @@ import net.minecraft.item.ItemInstance;
 public class AccessorySlot extends Slot
 {
     AccessoryType type;
+
     public AccessorySlot(InventoryBase arg, int i, int j, int k, AccessoryType type)
     {
         super(arg, i, j, k);
@@ -24,11 +25,14 @@ public class AccessorySlot extends Slot
     {
         if (item.getType() instanceof Accessory)
         {
-            return ((Accessory)item.getType()).getAccessoryType() == type;
+            for (AccessoryType accessoryType : ((Accessory) item.getType()).getAccessoryTypes(item))
+            {
+                if (accessoryType == type)
+                {
+                    return true;
+                }
+            }
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 }

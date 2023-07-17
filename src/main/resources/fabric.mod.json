@@ -2,7 +2,6 @@
   "schemaVersion": 1,
   "id": "accessoryapi",
   "version": "${version}",
-
   "name": "Accessory API",
   "description": "Adds inventory slots for various accessories",
   "authors": [
@@ -12,10 +11,8 @@
     "homepage": "https://github.com/matthewperiut/accessory-api",
     "issues": "https://github.com/matthewperiut/accessory-api/issues"
   },
-
   "license": "CC0-1.0",
   "icon": "assets/accessoryapi/icon.png",
-
   "environment": "*",
   "entrypoints": {
     "main": [
