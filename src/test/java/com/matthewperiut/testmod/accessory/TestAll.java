@@ -16,5 +16,4 @@ public class TestAll extends TestAccessory
     {
         return new AccessoryType[]{ AccessoryType.pendant, AccessoryType.cape, AccessoryType.shield, AccessoryType.glove, AccessoryType.ring, AccessoryType.misc };
     }
-
 }

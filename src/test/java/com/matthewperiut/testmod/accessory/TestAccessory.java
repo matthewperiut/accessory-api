@@ -18,6 +18,6 @@ public class TestAccessory extends TemplateItemBase implements Accessory
     @Override
     public AccessoryType[] getAccessoryTypes(ItemInstance item)
     {
-        return new AccessoryType[]{AccessoryType.none};
+        return new AccessoryType[]{};
     }
 }

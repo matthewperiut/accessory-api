@@ -49,19 +49,19 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase
         {
             if (!(this.minecraft.player.inventory.armour[4 + i] == null))
             {
-                this.blit(startX + 80,startY + 8 + 18*i,blankX,blankY,16,16);
+                this.blit(startX + 80, startY + 8 + 18 * i, blankX, blankY, 16, 16);
             }
         }
 
         if (!(this.minecraft.player.inventory.armour[7] == null))
-            this.blit(startX + 98,startY + 44,blankX,blankY,16,16);
+            this.blit(startX + 98, startY + 44, blankX, blankY, 16, 16);
 
 
         for (int i = 0; i < 2; i++)
         {
             if (!(this.minecraft.player.inventory.armour[8 + i] == null))
             {
-                this.blit(startX + 98,startY + 8 + 18*i,blankX,blankY,16,16);
+                this.blit(startX + 98, startY + 8 + 18 * i, blankX, blankY, 16, 16);
             }
         }
 
@@ -69,7 +69,7 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase
         {
             if (!(this.minecraft.player.inventory.armour[10 + i] == null))
             {
-                this.blit(startX + 80 + 18*i,startY + 62,blankX,blankY,16,16);
+                this.blit(startX + 80 + 18 * i, startY + 62, blankX, blankY, 16, 16);
             }
         }
     }

@@ -50,8 +50,7 @@ public class AccessoryAccess
     private static boolean hasThisAccessory(PlayerBase player, ItemBase item, int slot)
     {
         ItemInstance armourItem = player.inventory.getArmourItem(slot);
-        if (armourItem == null || armourItem.count < 1)
-            return false;
+        if (armourItem == null || armourItem.count < 1) return false;
         return armourItem.itemId == item.id;
     }
 
@@ -67,8 +66,7 @@ public class AccessoryAccess
     {
         if (type.ordinal() > 3)
         {
-            return hasThisAccessory(player, item, getSlot(type)) ||
-                    hasThisAccessory(player, item, getSlot(type) + 1);
+            return hasThisAccessory(player, item, getSlot(type)) || hasThisAccessory(player, item, getSlot(type) + 1);
         }
         return hasThisAccessory(player, item, getSlot(type));
     }
@@ -89,8 +87,7 @@ public class AccessoryAccess
     {
         if (type.ordinal() == 3 || type.ordinal() == 5)
         {
-            return hasAccessoryType(player, getSlot(type)) ||
-                    hasAccessoryType(player, getSlot(type) + 1);
+            return hasAccessoryType(player, getSlot(type)) || hasAccessoryType(player, getSlot(type) + 1);
         }
         return hasAccessoryType(player, getSlot(type));
     }

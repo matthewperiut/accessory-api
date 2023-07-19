@@ -68,6 +68,22 @@ public class AccessoryRenderHelper
         model.field_622.method_1815(f6);
     }
 
+    public static String ClientArmTexture;
+    public static int ClientArmColour;
+    public static boolean ClientFirstPersonArmOverlay;
+
+    public static void enableFirstPersonArmOverlayRender(String texture, int colour)
+    {
+        ClientArmTexture = texture;
+        ClientArmColour = colour;
+        ClientFirstPersonArmOverlay = true;
+    }
+
+    public static void disableFirstPersonArmOverlay()
+    {
+        ClientFirstPersonArmOverlay = false;
+    }
+
     public static void TorsoOverlay(PlayerBase player, String texture, int colour, Biped model, Object[] objects)
     {
         float f = (float) objects[3];
