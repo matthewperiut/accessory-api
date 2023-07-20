@@ -1,7 +1,7 @@
 package com.matthewperiut.testmod.accessory;
 
+import com.matthewperiut.accessoryapi.api.AccessoryType;
 import com.matthewperiut.accessoryapi.api.helper.AccessoryRenderHelper;
-import com.matthewperiut.accessoryapi.api.normal.AccessoryType;
 import net.minecraft.client.render.entity.PlayerRenderer;
 import net.minecraft.client.render.entity.model.Biped;
 import net.minecraft.entity.player.PlayerBase;
@@ -22,8 +22,8 @@ public class TestCape extends TestAccessory
     }
 
     @Override
-    public void renderWhileWorn(PlayerBase player, PlayerRenderer renderer, ItemInstance accessory, Biped model, Object[] playerRenderData)
+    public void renderWhileWorn(PlayerBase player, PlayerRenderer renderer, ItemInstance accessory, Biped model, Object[] objects)
     {
-        AccessoryRenderHelper.Cape(player, "assets/testmod/textures/capes/cape.png", model, playerRenderData);
+        AccessoryRenderHelper.Cape(player, "assets/testmod/textures/capes/cape.png", model, objects);
     }
 }

@@ -9,9 +9,10 @@
     "PlayerInventoryMixin"
   ],
   "client": [
-    "LivingEntityRendererAccessor",
-    "PlayerInventoryGuiMixin",
-    "PlayerRendererMixin"
+    "client.ContainerBaseMixin",
+    "client.LivingEntityRendererAccessor",
+    "client.PlayerInventoryGuiMixin",
+    "client.PlayerRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

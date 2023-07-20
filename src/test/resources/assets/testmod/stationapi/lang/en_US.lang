@@ -5,3 +5,5 @@ item.test_pendant.name=Test Pendant
 item.test_ring.name=Test Ring
 item.test_shield.name=Test Shield
 item.test_all.name=Test All
+item.test_blob.name=Slime
+item.test_blue.name=Blue Slime

@@ -1,4 +1,4 @@
-package com.matthewperiut.accessoryapi.impl.mixin;
+package com.matthewperiut.accessoryapi.impl.mixin.client;
 
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.entity.Living;

@@ -12,6 +12,7 @@ import net.modificationstation.stationapi.api.util.Null;
 public class ItemListener
 {
     public static ItemBase testCape, testGloves, testMisc, testPendant, testRing, testShield, testAll;
+    public static ItemBase slime, blueSlime;
 
     @Entrypoint.ModID
     public static final ModID MOD_ID = Null.get();
@@ -26,5 +27,8 @@ public class ItemListener
         testRing = new TestRing(Identifier.of(MOD_ID, "test_ring")).setTranslationKey(MOD_ID, "test_ring");
         testShield = new TestShield(Identifier.of(MOD_ID, "test_shield")).setTranslationKey(MOD_ID, "test_shield");
         testAll = new TestAll(Identifier.of(MOD_ID, "test_all")).setTranslationKey(MOD_ID, "test_all");
+
+        slime = new TestSlime(Identifier.of(MOD_ID, "test_blob")).setTranslationKey(MOD_ID, "test_blob");
+        blueSlime = new TestSlime(Identifier.of(MOD_ID, "test_blue")).setTranslationKey(MOD_ID, "test_blue");
     }
 }

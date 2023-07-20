@@ -13,6 +13,9 @@
   "icon": "assets/testmod/icon.png",
   "environment": "*",
   "entrypoints": {
+    "main": [
+      "com.matthewperiut.testmod.TestMod"
+    ],
     "stationapi:event_bus": [
       "com.matthewperiut.testmod.ItemListener"
     ],

@@ -1,6 +1,6 @@
 package com.matthewperiut.testmod.accessory;
 
-import com.matthewperiut.accessoryapi.api.normal.AccessoryType;
+import com.matthewperiut.accessoryapi.api.AccessoryType;
 import net.minecraft.item.ItemInstance;
 import net.modificationstation.stationapi.api.registry.Identifier;
 

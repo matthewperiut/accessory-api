@@ -1,7 +1,7 @@
 package com.matthewperiut.testmod.accessory;
 
+import com.matthewperiut.accessoryapi.api.AccessoryType;
 import com.matthewperiut.accessoryapi.api.helper.AccessoryRenderHelper;
-import com.matthewperiut.accessoryapi.api.normal.AccessoryType;
 import net.minecraft.client.render.entity.PlayerRenderer;
 import net.minecraft.client.render.entity.model.Biped;
 import net.minecraft.entity.player.PlayerBase;

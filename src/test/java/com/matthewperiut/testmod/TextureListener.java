@@ -22,5 +22,8 @@ public class TextureListener
         ItemListener.testRing.setTexture(Identifier.of(MOD_ID, "item/testring"));
         ItemListener.testShield.setTexture(Identifier.of(MOD_ID, "item/testshield"));
         ItemListener.testAll.setTexture(Identifier.of(MOD_ID, "item/testall"));
+
+        ItemListener.slime.setTexture(Identifier.of(MOD_ID, "item/slime"));
+        ItemListener.blueSlime.setTexture(Identifier.of(MOD_ID, "item/blue_slime"));
     }
 }

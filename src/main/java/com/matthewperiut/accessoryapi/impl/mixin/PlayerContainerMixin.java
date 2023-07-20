@@ -1,20 +1,26 @@
 package com.matthewperiut.accessoryapi.impl.mixin;
 
-import com.matthewperiut.accessoryapi.api.normal.AccessoryType;
+import com.matthewperiut.accessoryapi.api.AccessoryType;
 import com.matthewperiut.accessoryapi.impl.AccessorySlot;
+import com.matthewperiut.accessoryapi.impl.extended.CustomAccessoryStorage;
 import net.minecraft.container.ContainerBase;
 import net.minecraft.container.slot.Slot;
 import net.minecraft.entity.player.PlayerContainer;
 import net.minecraft.entity.player.PlayerInventory;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static com.matthewperiut.accessoryapi.impl.extended.CustomAccessoryStorage.setCustomSlotsPos;
+import static com.matthewperiut.accessoryapi.impl.extended.CustomAccessoryStorage.slotOrder;
+
 @Mixin(PlayerContainer.class)
 public abstract class PlayerContainerMixin extends ContainerBase
 {
+    @Unique
     int slotCounter = 0;
 
     @ModifyArg(method = "<init>(Lnet/minecraft/entity/player/PlayerInventory;Z)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerContainer;addSlot(Lnet/minecraft/container/slot/Slot;)V"), index = 0)
@@ -34,7 +40,7 @@ public abstract class PlayerContainerMixin extends ContainerBase
             par1.y -= 18;
         }
 
-        if (slotCounter > 4 && slotCounter < 9)
+        if (slotCounter > 4 && slotCounter < 9) // armour
         {
             par1.x += 54;
         }
@@ -45,7 +51,7 @@ public abstract class PlayerContainerMixin extends ContainerBase
     }
 
     @Inject(method = "<init>(Lnet/minecraft/entity/player/PlayerInventory;Z)V", at = @At(value = "TAIL"))
-    private void addSlots(PlayerInventory arg, boolean par2, CallbackInfo ci)
+    private void addSlots(PlayerInventory inv, boolean par2, CallbackInfo ci)
     {
         int slotnum = 40;
 
@@ -62,7 +68,7 @@ public abstract class PlayerContainerMixin extends ContainerBase
                     }
                 }
 
-                this.addSlot(new AccessorySlot(arg, slotnum, 80 + 18 * i, 8 + j * 18, AccessoryType.values()[slotnum - 40]));
+                this.addSlot(new AccessorySlot(inv, slotnum, 80 + 18 * i, 8 + j * 18, AccessoryType.values()[slotnum - 40]));
                 slotnum++;
             }
         }
@@ -70,15 +76,27 @@ public abstract class PlayerContainerMixin extends ContainerBase
         // ring slots
         for (int i = 0; i < 2; i++)
         {
-            this.addSlot(new AccessorySlot(arg, slotnum, 98, 8 + i * 18, AccessoryType.ring));
+            this.addSlot(new AccessorySlot(inv, slotnum, 98, 8 + i * 18, AccessoryType.ring));
             slotnum++;
         }
 
         // misc slots
         for (int i = 0; i < 2; i++)
         {
-            this.addSlot(new AccessorySlot(arg, slotnum, 80 + 18 * i, 62, AccessoryType.misc));
+            this.addSlot(new AccessorySlot(inv, slotnum, 80 + 18 * i, 62, AccessoryType.misc));
             slotnum++;
         }
+
+        // custom slots
+        CustomAccessoryStorage.initializeCustomAccessoryPositions();
+
+        for (int i = 0; i < slotOrder.size(); i++)
+        {
+            CustomAccessoryStorage.PreservedSlot slot = slotOrder.get(i);
+            this.addSlot(new AccessorySlot(inv, slotnum, slot.pos.x, slot.pos.z, slot.slotType));
+            slotnum++;
+        }
+
+        setCustomSlotsPos((PlayerContainer) (Object) this, false);
     }
 }

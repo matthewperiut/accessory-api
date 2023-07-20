@@ -4,9 +4,9 @@ import com.matthewperiut.accessoryapi.api.AccessoryType;
 import net.minecraft.item.ItemInstance;
 import net.modificationstation.stationapi.api.registry.Identifier;
 
-public class TestRing extends TestAccessory
+public class TestSlime extends TestGloves
 {
-    public TestRing(Identifier identifier)
+    public TestSlime(Identifier identifier)
     {
         super(identifier);
     }
@@ -14,6 +14,12 @@ public class TestRing extends TestAccessory
     @Override
     public AccessoryType[] getAccessoryTypes(ItemInstance item)
     {
-        return new AccessoryType[]{AccessoryType.ring};
+        return new AccessoryType[0];
+    }
+
+    @Override
+    public String[] getCustomAccessoryTypes(ItemInstance item)
+    {
+        return new String[]{"blob"};
     }
 }

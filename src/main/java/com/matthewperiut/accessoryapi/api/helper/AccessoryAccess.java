@@ -1,6 +1,6 @@
 package com.matthewperiut.accessoryapi.api.helper;
 
-import com.matthewperiut.accessoryapi.api.normal.AccessoryType;
+import com.matthewperiut.accessoryapi.api.AccessoryType;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemBase;
 import net.minecraft.item.ItemInstance;

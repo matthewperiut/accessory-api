@@ -1,9 +1,10 @@
-package com.matthewperiut.accessoryapi.impl.mixin;
+package com.matthewperiut.accessoryapi.impl.mixin.client;
 
+import com.matthewperiut.accessoryapi.api.Accessory;
 import com.matthewperiut.accessoryapi.api.helper.BipedHelper;
-import com.matthewperiut.accessoryapi.api.normal.Accessory;
 import com.matthewperiut.accessoryapi.impl.AccessoryEntry;
 import com.matthewperiut.accessoryapi.impl.PlayerInfo;
+import com.matthewperiut.accessoryapi.impl.extended.CustomAccessoryStorage;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
@@ -16,6 +17,7 @@ import net.minecraft.entity.player.PlayerBase;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -83,6 +85,22 @@ public class PlayerRendererMixin
                 // misc 2
                 ((Accessory) player.inventory.armour[11].getType()).renderWhileWorn(player, renderer, player.inventory.armour[11], models.misc2, pkgedData);
             }
+            for (int i = 12; i < player.inventory.armour.length; i++)
+            {
+                if (player.inventory.armour[i] != null)
+                {
+
+                    String type = CustomAccessoryStorage.slotOrder.get(i - 12).slotType;
+                    Biped custom_model = models.custom_models.get(PlayerInfo.custom_accessory_types.indexOf(type));
+
+                    BipedHelper.before(player, renderer, custom_model, pkgedData);
+
+                    ((Accessory) player.inventory.armour[i].getType()).renderWhileWorn(player, renderer, player.inventory.armour[i], custom_model, pkgedData);
+
+                    BipedHelper.after(custom_model);
+
+                }
+            }
         }
         catch (Exception ex)
         {
@@ -90,6 +108,7 @@ public class PlayerRendererMixin
         }
     }
 
+    @Unique
     private Biped gloveModel = new Biped(0.6f);
 
     @Inject(method = "method_345", at = @At(value = "TAIL"))

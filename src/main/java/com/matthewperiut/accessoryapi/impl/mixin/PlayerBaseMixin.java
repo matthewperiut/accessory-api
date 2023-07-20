@@ -1,6 +1,6 @@
 package com.matthewperiut.accessoryapi.impl.mixin;
 
-import com.matthewperiut.accessoryapi.api.normal.Accessory;
+import com.matthewperiut.accessoryapi.api.Accessory;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemInstance;
 import org.spongepowered.asm.mixin.Mixin;

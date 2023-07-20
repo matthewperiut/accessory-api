@@ -17,13 +17,7 @@ public class PlayerEntityMixin
     public void onInit(Level par1, CallbackInfo ci)
     {
         PlayerBase player = (PlayerBase) (Object) this;
-        ItemBase[] items = { ItemListener.testCape,
-                ItemListener.testGloves,
-                ItemListener.testMisc,
-                ItemListener.testPendant,
-                ItemListener.testRing,
-                ItemListener.testShield,
-                ItemListener.testAll};
+        ItemBase[] items = {ItemListener.testCape, ItemListener.testGloves, ItemListener.testMisc, ItemListener.testPendant, ItemListener.testRing, ItemListener.testShield, ItemListener.testAll, ItemListener.slime, ItemListener.blueSlime};
 
         for (int i = 0; i < items.length; i++)
         {

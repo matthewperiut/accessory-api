@@ -1,6 +1,6 @@
 package com.matthewperiut.accessoryapi.api.helper;
 
-import com.matthewperiut.accessoryapi.impl.mixin.LivingEntityRendererAccessor;
+import com.matthewperiut.accessoryapi.impl.mixin.client.LivingEntityRendererAccessor;
 import net.minecraft.client.render.entity.PlayerRenderer;
 import net.minecraft.client.render.entity.model.Biped;
 import net.minecraft.entity.player.PlayerBase;
