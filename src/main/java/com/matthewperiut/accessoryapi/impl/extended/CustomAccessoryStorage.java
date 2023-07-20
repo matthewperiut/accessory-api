@@ -29,25 +29,6 @@ public class CustomAccessoryStorage
         }
     }
 
-    private static void reverseStrings()
-    {
-        ArrayList<String> reversedStrings1 = new ArrayList<>();
-        ArrayList<String> reversedStrings2 = new ArrayList<>();
-        for (PreservedSlot slot : slotOrder)
-        {
-            reversedStrings1.add(slot.slotName);
-            reversedStrings2.add(slot.slotType);
-        }
-        Collections.reverse(reversedStrings1);
-        Collections.reverse(reversedStrings2);
-
-        for (int i = 0; i < slotOrder.size(); i++)
-        {
-            slotOrder.get(i).slotName = reversedStrings1.get(i);
-            slotOrder.get(i).slotType = reversedStrings2.get(i);
-        }
-    }
-
     public static void initializeCustomAccessoryPositions()
     {
         // This whole function is a little slow, but it's called once per world run, so it's okay
@@ -56,7 +37,7 @@ public class CustomAccessoryStorage
         ArrayList<PreservedSlot> taken = new ArrayList<>();
         ArrayList<CustomAccessoryInfo> info = (ArrayList<CustomAccessoryInfo>) slotInfo.clone();
 
-        for (CustomAccessoryInfo a : slotInfo)
+        for (CustomAccessoryInfo a : info)
         {
             if (a.applyPreferred)
             {
@@ -136,11 +117,7 @@ public class CustomAccessoryStorage
                 }
             }
         }
-
         Collections.reverse(slotOrder);
-
-        // dude, idk why they're backwards but:
-        reverseStrings();
     }
 
     public static void setCustomSlotsPos(PlayerContainer container, boolean show)
