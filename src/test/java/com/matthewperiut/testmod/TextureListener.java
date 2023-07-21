@@ -15,15 +15,17 @@ public class TextureListener
     @EventListener
     public void registerTextures(TextureRegisterEvent event)
     {
-        ItemListener.testCape.setTexture(Identifier.of(MOD_ID, "item/testcape"));
-        ItemListener.testGloves.setTexture(Identifier.of(MOD_ID, "item/testgloves"));
-        ItemListener.testMisc.setTexture(Identifier.of(MOD_ID, "item/testmisc"));
-        ItemListener.testPendant.setTexture(Identifier.of(MOD_ID, "item/testpendant"));
-        ItemListener.testRing.setTexture(Identifier.of(MOD_ID, "item/testring"));
-        ItemListener.testShield.setTexture(Identifier.of(MOD_ID, "item/testshield"));
-        ItemListener.testAll.setTexture(Identifier.of(MOD_ID, "item/testall"));
+        ItemListener.testCape.setTexture(MOD_ID.id("item/testcape"));
+        ItemListener.rainbowCape.setTexture(MOD_ID.id("item/rainbowcape"));
+        ItemListener.testGloves.setTexture(MOD_ID.id("item/testgloves"));
+        ItemListener.rainbowGloves.setTexture(MOD_ID.id("item/rainbowgloves"));
+        ItemListener.testMisc.setTexture(MOD_ID.id("item/testmisc"));
+        ItemListener.testPendant.setTexture(MOD_ID.id("item/testpendant"));
+        ItemListener.testRing.setTexture(MOD_ID.id("item/testring"));
+        ItemListener.testShield.setTexture(MOD_ID.id("item/testshield"));
+        ItemListener.testAll.setTexture(MOD_ID.id("item/testall"));
 
-        ItemListener.slime.setTexture(Identifier.of(MOD_ID, "item/slime"));
-        ItemListener.blueSlime.setTexture(Identifier.of(MOD_ID, "item/blue_slime"));
+        ItemListener.slime.setTexture(MOD_ID.id("item/slime"));
+        ItemListener.blueSlime.setTexture(MOD_ID.id("item/blue_slime"));
     }
 }
