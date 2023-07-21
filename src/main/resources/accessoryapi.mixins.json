@@ -4,6 +4,7 @@
   "package": "com.matthewperiut.accessoryapi.impl.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "ArmorMixin",
     "PlayerBaseMixin",
     "PlayerContainerMixin",
     "PlayerInventoryMixin"

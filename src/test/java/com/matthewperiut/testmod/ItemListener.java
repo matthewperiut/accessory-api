@@ -20,15 +20,15 @@ public class ItemListener
     @EventListener
     public void registerItems(ItemRegistryEvent event)
     {
-        testCape = new TestCape(Identifier.of(MOD_ID, "test_cape")).setTranslationKey(MOD_ID, "test_cape");
-        testGloves = new TestGloves(Identifier.of(MOD_ID, "test_gloves")).setTranslationKey(MOD_ID, "test_gloves");
-        testMisc = new TestMisc(Identifier.of(MOD_ID, "test_misc")).setTranslationKey(MOD_ID, "test_misc");
-        testPendant = new TestPendant(Identifier.of(MOD_ID, "test_pendant")).setTranslationKey(MOD_ID, "test_pendant");
-        testRing = new TestRing(Identifier.of(MOD_ID, "test_ring")).setTranslationKey(MOD_ID, "test_ring");
-        testShield = new TestShield(Identifier.of(MOD_ID, "test_shield")).setTranslationKey(MOD_ID, "test_shield");
-        testAll = new TestAll(Identifier.of(MOD_ID, "test_all")).setTranslationKey(MOD_ID, "test_all");
+        testCape = new TestCape(Identifier.of(MOD_ID, "test_cape"));
+        testGloves = new TestGloves(Identifier.of(MOD_ID, "test_gloves"));
+        testMisc = new TestAccessory(Identifier.of(MOD_ID, "test_misc"), "misc");
+        testPendant = new TestPendant(Identifier.of(MOD_ID, "test_pendant"));
+        testRing = new TestAccessory(Identifier.of(MOD_ID, "test_ring"), "ring");
+        testShield = new TestShield(Identifier.of(MOD_ID, "test_shield"));
+        testAll = new TestAccessory(Identifier.of(MOD_ID, "test_all"), "all");
 
-        slime = new TestSlime(Identifier.of(MOD_ID, "test_blob")).setTranslationKey(MOD_ID, "test_blob");
-        blueSlime = new TestSlime(Identifier.of(MOD_ID, "test_blue")).setTranslationKey(MOD_ID, "test_blue");
+        slime = new TestAccessory(Identifier.of(MOD_ID, "test_blob"), "slime");
+        blueSlime = new TestAccessory(Identifier.of(MOD_ID, "test_blue"), "slime");
     }
 }

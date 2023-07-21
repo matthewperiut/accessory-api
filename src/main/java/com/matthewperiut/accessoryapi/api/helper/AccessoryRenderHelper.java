@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 
 public class AccessoryRenderHelper
 {
-    public static void Cape(PlayerBase player, String texture, Biped model, Object[] objects)
+    public static void cape(PlayerBase player, String texture, Biped model, Object[] objects)
     {
         float f = (float) objects[0];
 
@@ -52,7 +52,7 @@ public class AccessoryRenderHelper
         GL11.glPopMatrix();
     }
 
-    public static void ArmOverlay(PlayerBase player, String texture, int colour, Biped model, Object[] objects)
+    public static void armOverlay(PlayerBase player, String texture, int colour, Biped model, Object[] objects)
     {
         float f = (float) objects[3];
         final float brightness = player.getBrightnessAtEyes(f);
@@ -84,7 +84,7 @@ public class AccessoryRenderHelper
         ClientFirstPersonArmOverlay = false;
     }
 
-    public static void TorsoOverlay(PlayerBase player, String texture, int colour, Biped model, Object[] objects)
+    public static void torsoOverlay(PlayerBase player, String texture, int colour, Biped model, Object[] objects)
     {
         float f = (float) objects[3];
         final float brightness = player.getBrightnessAtEyes(f);

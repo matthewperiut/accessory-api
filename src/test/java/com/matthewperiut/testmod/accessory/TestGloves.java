@@ -1,6 +1,5 @@
 package com.matthewperiut.testmod.accessory;
 
-import com.matthewperiut.accessoryapi.api.AccessoryType;
 import com.matthewperiut.accessoryapi.api.helper.AccessoryRenderHelper;
 import net.minecraft.client.render.entity.PlayerRenderer;
 import net.minecraft.client.render.entity.model.Biped;
@@ -15,15 +14,9 @@ public class TestGloves extends TestAccessory
 
     public TestGloves(Identifier identifier)
     {
-        super(identifier);
+        super(identifier, "gloves");
         texture = "assets/testmod/textures/armour/test.png";
         colour = 14540253;
-    }
-
-    @Override
-    public AccessoryType[] getAccessoryTypes(ItemInstance item)
-    {
-        return new AccessoryType[]{AccessoryType.glove};
     }
 
     @Override
@@ -35,7 +28,7 @@ public class TestGloves extends TestAccessory
     @Override
     public void renderWhileWorn(PlayerBase player, PlayerRenderer renderer, ItemInstance accessory, Biped model, Object[] objects)
     {
-        AccessoryRenderHelper.ArmOverlay(player, texture, colour, model, objects);
+        AccessoryRenderHelper.armOverlay(player, texture, colour, model, objects);
     }
 
     @Override

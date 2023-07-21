@@ -1,6 +1,5 @@
 package com.matthewperiut.accessoryapi.impl.mixin;
 
-import com.matthewperiut.accessoryapi.api.AccessoryType;
 import com.matthewperiut.accessoryapi.impl.AccessorySlot;
 import com.matthewperiut.accessoryapi.impl.extended.CustomAccessoryStorage;
 import net.minecraft.container.ContainerBase;
@@ -55,37 +54,37 @@ public abstract class PlayerContainerMixin extends ContainerBase
     {
         int slotnum = 40;
 
-        // labeled slots
-        for (int i = 0; i < 2; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                if (i == 1)
-                {
-                    if (j == 0 || j == 1)
-                    {
-                        continue;
-                    }
-                }
-
-                this.addSlot(new AccessorySlot(inv, slotnum, 80 + 18 * i, 8 + j * 18, AccessoryType.values()[slotnum - 40]));
-                slotnum++;
-            }
-        }
-
-        // ring slots
-        for (int i = 0; i < 2; i++)
-        {
-            this.addSlot(new AccessorySlot(inv, slotnum, 98, 8 + i * 18, AccessoryType.ring));
-            slotnum++;
-        }
-
-        // misc slots
-        for (int i = 0; i < 2; i++)
-        {
-            this.addSlot(new AccessorySlot(inv, slotnum, 80 + 18 * i, 62, AccessoryType.misc));
-            slotnum++;
-        }
+//        // labeled slots
+//        for (int i = 0; i < 2; i++)
+//        {
+//            for (int j = 0; j < 3; j++)
+//            {
+//                if (i == 1)
+//                {
+//                    if (j == 0 || j == 1)
+//                    {
+//                        continue;
+//                    }
+//                }
+//
+//                this.addSlot(new AccessorySlot(inv, slotnum, 80 + 18 * i, 8 + j * 18, AccessoryType.values()[slotnum - 40]));
+//                slotnum++;
+//            }
+//        }
+//
+//        // ring slots
+//        for (int i = 0; i < 2; i++)
+//        {
+//            this.addSlot(new AccessorySlot(inv, slotnum, 98, 8 + i * 18, "ring"));
+//            slotnum++;
+//        }
+//
+//        // misc slots
+//        for (int i = 0; i < 2; i++)
+//        {
+//            this.addSlot(new AccessorySlot(inv, slotnum, 80 + 18 * i, 62, "misc"));
+//            slotnum++;
+//        }
 
         // custom slots
         CustomAccessoryStorage.initializeCustomAccessoryPositions();

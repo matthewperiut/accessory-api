@@ -7,28 +7,14 @@ import net.minecraft.client.render.entity.model.Biped;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemInstance;
 
-public interface Accessory
+public interface Accessory extends TickableInArmorSlot
 {
     /**
-     * Determines what accessory slot your item goes to
-     *
-     * @return Accessory Slot Types array
-     */
-    AccessoryType[] getAccessoryTypes(ItemInstance item);
-
-    /**
-     * Determines what custom accessory slot your item goes to
+     * Determines what accessory slots your item goes to
      *
      * @return Accessory Type String array
      */
-    default String[] getCustomAccessoryTypes(ItemInstance item)
-    {
-        return new String[0];
-    }
-
-    default void tickWhileWorn(PlayerBase player, ItemInstance accessory)
-    {
-    }
+    String[] getAccessoryTypes(ItemInstance item);
 
     /**
      * Render function for a specific player, providing cuboids or bipeds for use

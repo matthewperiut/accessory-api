@@ -85,7 +85,7 @@ public class PlayerRendererMixin
                 // misc 2
                 ((Accessory) player.inventory.armour[11].getType()).renderWhileWorn(player, renderer, player.inventory.armour[11], models.misc2, pkgedData);
             }
-            for (int i = 12; i < player.inventory.armour.length; i++)
+            for (int i = 4; i < player.inventory.armour.length; i++)
             {
                 if (player.inventory.armour[i] != null)
                 {

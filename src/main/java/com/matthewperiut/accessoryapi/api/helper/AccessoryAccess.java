@@ -1,129 +1,99 @@
 package com.matthewperiut.accessoryapi.api.helper;
 
-import com.matthewperiut.accessoryapi.api.AccessoryType;
+import com.matthewperiut.accessoryapi.api.Accessory;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemBase;
 import net.minecraft.item.ItemInstance;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class AccessoryAccess
 {
-    public static int getSlot(AccessoryType type)
-    {
-        int result = type.ordinal() + 4;
-        if (type.ordinal() > 4)
-        {
-            result += 1;
-        }
-        return result;
-    }
+    private static final int ACCESSORY_OFFSET = 4;
 
-    public static ItemInstance getAccessory(PlayerBase player, AccessoryType type)
-    {
-        return getAccessory(player, type, false);
-    }
-
-    public static ItemInstance getAccessory(PlayerBase player, AccessoryType type, boolean secondary)
-    {
-        int slot = getSlot(type);
-        if (secondary)
-        {
-            slot += 1;
-        }
-        return player.inventory.armour[slot];
-    }
-
-    public static void setAccessory(PlayerBase player, AccessoryType type, ItemInstance item)
-    {
-        setAccessory(player, type, item, false);
-    }
-
-    public static void setAccessory(PlayerBase player, AccessoryType type, ItemInstance item, boolean secondary)
-    {
-        int slot = getSlot(type);
-        if (secondary)
-        {
-            slot += 1;
-        }
-        player.inventory.armour[slot] = item;
-    }
-
-    private static boolean hasThisAccessory(PlayerBase player, ItemBase item, int slot)
-    {
-        ItemInstance armourItem = player.inventory.getArmourItem(slot);
-        if (armourItem == null || armourItem.count < 1) return false;
-        return armourItem.itemId == item.id;
+    /**
+     *
+     * @param player The player you are checking.
+     * @return The full array of the player's accessories.
+     */
+    public static ItemInstance[] getAccessories(PlayerBase player) {
+        return Arrays.copyOfRange(player.inventory.armour, ACCESSORY_OFFSET, player.inventory.armour.length - 1);
     }
 
     /**
-     * Checks whether a player has a specific accessory
      *
-     * @param player The player that you're checking the accessory from
-     * @param type   The accessory type you're checking for
-     * @param item   The accessory you're looking for
-     * @return whether the player has the specified accessory
+     * @param player The player you are checking.
+     * @param slot The index of the accessory inventory you want to check, DO NOT offset for armour slots.
+     * @return The accessory in the specified slot.
      */
-    public static boolean hasThisAccessory(PlayerBase player, ItemBase item, AccessoryType type)
-    {
-        if (type.ordinal() > 3)
-        {
-            return hasThisAccessory(player, item, getSlot(type)) || hasThisAccessory(player, item, getSlot(type) + 1);
-        }
-        return hasThisAccessory(player, item, getSlot(type));
-    }
-
-    private static boolean hasAccessoryType(PlayerBase player, int slot)
-    {
-        return player.inventory.getArmourItem(slot) != null;
+    public static ItemInstance getAccessory(PlayerBase player, int slot) {
+        return getAccessories(player)[slot];
     }
 
     /**
-     * Checks whether a player has any of a specific accessory type
      *
-     * @param player The player that you're checking the accessory from
-     * @param type   The accessory type you're checking for
-     * @return whether the player has the specified accessory type
+     * @param player The player you are giving the accessory to.
+     * @param slot The slot you are placing the accessory in.
+     * @param item The item you would like to place.
      */
-    public static boolean hasAccessoryType(PlayerBase player, AccessoryType type)
+    public static void setAccessory(PlayerBase player, int slot, ItemInstance item)
     {
-        if (type.ordinal() == 3 || type.ordinal() == 5)
-        {
-            return hasAccessoryType(player, getSlot(type)) || hasAccessoryType(player, getSlot(type) + 1);
-        }
-        return hasAccessoryType(player, getSlot(type));
+        player.inventory.armour[slot + ACCESSORY_OFFSET] = item;
     }
 
     /**
-     * Damages an accessory that a player is wearing
      *
-     * @param player The player that you're checking the accessory from
-     * @param item   The accessory you want damaged
-     * @param type   The accessory type you want damaged
-     * @param amount The amount of damage the accessory should take
-     * @return whether the item has broken or doesn't exist
+     * @param player The player you are checking.
+     * @param type The type of accessory you are looking for.
+     * @return The array of the player's accessories that match the type.
      */
-    public static boolean damageThisAccessory(PlayerBase player, ItemBase item, AccessoryType type, int amount)
-    {
-        int slot = getSlot(type);
-        if (type.ordinal() == 3 || type.ordinal() == 5)
-        {
-            if (hasThisAccessory(player, item, slot))
-            {
-                player.inventory.armour[slot].applyDamage(amount, player);
-                return true;
+    public static ItemInstance[] getAccessories(PlayerBase player, String type) {
+        var foundItems = new ArrayList<ItemInstance>();
+        for (ItemInstance item : getAccessories(player)) {
+            if (item != null && item.getType() instanceof Accessory accessory) {
+                if (Arrays.asList(accessory.getAccessoryTypes(item)).contains(type)) {
+                    foundItems.add(item);
+                }
             }
-            else if (hasThisAccessory(player, item, slot + 1))
-            {
-                player.inventory.armour[slot + 1].applyDamage(amount, player);
+        }
+        return foundItems.toArray(ItemInstance[]::new);
+    }
+
+    /*
+         Maybe change this method to use <T extends ItemBase & Accessory>
+         for the sake of only checking applicable slots.
+    */
+
+    /**
+     *
+     * @param player The player you are checking.
+     * @param itemType The item you are looking for.
+     * @return Whether the player has any items that match the provided item type.
+     */
+    private static boolean hasAccessory(PlayerBase player, ItemBase itemType) {
+        for (ItemInstance item : getAccessories(player)) {
+            if (item != null && item.getType() == itemType) {
                 return true;
             }
         }
+        return false;
+    }
 
-        if (hasThisAccessory(player, item, slot))
-        {
-            player.inventory.armour[slot + 1].applyDamage(amount, player);
-            return true;
+    /**
+     *
+     * @param player The player you are checking.
+     * @param type The type of accessory you are looking for.
+     * @return Whether the player has any accessories in their inventory that match the type.
+     */
+    private static boolean hasAnyAccessoriesOfType(PlayerBase player, String type) {
+        for (ItemInstance item : getAccessories(player)) {
+            if (item != null && item.getType() instanceof Accessory accessory) {
+                if (Arrays.asList(accessory.getAccessoryTypes(item)).contains(type)) {
+                    return true;
+                }
+            }
         }
-
         return false;
     }
 }

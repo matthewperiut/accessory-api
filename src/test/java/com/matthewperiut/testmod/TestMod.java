@@ -14,7 +14,7 @@ public class TestMod implements ModInitializer
         {
             CustomAccessoryRegister.add("extra" + i, "extra", "assets/testmod/textures/slot/extra.png", 16, 0);
         }
-        CustomAccessoryRegister.add("blob", "blob", "assets/testmod/textures/slot/extra.png", 0, 0);
+        CustomAccessoryRegister.add("blob", "cape", "assets/testmod/textures/slot/extra.png", 0, 0);
 
         for (int i = 0; i < 2; i++)
         {
