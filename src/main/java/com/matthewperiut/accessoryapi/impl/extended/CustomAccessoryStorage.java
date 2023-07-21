@@ -44,9 +44,9 @@ public class CustomAccessoryStorage
             if (a.applyPreferred)
             {
                 boolean available = true;
-                int h = a.h.ordinal();
-                int v = a.v.ordinal();
-                Vec2i pos = new Vec2i(116 + h * 18, 8 + v * 18);
+                int h = a.h;
+                int v = a.v;
+                Vec2i pos = new Vec2i(startX + h * 18, startY + v * 18);
                 for (PreservedSlot slot : taken)
                 {
                     if (slot.pos.equals(pos))
@@ -58,10 +58,10 @@ public class CustomAccessoryStorage
                 boolean secondary = false;
                 if (!available)
                 {
-                    for (int x = 0; x < 3; x++)
+                    for (int x = 0; x < 6; x++)
                     {
                         available = true;
-                        pos = new Vec2i(116 + x * 18, 8 + v * 18);
+                        pos = new Vec2i(startX + x * 18, startY + v * 18);
                         for (PreservedSlot slot : taken)
                         {
                             if (slot.pos.equals(pos))
@@ -90,14 +90,14 @@ public class CustomAccessoryStorage
             }
         }
 
-        for (int h = 0; h < 3; h++)
+        for (int h = 0; h < 6; h++)
         {
             for (int v = 0; v < 4; v++)
             {
                 boolean available = true;
                 for (PreservedSlot slot : taken)
                 {
-                    if (slot.pos.x == (116 + h * 18) && (slot.pos.z == 8 + v * 18))
+                    if (slot.pos.x == (startX + h * 18) && (slot.pos.z == startY + v * 18))
                     {
                         slotOrder.add(slot);
                         available = false;
@@ -110,7 +110,7 @@ public class CustomAccessoryStorage
                     if (info.size() > 0)
                     {
                         CustomAccessoryInfo accessory = info.get(0);
-                        slotOrder.add(new PreservedSlot(accessory.name, accessory.type, new Vec2i(116 + h * 18, 8 + v * 18)));
+                        slotOrder.add(new PreservedSlot(accessory.name, accessory.type, new Vec2i(startX + h * 18, startY + v * 18)));
                         slotOrder.get(slotOrder.size() - 1).texture = accessory.texture;
                         slotOrder.get(slotOrder.size() - 1).tx = accessory.tx;
                         slotOrder.get(slotOrder.size() - 1).ty = accessory.ty;

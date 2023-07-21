@@ -7,8 +7,8 @@ public class CustomAccessoryInfo
     // Setup Position Variables
     public boolean applyPreferred = false;
 
-    CustomAccessoryRegister.VerticalPositions v;
-    CustomAccessoryRegister.HorizontalPositions h;
+    int v;
+    int h;
 
     // Identifiers
     public String name;
@@ -33,7 +33,7 @@ public class CustomAccessoryInfo
         ty = texPosY;
     }
 
-    public CustomAccessoryInfo(String SlotName, String AccessoryType, CustomAccessoryRegister.HorizontalPositions hp, CustomAccessoryRegister.VerticalPositions vp)
+    public CustomAccessoryInfo(String SlotName, String AccessoryType, int hp, int vp)
     {
         this(SlotName, AccessoryType);
         applyPreferred = true;
@@ -41,7 +41,7 @@ public class CustomAccessoryInfo
         v = vp;
     }
 
-    public CustomAccessoryInfo(String SlotName, String AccessoryType, String Texture, int texPosX, int texPosY, CustomAccessoryRegister.HorizontalPositions hp, CustomAccessoryRegister.VerticalPositions vp)
+    public CustomAccessoryInfo(String SlotName, String AccessoryType, String Texture, int texPosX, int texPosY, int hp, int vp)
     {
         this(SlotName, AccessoryType, Texture, texPosX, texPosY);
         applyPreferred = true;

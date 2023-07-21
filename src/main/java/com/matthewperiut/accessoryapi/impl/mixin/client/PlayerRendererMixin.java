@@ -21,19 +21,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(PlayerRenderer.class)
 public class PlayerRendererMixin
 {
-    @Shadow
-    private Biped field_294; // cape
-
-    @Inject(method = "method_827", at = @At(value = "TAIL")) // cape
-    private void capeHandle(Living f, float par2, CallbackInfo ci)
-    {
-        PlayerBase player = (PlayerBase) f;
-
-        if (player.inventory.armour[5] != null)
-        {
-            ((Accessory) player.inventory.armour[5].getType()).renderWhileWorn(player, (PlayerRenderer) (Object) this, player.inventory.armour[5], field_294, new Object[]{par2});
-        }
-    }
 
     @Inject(method = "render(Lnet/minecraft/entity/EntityBase;DDDFF)V", at = @At(value = "TAIL"))
     private void renderEntityCustom(EntityBase d, double x, double y, double z, float h, float v, CallbackInfo ci)

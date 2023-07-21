@@ -89,7 +89,7 @@ public abstract class PlayerContainerMixin extends ContainerBase
         // custom slots
         CustomAccessoryStorage.initializeCustomAccessoryPositions();
 
-        for (int i = slotOrder.size()-1; i > -1; i--)
+        for (int i = slotOrder.size() - 1; i > -1; i--)
         {
             CustomAccessoryStorage.PreservedSlot slot = slotOrder.get(i);
             System.out.println(slotnum + " " + slot.pos.x + " " + slot.pos.z + " " + slot.slotType);
