@@ -79,7 +79,7 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase
         //this.minecraft.player.inventory.armour[]
 
         // blank tile (first inventory slot, bottom left)
-        int blankX = 8, blankY = 142;
+        int blankX = 81, blankY = 142;
 
         for (int i = 0; i < 3; i++)
         {

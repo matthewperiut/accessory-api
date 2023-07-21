@@ -29,6 +29,8 @@ public class CustomAccessoryStorage
         }
     }
 
+    private static final int startX = 80;
+    private static final int startY = 8;
     public static void initializeCustomAccessoryPositions()
     {
         // This whole function is a little slow, but it's called once per world run, so it's okay
