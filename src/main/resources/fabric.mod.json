@@ -15,8 +15,14 @@
   "icon": "assets/accessoryapi/icon.png",
   "environment": "*",
   "entrypoints": {
+    "main": [
+      "com.matthewperiut.accessoryapi.AccessoryAPI"
+    ],
+    "gcapi:factory_provider": [
+      "com.matthewperiut.accessoryapi.config.AccessoryFactoryProvider"
+    ],
     "gcapi": [
-      "com.matthewperiut.accessoryapi.config.AccessoryConfig"
+      "com.matthewperiut.accessoryapi.AccessoryAPI"
     ]
   },
   "mixins": [

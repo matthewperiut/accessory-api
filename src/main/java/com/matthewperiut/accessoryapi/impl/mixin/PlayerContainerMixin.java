@@ -1,6 +1,6 @@
 package com.matthewperiut.accessoryapi.impl.mixin;
 
-import com.matthewperiut.accessoryapi.config.AccessoryConfig;
+import com.matthewperiut.accessoryapi.AccessoryAPI;
 import com.matthewperiut.accessoryapi.impl.slot.AccessorySlot;
 import com.matthewperiut.accessoryapi.impl.slot.AccessorySlotStorage;
 import net.minecraft.container.ContainerBase;
@@ -44,7 +44,7 @@ public abstract class PlayerContainerMixin extends ContainerBase
             par1.y -= 18;
         }
 
-        if (AccessoryConfig.config.aetherStyleArmor)
+        if (AccessoryAPI.config.aetherStyleArmor)
         {
             if (slotCounter > 4 && slotCounter < 9) // armour
             {
