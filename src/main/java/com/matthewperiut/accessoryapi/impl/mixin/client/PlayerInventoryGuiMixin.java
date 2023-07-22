@@ -20,8 +20,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static com.matthewperiut.accessoryapi.impl.slot.AccessorySlotStorage.showOverflowSlots;
-import static com.matthewperiut.accessoryapi.impl.slot.AccessorySlotStorage.slotOrder;
+import static com.matthewperiut.accessoryapi.impl.slot.AccessorySlotStorage.*;
 
 @Mixin(value = PlayerInventory.class)
 public abstract class PlayerInventoryGuiMixin extends ContainerBase
@@ -51,26 +50,51 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase
     {
         if (button.id == 250)
         {
-            extended = true;
-            button.visible = false;
-            for (int i = 0; i < 5; i++)
+            int startX = (width - containerWidth) / 2;
+            int startY = (height - containerHeight) / 2;
+            extended = !extended;
+            ((AccessoryButton) button).goBack = extended;
+
+            if (extended)
             {
-                ((Slot) container.slots.get(i)).y = 1000;
+                for (int i = 0; i < 5; i++)
+                {
+                    ((Slot) container.slots.get(i)).y = 1000;
+                }
+
+                button.x = startX + 165;
+                button.y = startY + 1;
+                showOverflowSlots((PlayerContainer) container);
+            }
+            else
+            {
+                AccessoryButton.resetPlayerInv(container);
+                button.x = startX + 115;
+                button.y = startY + 6;
+                hideOverflowSlots((PlayerContainer) container);
             }
 
-            showOverflowSlots((PlayerContainer) container);
+
+            AccessoryButton.time_clicked = System.currentTimeMillis();
         }
     }
 
     // uses the aether-style armour slot by having the armour slots on the right of the player rendering
+    @Unique
     private static final int AETHER_U = 0, AETHER_V = 0, AETHER_W = 154, AETHER_H = 72;
     // regular armour slot location
+    @Unique
     private static final int REGULAR_U = 72, REGULAR_V = 0, REGULAR_W = 82, REGULAR_H = 72;
+    @Unique
     private static final int SLOT_U = 154, SLOT_V = 54, SLOT_W = 18, SLOT_H = 18;
+    @Unique
     private static final int CRAFT_U = 172, CRAFT_V = 0, CRAFT_W = 36, CRAFT_H = 72;
+    @Unique
     private static final int CRAFT_X = 117;
 
+    @Unique
     private static final int CORNER_INSET = 7;
+
     @Inject(method = "renderContainerBackground", at = @At("TAIL"))
     public void bindAetherPlayerGuiTexture(float par1, CallbackInfo ci)
     {
@@ -83,7 +107,8 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase
         {
             blit(startX + CORNER_INSET + REGULAR_U, startY + CORNER_INSET + REGULAR_V, REGULAR_U, REGULAR_V, REGULAR_W, REGULAR_H);
         }
-        else{
+        else
+        {
             //blit(startX + texOffsetX, startY + texOffsetY, texOffsetX, texOffsetY, topSizeX, topSizeY);
             blit(startX + CORNER_INSET, startY + CORNER_INSET, AETHER_U, AETHER_V, AETHER_W, AETHER_H);
         }
@@ -104,9 +129,12 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase
             blit(startX + slot.x - 1, startY + slot.y - 1, SLOT_U, SLOT_V, SLOT_W, SLOT_H);
             if (!slot.hasItem())
             {
-                int slot_tex = minecraft.textureManager.getTextureId(info.texture);
-                minecraft.textureManager.bindTexture(slot_tex);
-                blit(startX + slot.x, startY + slot.y, info.tx, info.ty, 16, 16);
+                if (!info.texture.isEmpty())
+                {
+                    int slot_tex = minecraft.textureManager.getTextureId(info.texture);
+                    minecraft.textureManager.bindTexture(slot_tex);
+                    blit(startX + slot.x, startY + slot.y, info.tx, info.ty, 16, 16);
+                }
             }
         }
     }

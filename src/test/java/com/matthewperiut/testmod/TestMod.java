@@ -19,5 +19,8 @@ public class TestMod implements ModInitializer
 
         for (int i = 0; i < 4; i++)
             AccessoryRegister.add("slime", "assets/testmod/textures/slot/extra.png", 0, 0);
+
+        for (int i = 0; i < 8; i++)
+            AccessoryRegister.add("nope");
     }
 }

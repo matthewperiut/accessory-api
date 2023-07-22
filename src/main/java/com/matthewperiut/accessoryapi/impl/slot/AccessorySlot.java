@@ -20,8 +20,14 @@ public class AccessorySlot extends Slot
         return 1;
     }
 
+    // delay while pressing accessory slot button to prevent taking / inserting item
+    private static final long MILLISECONDS_DELAY = 50;
+
     public boolean canInsert(ItemInstance item)
     {
+        if (AccessoryButton.time_clicked + MILLISECONDS_DELAY > System.currentTimeMillis())
+            return false;
+
         if (item.getType() instanceof Accessory accessory)
         {
             for (String type : accessory.getAccessoryTypes(item))
@@ -33,5 +39,14 @@ public class AccessorySlot extends Slot
             }
         }
         return false;
+    }
+
+    @Override
+    public ItemInstance takeItem(int i)
+    {
+        if (AccessoryButton.time_clicked + MILLISECONDS_DELAY > System.currentTimeMillis())
+            return null;
+
+        return super.takeItem(i);
     }
 }

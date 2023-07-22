@@ -32,7 +32,7 @@ public class ItemListener
         testGloves = new TestAccessoryWithRenderer(MOD_ID.id("test_gloves"), new GloveRenderer("assets/testmod/textures/armour/test.png"), "gloves");
         rainbowGloves = new RainbowAccessory(MOD_ID.id("rainbow_gloves"), new RainbowGloveRenderer("assets/testmod/textures/armour/test.png"), "gloves");
         testMisc = new TestAccessory(MOD_ID.id("test_misc"), "misc");
-        testPendant = new TestAccessoryWithRenderer(MOD_ID.id("test_pendant"), new NecklaceRenderer("assets/testmod/textures/armour/test.png"), "neck");
+        testPendant = new TestAccessoryWithRenderer(MOD_ID.id("test_pendant"), new NecklaceRenderer("assets/testmod/textures/armour/test.png"), "pendant");
         testRing = new TestAccessory(MOD_ID.id("test_ring"), "ring");
 
         testShield = new TestShield(MOD_ID.id("test_shield"));
