@@ -1,6 +1,6 @@
 package com.matthewperiut.accessoryapi.impl.mixin;
 
-import com.matthewperiut.accessoryapi.api.Accessory;
+import com.matthewperiut.accessoryapi.api.TickableInArmorSlot;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemInstance;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,12 +15,16 @@ public abstract class PlayerBaseMixin
     public void tick(CallbackInfo ci)
     {
         PlayerBase player = (PlayerBase) ((Object) this);
-        for (int i = 4; i < player.inventory.armour.length; i++)
+        for (int i = 0; i < player.inventory.armour.length; i++)
         {
             ItemInstance item = player.inventory.armour[i];
             if (item != null)
             {
-                ((Accessory) item.getType()).tickWhileWorn(player, item);
+                var newItem = ((TickableInArmorSlot) item.getType()).tickWhileWorn(player, item);
+                if (newItem != item)
+                {
+                    player.inventory.armour[i] = newItem;
+                }
             }
         }
     }

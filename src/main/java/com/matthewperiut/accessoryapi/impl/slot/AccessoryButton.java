@@ -1,4 +1,4 @@
-package com.matthewperiut.accessoryapi.impl.extended;
+package com.matthewperiut.accessoryapi.impl.slot;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widgets.Button;

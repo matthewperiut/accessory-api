@@ -16,7 +16,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.matthewperiut.accessoryapi.impl.AccessoryEntry"
+      "com.matthewperiut.accessoryapi.impl.AccessoryMod"
     ]
   },
   "mixins": [

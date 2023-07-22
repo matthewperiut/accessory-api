@@ -1,17 +1,24 @@
 package com.matthewperiut.testmod;
 
-import com.matthewperiut.testmod.accessory.*;
+import com.matthewperiut.accessoryapi.api.render.builtin.CapeRenderer;
+import com.matthewperiut.accessoryapi.api.render.builtin.GloveRenderer;
+import com.matthewperiut.accessoryapi.api.render.builtin.NecklaceRenderer;
+import com.matthewperiut.testmod.accessory.RainbowAccessory;
+import com.matthewperiut.testmod.accessory.TestAccessory;
+import com.matthewperiut.testmod.accessory.TestAccessoryWithRenderer;
+import com.matthewperiut.testmod.accessory.TestShield;
+import com.matthewperiut.testmod.client.RainbowCapeRenderer;
+import com.matthewperiut.testmod.client.RainbowGloveRenderer;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.item.ItemBase;
 import net.modificationstation.stationapi.api.event.registry.ItemRegistryEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
-import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.registry.ModID;
 import net.modificationstation.stationapi.api.util.Null;
 
 public class ItemListener
 {
-    public static ItemBase testCape, testGloves, testMisc, testPendant, testRing, testShield, testAll;
+    public static ItemBase testCape, rainbowCape, testGloves, rainbowGloves, testMisc, testPendant, testRing, testShield, testAll;
     public static ItemBase slime, blueSlime;
 
     @Entrypoint.ModID
@@ -20,15 +27,18 @@ public class ItemListener
     @EventListener
     public void registerItems(ItemRegistryEvent event)
     {
-        testCape = new TestCape(Identifier.of(MOD_ID, "test_cape")).setTranslationKey(MOD_ID, "test_cape");
-        testGloves = new TestGloves(Identifier.of(MOD_ID, "test_gloves")).setTranslationKey(MOD_ID, "test_gloves");
-        testMisc = new TestMisc(Identifier.of(MOD_ID, "test_misc")).setTranslationKey(MOD_ID, "test_misc");
-        testPendant = new TestPendant(Identifier.of(MOD_ID, "test_pendant")).setTranslationKey(MOD_ID, "test_pendant");
-        testRing = new TestRing(Identifier.of(MOD_ID, "test_ring")).setTranslationKey(MOD_ID, "test_ring");
-        testShield = new TestShield(Identifier.of(MOD_ID, "test_shield")).setTranslationKey(MOD_ID, "test_shield");
-        testAll = new TestAll(Identifier.of(MOD_ID, "test_all")).setTranslationKey(MOD_ID, "test_all");
+        testCape = new TestAccessoryWithRenderer(MOD_ID.id("test_cape"), new CapeRenderer("assets/testmod/textures/capes/cape.png"), "cape");
+        rainbowCape = new RainbowAccessory(MOD_ID.id("rainbow_cape"), new RainbowCapeRenderer("assets/testmod/textures/capes/cape.png"), "cape");
+        testGloves = new TestAccessoryWithRenderer(MOD_ID.id("test_gloves"), new GloveRenderer("assets/testmod/textures/armour/test.png"), "gloves");
+        rainbowGloves = new RainbowAccessory(MOD_ID.id("rainbow_gloves"), new RainbowGloveRenderer("assets/testmod/textures/armour/test.png"), "gloves");
+        testMisc = new TestAccessory(MOD_ID.id("test_misc"), "misc");
+        testPendant = new TestAccessoryWithRenderer(MOD_ID.id("test_pendant"), new NecklaceRenderer("assets/testmod/textures/armour/test.png"), "neck");
+        testRing = new TestAccessory(MOD_ID.id("test_ring"), "ring");
 
-        slime = new TestSlime(Identifier.of(MOD_ID, "test_blob")).setTranslationKey(MOD_ID, "test_blob");
-        blueSlime = new TestSlime(Identifier.of(MOD_ID, "test_blue")).setTranslationKey(MOD_ID, "test_blue");
+        testShield = new TestShield(MOD_ID.id("test_shield"));
+        testAll = new TestAccessory(MOD_ID.id("test_all"), "all", "ring", "misc", "slime");
+
+        slime = new TestAccessory(MOD_ID.id("test_blob"), "slime");
+        blueSlime = new TestAccessory(MOD_ID.id("test_blue"), "slime");
     }
 }

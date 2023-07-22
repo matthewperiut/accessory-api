@@ -1,4 +1,4 @@
-package com.matthewperiut.accessoryapi.impl.extended;
+package com.matthewperiut.accessoryapi.impl.slot;
 
 import net.minecraft.container.slot.Slot;
 import net.minecraft.entity.player.PlayerContainer;
@@ -7,27 +7,29 @@ import net.minecraft.util.maths.Vec2i;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class CustomAccessoryStorage
+public class AccessorySlotStorage
 {
-    public static ArrayList<CustomAccessoryInfo> slotInfo = new ArrayList<>();
+    public static ArrayList<AccessorySlotInfo> slotInfo = new ArrayList<>();
     public static ArrayList<PreservedSlot> slotOrder = new ArrayList<>();
+    public static int extraSlots = 0;
 
     public static class PreservedSlot
     {
-        public String slotName;
         public String slotType;
         public String texture = "";
         public int tx;
         public int ty;
         public Vec2i pos;
 
-        public PreservedSlot(String slotName, String slotType, Vec2i pos)
+        public PreservedSlot(String slotType, Vec2i pos)
         {
-            this.slotName = slotName;
             this.slotType = slotType;
             this.pos = pos;
         }
     }
+
+    private static final int startX = 62;
+    private static final int startY = 8;
 
     public static void initializeCustomAccessoryPositions()
     {
@@ -35,16 +37,16 @@ public class CustomAccessoryStorage
         slotOrder.clear();
 
         ArrayList<PreservedSlot> taken = new ArrayList<>();
-        ArrayList<CustomAccessoryInfo> info = (ArrayList<CustomAccessoryInfo>) slotInfo.clone();
+        ArrayList<AccessorySlotInfo> info = (ArrayList<AccessorySlotInfo>) slotInfo.clone();
 
-        for (CustomAccessoryInfo a : info)
+        for (AccessorySlotInfo a : slotInfo)
         {
             if (a.applyPreferred)
             {
                 boolean available = true;
-                int h = a.h.ordinal();
-                int v = a.v.ordinal();
-                Vec2i pos = new Vec2i(116 + h * 18, 8 + v * 18);
+                int h = a.h;
+                int v = a.v;
+                Vec2i pos = new Vec2i(startX + h * 18, startY + v * 18);
                 for (PreservedSlot slot : taken)
                 {
                     if (slot.pos.equals(pos))
@@ -56,10 +58,10 @@ public class CustomAccessoryStorage
                 boolean secondary = false;
                 if (!available)
                 {
-                    for (int x = 0; x < 3; x++)
+                    for (int x = 0; x < 6; x++)
                     {
                         available = true;
-                        pos = new Vec2i(116 + x * 18, 8 + v * 18);
+                        pos = new Vec2i(startX + x * 18, startY + v * 18);
                         for (PreservedSlot slot : taken)
                         {
                             if (slot.pos.equals(pos))
@@ -79,7 +81,7 @@ public class CustomAccessoryStorage
 
                 if (available || secondary)
                 {
-                    taken.add(new PreservedSlot(a.name, a.type, pos));
+                    taken.add(new PreservedSlot(a.type, pos));
                     taken.get(taken.size() - 1).texture = a.texture;
                     taken.get(taken.size() - 1).tx = a.tx;
                     taken.get(taken.size() - 1).ty = a.ty;
@@ -88,14 +90,14 @@ public class CustomAccessoryStorage
             }
         }
 
-        for (int h = 0; h < 3; h++)
+        for (int h = 0; h < 6; h++)
         {
             for (int v = 0; v < 4; v++)
             {
                 boolean available = true;
                 for (PreservedSlot slot : taken)
                 {
-                    if (slot.pos.x == (116 + h * 18) && (slot.pos.z == 8 + v * 18))
+                    if (slot.pos.x == (startX + h * 18) && (slot.pos.z == startY + v * 18))
                     {
                         slotOrder.add(slot);
                         available = false;
@@ -107,8 +109,8 @@ public class CustomAccessoryStorage
                 {
                     if (info.size() > 0)
                     {
-                        CustomAccessoryInfo accessory = info.get(0);
-                        slotOrder.add(new PreservedSlot(accessory.name, accessory.type, new Vec2i(116 + h * 18, 8 + v * 18)));
+                        AccessorySlotInfo accessory = info.get(0);
+                        slotOrder.add(new PreservedSlot(accessory.type, new Vec2i(startX + h * 18, startY + v * 18)));
                         slotOrder.get(slotOrder.size() - 1).texture = accessory.texture;
                         slotOrder.get(slotOrder.size() - 1).tx = accessory.tx;
                         slotOrder.get(slotOrder.size() - 1).ty = accessory.ty;
@@ -118,9 +120,12 @@ public class CustomAccessoryStorage
             }
         }
         Collections.reverse(slotOrder);
+
+        if (slotOrder.size() > 8)
+            extraSlots = slotOrder.size() - 8;
     }
 
-    public static void setCustomSlotsPos(PlayerContainer container, boolean show)
+    public static void showOverflowSlots(PlayerContainer container)
     {
         int start = container.slots.size() - slotOrder.size();
         int end = container.slots.size();
@@ -128,8 +133,25 @@ public class CustomAccessoryStorage
         for (int i = start; i < end; i++)
         {
             Slot slot = (Slot) container.slots.get(i);
-            slot.x = slotOrder.get(end - i - 1).pos.x;
-            slot.y = slotOrder.get(end - i - 1).pos.z + (show ? 0 : 1000);
+            if (slot.x > 114 && slot.y > 500)
+            {
+                slot.y -= 1000;
+            }
+        }
+    }
+
+    public static void hideOverflowSlots(PlayerContainer container)
+    {
+        int start = container.slots.size() - slotOrder.size();
+        int end = container.slots.size();
+
+        for (int i = start; i < end; i++)
+        {
+            Slot slot = (Slot) container.slots.get(i);
+            if (slot.x > 114 && slot.y < 500)
+            {
+                slot.y += 1000;
+            }
         }
     }
 }

@@ -1,5 +1,7 @@
 item.test_cape.name=Test Cape
+item.rainbow_cape.name=Rainbow Cape
 item.test_gloves.name=Test Gloves
+item.rainbow_gloves.name=Rainbow Gloves
 item.test_misc.name=Test Misc
 item.test_pendant.name=Test Pendant
 item.test_ring.name=Test Ring
