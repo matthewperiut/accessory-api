@@ -40,7 +40,7 @@ public abstract class PlayerContainerMixin extends ContainerBase
             par1.y -= 18;
         }
 
-        if (!AccessoryMod.leftArmourSlots)
+        if (!AccessoryMod.leftArmorSlots)
         {
             if (slotCounter > 4 && slotCounter < 9) // armour
             {

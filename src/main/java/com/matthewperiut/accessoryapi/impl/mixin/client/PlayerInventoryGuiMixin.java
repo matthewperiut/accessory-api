@@ -62,29 +62,35 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase
         }
     }
 
+    // uses the aether-style armour slot by having the armour slots on the right of the player rendering
+    private static final int AETHER_U = 0, AETHER_V = 0, AETHER_W = 154, AETHER_H = 72;
+    // regular armour slot location
+    private static final int REGULAR_U = 72, REGULAR_V = 0, REGULAR_W = 82, REGULAR_H = 72;
+    private static final int SLOT_U = 154, SLOT_V = 54, SLOT_W = 18, SLOT_H = 18;
+    private static final int CRAFT_U = 172, CRAFT_V = 0, CRAFT_W = 36, CRAFT_H = 72;
+    private static final int CRAFT_X = 117;
+
+    private static final int CORNER_INSET = 7;
     @Inject(method = "renderContainerBackground", at = @At("TAIL"))
     public void bindAetherPlayerGuiTexture(float par1, CallbackInfo ci)
     {
         int var2 = minecraft.textureManager.getTextureId("/assets/accessoryapi/inventory.png");
         minecraft.textureManager.bindTexture(var2);
 
-        int texOffsetX = 7, texOffsetY = 7;
-        int topSizeX = 154, topSizeY = 72;
-
-        if (AccessoryMod.leftArmourSlots)
-        {
-            texOffsetX += 72;
-            topSizeX -= 72;
-        }
-
         int startX = (width - containerWidth) / 2;
         int startY = (height - containerHeight) / 2;
-        blit(startX + texOffsetX, startY + texOffsetY, texOffsetX, texOffsetY, topSizeX, topSizeY);
+        if (AccessoryMod.leftArmorSlots)
+        {
+            blit(startX + CORNER_INSET + REGULAR_U, startY + CORNER_INSET + REGULAR_V, REGULAR_U, REGULAR_V, REGULAR_W, REGULAR_H);
+        }
+        else{
+            //blit(startX + texOffsetX, startY + texOffsetY, texOffsetX, texOffsetY, topSizeX, topSizeY);
+            blit(startX + CORNER_INSET, startY + CORNER_INSET, AETHER_U, AETHER_V, AETHER_W, AETHER_H);
+        }
 
-        if (extended) blit(startX + 117, startY, 176, 0, 59, 79);
+        if (!extended) blit(startX + CRAFT_X + CORNER_INSET, startY + CORNER_INSET, CRAFT_U, CRAFT_V, CRAFT_W, CRAFT_H);
 
         // blank tile (first inventory slot, bottom left)
-        int blankX = 176, blankY = 79;
 
         int start = container.slots.size() - slotOrder.size();
         int end = container.slots.size();
@@ -95,7 +101,7 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase
             Slot slot = (Slot) container.slots.get(i);
             AccessorySlotStorage.PreservedSlot info = slotOrder.get(i - start);
             minecraft.textureManager.bindTexture(var2);
-            blit(startX + slot.x - 1, startY + slot.y - 1, blankX, blankY, 18, 18);
+            blit(startX + slot.x - 1, startY + slot.y - 1, SLOT_U, SLOT_V, SLOT_W, SLOT_H);
             if (!slot.hasItem())
             {
                 int slot_tex = minecraft.textureManager.getTextureId(info.texture);
@@ -118,7 +124,7 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase
     @Redirect(method = "renderContainerBackground", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glTranslatef(FFF)V"))
     public void translateAetherPlayerModel(float x, float y, float z)
     {
-        if (AccessoryMod.leftArmourSlots)
+        if (AccessoryMod.leftArmorSlots)
         {
             GL11.glTranslatef(x, y, z);
             return;
@@ -134,7 +140,7 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase
     private void injected(AbstractClientPlayer instance, float value)
     {
         float newValue;
-        if (AccessoryMod.leftArmourSlots)
+        if (AccessoryMod.leftArmorSlots)
         {
             newValue = value;
         }

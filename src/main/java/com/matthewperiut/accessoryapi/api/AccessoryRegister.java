@@ -25,11 +25,13 @@ public class AccessoryRegister
 
     private static final String defaultTexture = "/assets/accessoryapi/inventory.png";
 
+    private static final int DEFAULT_ACCESSORY_Y = 72;
+
     public static void add(String accessoryType)
     {
         int d = getDefaultTextureId(accessoryType);
         if (d != -1)
-            AccessorySlotStorage.slotInfo.add(new AccessorySlotInfo(accessoryType, defaultTexture, d * 16, 166));
+            AccessorySlotStorage.slotInfo.add(new AccessorySlotInfo(accessoryType, defaultTexture, d * 16, DEFAULT_ACCESSORY_Y));
         else
             AccessorySlotStorage.slotInfo.add(new AccessorySlotInfo(accessoryType));
     }
@@ -43,7 +45,7 @@ public class AccessoryRegister
     {
         int d = getDefaultTextureId(accessoryType);
         if (d != -1)
-            AccessorySlotStorage.slotInfo.add(new AccessorySlotInfo(accessoryType, defaultTexture, d * 16, 166, h, v));
+            AccessorySlotStorage.slotInfo.add(new AccessorySlotInfo(accessoryType, defaultTexture, d * 16, DEFAULT_ACCESSORY_Y, h, v));
         else
             AccessorySlotStorage.slotInfo.add(new AccessorySlotInfo(accessoryType, h, v));
     }
