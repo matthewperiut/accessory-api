@@ -31,7 +31,7 @@ public class RenderingHelper
         GL11.glScalef(-1.0f, -1.0f, 1.0f);
         ((LivingEntityRendererAccessor) playerRenderer).invoke823(player, v);
         GL11.glTranslatef(0.0f, -24.0f * f6 - 0.0078125f, 0.0f);
-        float f7 = Math.max(player.field_1048 + (player.limbDistance - player.field_1048) * v, 1.0f);
+        float f7 = Math.min(player.field_1048 + (player.limbDistance - player.field_1048) * v, 1.0f);
         final float f8 = player.field_1050 - player.limbDistance * (1.0f - v);
         GL11.glEnable(3008);
         model.setAngles(f8, f7, f5, f3 - f2, f4, f6);
