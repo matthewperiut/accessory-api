@@ -20,7 +20,7 @@ public class ContainerBaseMixin
     @Unique
     private void resetPlayerInv()
     {
-        if (this.container instanceof PlayerContainer pc)
+        if (container instanceof PlayerContainer pc)
         {
             // crafting result pos ( for aether )
             pc.getSlot(0).x = 134;

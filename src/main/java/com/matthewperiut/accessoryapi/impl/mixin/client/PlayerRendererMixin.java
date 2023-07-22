@@ -4,6 +4,7 @@ import com.matthewperiut.accessoryapi.api.helper.AccessoryAccess;
 import com.matthewperiut.accessoryapi.api.render.HasCustomRenderer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.PlayerRenderer;
 import net.minecraft.entity.EntityBase;
 import net.minecraft.entity.player.PlayerBase;
@@ -18,8 +19,9 @@ public class PlayerRendererMixin
 {
 
     @Inject(method = "render(Lnet/minecraft/entity/EntityBase;DDDFF)V", at = @At(value = "TAIL"))
-    private void renderEntityCustom(EntityBase d, double x, double y, double z, float h, float v, CallbackInfo ci)
+    private void thirdPersonRender(EntityBase d, double x, double y, double z, float h, float v, CallbackInfo ci)
     {
+        if (EntityRenderDispatcher.INSTANCE.textureManager == null) return;
         try
         {
             final PlayerRenderer renderer = (PlayerRenderer) (Object) this;
@@ -41,8 +43,10 @@ public class PlayerRendererMixin
     }
 
     @Inject(method = "method_345", at = @At(value = "TAIL"))
-    private void firstPersonGloveRender(CallbackInfo ci)
+    private void firstPersonRender(CallbackInfo ci)
     {
+        if (EntityRenderDispatcher.INSTANCE.textureManager == null) return;
+
         PlayerBase player = ((Minecraft) FabricLoader.getInstance().getGameInstance()).player;
         for (ItemInstance item : AccessoryAccess.getAccessories(player))
         {

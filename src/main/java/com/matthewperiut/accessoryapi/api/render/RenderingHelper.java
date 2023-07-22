@@ -11,14 +11,10 @@ public class RenderingHelper
 {
     public static void beforeBiped(PlayerBase player, PlayerRenderer playerRenderer, Biped model, double x, double y, double z, float h, float v)
     {
-        final ItemInstance itemstack = player.getHeldItem();
-        model.field_629 = (itemstack != null);
+        final ItemInstance itemInstance = player.getHeldItem();
+        model.field_629 = (itemInstance != null);
         model.field_630 = player.method_1373();
         double d3 = y - player.standingEyeHeight;
-        if (player.method_1373() && !(player instanceof PlayerBase))
-        {
-            d3 -= 0.125;
-        }
 
         GL11.glPushMatrix();
         GL11.glEnable(2884);
@@ -35,12 +31,8 @@ public class RenderingHelper
         GL11.glScalef(-1.0f, -1.0f, 1.0f);
         ((LivingEntityRendererAccessor) playerRenderer).invoke823(player, v);
         GL11.glTranslatef(0.0f, -24.0f * f6 - 0.0078125f, 0.0f);
-        float f7 = player.field_1048 + (player.limbDistance - player.field_1048) * v;
+        float f7 = Math.max(player.field_1048 + (player.limbDistance - player.field_1048) * v, 1.0f);
         final float f8 = player.field_1050 - player.limbDistance * (1.0f - v);
-        if (f7 > 1.0f)
-        {
-            f7 = 1.0f;
-        }
         GL11.glEnable(3008);
         model.setAngles(f8, f7, f5, f3 - f2, f4, f6);
     }

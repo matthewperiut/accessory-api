@@ -40,10 +40,10 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase
     @Inject(method = "init", at = @At("TAIL"))
     public void init(CallbackInfo ci)
     {
-        int startX = (this.width - this.containerWidth) / 2;
-        int startY = (this.height - this.containerHeight) / 2;
+        int startX = (width - containerWidth) / 2;
+        int startY = (height - containerHeight) / 2;
 
-        if (slotOrder.size() > 8) this.buttons.add(new AccessoryButton(250, startX + 115, startY + 6));
+        if (slotOrder.size() > 8) buttons.add(new AccessoryButton(250, startX + 115, startY + 6));
     }
 
     @Inject(method = "buttonClicked", at = @At("TAIL"))
@@ -58,15 +58,15 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase
                 ((Slot) container.slots.get(i)).y = 1000;
             }
 
-            showOverflowSlots((PlayerContainer) this.container);
+            showOverflowSlots((PlayerContainer) container);
         }
     }
 
     @Inject(method = "renderContainerBackground", at = @At("TAIL"))
     public void bindAetherPlayerGuiTexture(float par1, CallbackInfo ci)
     {
-        int var2 = this.minecraft.textureManager.getTextureId("/assets/accessoryapi/inventory.png");
-        this.minecraft.textureManager.bindTexture(var2);
+        int var2 = minecraft.textureManager.getTextureId("/assets/accessoryapi/inventory.png");
+        minecraft.textureManager.bindTexture(var2);
 
         int texOffsetX = 7, texOffsetY = 7;
         int topSizeX = 154, topSizeY = 72;
@@ -77,14 +77,11 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase
             topSizeX -= 72;
         }
 
-        int startX = (this.width - this.containerWidth) / 2;
-        int startY = (this.height - this.containerHeight) / 2;
-        this.blit(startX + texOffsetX, startY + texOffsetY, texOffsetX, texOffsetY, topSizeX, topSizeY);
+        int startX = (width - containerWidth) / 2;
+        int startY = (height - containerHeight) / 2;
+        blit(startX + texOffsetX, startY + texOffsetY, texOffsetX, texOffsetY, topSizeX, topSizeY);
 
-        if (extended) this.blit(startX + 117, startY, 176, 0, 59, 79);
-
-        // todo: maybe make this performant?
-        //this.minecraft.player.inventory.armour[]
+        if (extended) blit(startX + 117, startY, 176, 0, 59, 79);
 
         // blank tile (first inventory slot, bottom left)
         int blankX = 176, blankY = 79;
@@ -97,13 +94,13 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase
         {
             Slot slot = (Slot) container.slots.get(i);
             AccessorySlotStorage.PreservedSlot info = slotOrder.get(i - start);
-            this.minecraft.textureManager.bindTexture(var2);
-            this.blit(startX + slot.x - 1, startY + slot.y - 1, blankX, blankY, 18, 18);
+            minecraft.textureManager.bindTexture(var2);
+            blit(startX + slot.x - 1, startY + slot.y - 1, blankX, blankY, 18, 18);
             if (!slot.hasItem())
             {
-                int slot_tex = this.minecraft.textureManager.getTextureId(info.texture);
-                this.minecraft.textureManager.bindTexture(slot_tex);
-                this.blit(startX + slot.x, startY + slot.y, info.tx, info.ty, 16, 16);
+                int slot_tex = minecraft.textureManager.getTextureId(info.texture);
+                minecraft.textureManager.bindTexture(slot_tex);
+                blit(startX + slot.x, startY + slot.y, info.tx, info.ty, 16, 16);
             }
         }
     }
@@ -143,7 +140,7 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase
         }
         else
         {
-            float var9 = (float) (wpx + 33) - this.mouseX;
+            float var9 = (float) (wpx + 33) - mouseX;
             newValue = (float) Math.atan(var9 / 40.0F) * 40.0F;
         }
         instance.yaw = newValue;

@@ -14,18 +14,18 @@ public class AccessoryButton extends Button
     @Override
     public void render(Minecraft minecraft, int i, int j)
     {
-        if (this.visible)
+        if (visible)
         {
             GL11.glBindTexture(3553, minecraft.textureManager.getTextureId("assets/accessoryapi/buttons.png"));
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-            boolean hovered = i >= this.x && j >= this.y && i < this.x + this.width && j < this.y + this.height;
+            boolean hovered = i >= x && j >= y && i < x + width && j < y + height;
 
             int tpx = hovered ? 30 : 10; // texture position x
             int tpy = 0; // texture position y
 
-            this.blit(this.x, this.y, tpx, tpy, 10, 10);
-            this.postRender(minecraft, i, j);
+            blit(x, y, tpx, tpy, 10, 10);
+            postRender(minecraft, i, j);
         }
     }
 }

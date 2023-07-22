@@ -65,11 +65,11 @@ public class PlayerInventoryMixin
         {
             return;
         }
-        if (i >= this.armour.length)
+        if (i >= armour.length)
         {
 
-            int pos = i - this.main.length;
-            ItemInstance oldItem = this.armour[pos];
+            int pos = i - main.length;
+            ItemInstance oldItem = armour[pos];
 
             if (oldItem != null)
             {
@@ -97,10 +97,10 @@ public class PlayerInventoryMixin
         {
             return;
         }
-        if (i >= this.main.length)
+        if (i >= main.length)
         {
-            int pos = i - this.main.length;
-            ItemInstance oldItem = this.armour[pos];
+            int pos = i - main.length;
+            ItemInstance oldItem = armour[pos];
             if (oldItem != null)
             {
                 if (oldItem.getType() instanceof Accessory accessory)
