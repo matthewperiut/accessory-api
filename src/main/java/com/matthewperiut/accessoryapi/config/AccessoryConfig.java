@@ -5,7 +5,8 @@ import net.glasslauncher.mods.api.gcapi.api.ConfigName;
 import net.glasslauncher.mods.api.gcapi.api.GConfig;
 import net.glasslauncher.mods.api.gcapi.api.MultiplayerSynced;
 
-public class AccessoryConfig {
+public class AccessoryConfig
+{
     @GConfig(value = "config", visibleName = "Accessory API Config")
     public static ConfigFields config = new ConfigFields();
 

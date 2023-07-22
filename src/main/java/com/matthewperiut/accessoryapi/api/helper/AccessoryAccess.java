@@ -18,7 +18,7 @@ public class AccessoryAccess
      */
     public static ItemInstance[] getAccessories(PlayerBase player)
     {
-        return Arrays.copyOfRange(player.inventory.armour, AccessoryConfig.config.armorOffset, player.inventory.armour.length - 1);
+        return Arrays.copyOfRange(player.inventory.armour, AccessoryConfig.config.armorOffset, player.inventory.armour.length);
     }
 
     /**

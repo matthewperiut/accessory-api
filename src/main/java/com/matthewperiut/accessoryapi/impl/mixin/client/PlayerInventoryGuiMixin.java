@@ -20,6 +20,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static com.matthewperiut.accessoryapi.impl.slot.AccessoryInventoryPlacement.resetPlayerInv;
 import static com.matthewperiut.accessoryapi.impl.slot.AccessorySlotStorage.*;
 
 @Mixin(value = PlayerInventory.class)
@@ -68,7 +69,7 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase
             }
             else
             {
-                AccessoryButton.resetPlayerInv(container);
+                resetPlayerInv(container);
                 button.x = startX + 115;
                 button.y = startY + 6;
                 hideOverflowSlots((PlayerContainer) container);
@@ -107,11 +108,20 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase
         {
             //blit(startX + texOffsetX, startY + texOffsetY, texOffsetX, texOffsetY, topSizeX, topSizeY);
             blit(startX + CORNER_INSET, startY + CORNER_INSET, AETHER_U, AETHER_V, AETHER_W, AETHER_H);
-        } else {
+        }
+        else
+        {
             blit(startX + CORNER_INSET + REGULAR_U, startY + CORNER_INSET + REGULAR_V, REGULAR_U, REGULAR_V, REGULAR_W, REGULAR_H);
         }
 
-        if (!extended) blit(startX + CRAFT_X + CORNER_INSET, startY + CORNER_INSET, CRAFT_U, CRAFT_V, CRAFT_W, CRAFT_H);
+        int craft_centering_shift = 0;
+        if (slotOrder.size() < 1)
+            craft_centering_shift -= 18;
+        else if (slotOrder.size() < 5)
+            craft_centering_shift -= 9;
+
+        if (!extended)
+            blit(startX + CRAFT_X + CORNER_INSET + craft_centering_shift, startY + CORNER_INSET, CRAFT_U, CRAFT_V, CRAFT_W, CRAFT_H);
 
         // blank tile (first inventory slot, bottom left)
 

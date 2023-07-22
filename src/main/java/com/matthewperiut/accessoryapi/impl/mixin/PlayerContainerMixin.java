@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static com.matthewperiut.accessoryapi.impl.slot.AccessoryInventoryPlacement.getCraftingOffset;
 import static com.matthewperiut.accessoryapi.impl.slot.AccessorySlotStorage.hideOverflowSlots;
 import static com.matthewperiut.accessoryapi.impl.slot.AccessorySlotStorage.slotOrder;
 
@@ -23,20 +24,23 @@ public abstract class PlayerContainerMixin extends ContainerBase
     @Unique
     int slotCounter = 0;
 
+    @Unique
+    private static final int craft_centering_shift = getCraftingOffset();
+
     @ModifyArg(method = "<init>(Lnet/minecraft/entity/player/PlayerInventory;Z)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerContainer;addSlot(Lnet/minecraft/container/slot/Slot;)V"), index = 0)
     private Slot changeTopSlots(Slot par1)
     {
 
         if (par1.x == 144) // x of crafting result
         {
-            par1.x = 134;
+            par1.x = 134 + craft_centering_shift;
             par1.y = 62;
             slotCounter = 0;
         }
 
         if (slotCounter > 0 && slotCounter < 5) // 1, 2, 3, 4 are crafting slots
         {
-            par1.x += 37;
+            par1.x += 37 + craft_centering_shift;
             par1.y -= 18;
         }
 
@@ -59,9 +63,8 @@ public abstract class PlayerContainerMixin extends ContainerBase
 
         AccessorySlotStorage.initializeCustomAccessoryPositions();
 
-        for (int i = 0; i < slotOrder.size(); i++)
+        for (AccessorySlotStorage.PreservedSlot slot : slotOrder)
         {
-            AccessorySlotStorage.PreservedSlot slot = slotOrder.get(i);
             addSlot(new AccessorySlot(inv, slotnum, slot.pos.x + 18, slot.pos.z, slot.slotType));
             slotnum++;
         }
