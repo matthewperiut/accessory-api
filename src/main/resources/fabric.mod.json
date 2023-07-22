@@ -15,8 +15,8 @@
   "icon": "assets/accessoryapi/icon.png",
   "environment": "*",
   "entrypoints": {
-    "main": [
-      "com.matthewperiut.accessoryapi.impl.AccessoryMod"
+    "gcapi": [
+      "com.matthewperiut.accessoryapi.config.AccessoryConfig"
     ]
   },
   "mixins": [

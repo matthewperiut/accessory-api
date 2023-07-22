@@ -24,16 +24,4 @@ public class TestAccessory extends TemplateItemBase implements Accessory
     {
         return types;
     }
-
-    @Override
-    public void onAccessoryAdded(PlayerBase player, ItemInstance accessory)
-    {
-        System.out.println("added " + accessory.itemId);
-    }
-
-    @Override
-    public void onAccessoryRemoved(PlayerBase player, ItemInstance accessory)
-    {
-        System.out.println("removed " + accessory.itemId);
-    }
 }

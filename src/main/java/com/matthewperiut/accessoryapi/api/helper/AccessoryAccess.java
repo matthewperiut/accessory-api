@@ -1,6 +1,7 @@
 package com.matthewperiut.accessoryapi.api.helper;
 
 import com.matthewperiut.accessoryapi.api.Accessory;
+import com.matthewperiut.accessoryapi.config.AccessoryConfig;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemBase;
 import net.minecraft.item.ItemInstance;
@@ -10,7 +11,6 @@ import java.util.Arrays;
 
 public class AccessoryAccess
 {
-    private static final int ACCESSORY_OFFSET = 4;
 
     /**
      * @param player The player you are checking.
@@ -18,7 +18,7 @@ public class AccessoryAccess
      */
     public static ItemInstance[] getAccessories(PlayerBase player)
     {
-        return Arrays.copyOfRange(player.inventory.armour, ACCESSORY_OFFSET, player.inventory.armour.length - 1);
+        return Arrays.copyOfRange(player.inventory.armour, AccessoryConfig.config.armorOffset, player.inventory.armour.length - 1);
     }
 
     /**
@@ -38,7 +38,7 @@ public class AccessoryAccess
      */
     public static void setAccessory(PlayerBase player, int slot, ItemInstance item)
     {
-        player.inventory.armour[slot + ACCESSORY_OFFSET] = item;
+        player.inventory.armour[slot + AccessoryConfig.config.armorOffset] = item;
     }
 
     /**

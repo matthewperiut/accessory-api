@@ -1,6 +1,6 @@
 package com.matthewperiut.accessoryapi.impl.mixin.client;
 
-import com.matthewperiut.accessoryapi.impl.AccessoryMod;
+import com.matthewperiut.accessoryapi.config.AccessoryConfig;
 import com.matthewperiut.accessoryapi.impl.slot.AccessoryButton;
 import com.matthewperiut.accessoryapi.impl.slot.AccessorySlotStorage;
 import net.minecraft.client.gui.screen.container.ContainerBase;
@@ -103,14 +103,12 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase
 
         int startX = (width - containerWidth) / 2;
         int startY = (height - containerHeight) / 2;
-        if (AccessoryMod.leftArmorSlots)
-        {
-            blit(startX + CORNER_INSET + REGULAR_U, startY + CORNER_INSET + REGULAR_V, REGULAR_U, REGULAR_V, REGULAR_W, REGULAR_H);
-        }
-        else
+        if (AccessoryConfig.config.aetherStyleArmor)
         {
             //blit(startX + texOffsetX, startY + texOffsetY, texOffsetX, texOffsetY, topSizeX, topSizeY);
             blit(startX + CORNER_INSET, startY + CORNER_INSET, AETHER_U, AETHER_V, AETHER_W, AETHER_H);
+        } else {
+            blit(startX + CORNER_INSET + REGULAR_U, startY + CORNER_INSET + REGULAR_V, REGULAR_U, REGULAR_V, REGULAR_W, REGULAR_H);
         }
 
         if (!extended) blit(startX + CRAFT_X + CORNER_INSET, startY + CORNER_INSET, CRAFT_U, CRAFT_V, CRAFT_W, CRAFT_H);
@@ -152,7 +150,7 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase
     @Redirect(method = "renderContainerBackground", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glTranslatef(FFF)V"))
     public void translateAetherPlayerModel(float x, float y, float z)
     {
-        if (AccessoryMod.leftArmorSlots)
+        if (!AccessoryConfig.config.aetherStyleArmor)
         {
             GL11.glTranslatef(x, y, z);
             return;
@@ -168,7 +166,7 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase
     private void injected(AbstractClientPlayer instance, float value)
     {
         float newValue;
-        if (AccessoryMod.leftArmorSlots)
+        if (!AccessoryConfig.config.aetherStyleArmor)
         {
             newValue = value;
         }

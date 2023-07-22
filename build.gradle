@@ -72,6 +72,8 @@ dependencies {
     modImplementation("net.glasslauncher.mods:GlassConfigAPI:${project.gcapi_version}") {
         transitive false
     }
+
+    implementation "blue.endless:jankson:${project.jankson_version}"
     modImplementation("net.glasslauncher:HowManyItems-Fabric-Unofficial:${project.howmanyitems_version}") {
         transitive false
     }
