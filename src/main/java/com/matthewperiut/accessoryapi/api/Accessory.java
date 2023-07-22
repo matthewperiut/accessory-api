@@ -1,9 +1,5 @@
 package com.matthewperiut.accessoryapi.api;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.render.entity.PlayerRenderer;
-import net.minecraft.client.render.entity.model.Biped;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemInstance;
 

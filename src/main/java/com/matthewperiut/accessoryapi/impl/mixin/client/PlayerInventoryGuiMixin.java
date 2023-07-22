@@ -1,7 +1,8 @@
 package com.matthewperiut.accessoryapi.impl.mixin.client;
 
-import com.matthewperiut.accessoryapi.impl.extended.AccessoryButton;
-import com.matthewperiut.accessoryapi.impl.extended.CustomAccessoryStorage;
+import com.matthewperiut.accessoryapi.impl.AccessoryMod;
+import com.matthewperiut.accessoryapi.impl.slot.AccessoryButton;
+import com.matthewperiut.accessoryapi.impl.slot.AccessorySlotStorage;
 import net.minecraft.client.gui.screen.container.ContainerBase;
 import net.minecraft.client.gui.screen.container.PlayerInventory;
 import net.minecraft.client.gui.widgets.Button;
@@ -19,7 +20,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static com.matthewperiut.accessoryapi.impl.extended.CustomAccessoryStorage.slotOrder;
+import static com.matthewperiut.accessoryapi.impl.slot.AccessorySlotStorage.showOverflowSlots;
+import static com.matthewperiut.accessoryapi.impl.slot.AccessorySlotStorage.slotOrder;
 
 @Mixin(value = PlayerInventory.class)
 public abstract class PlayerInventoryGuiMixin extends ContainerBase
@@ -41,7 +43,7 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase
         int startX = (this.width - this.containerWidth) / 2;
         int startY = (this.height - this.containerHeight) / 2;
 
-        if (slotOrder.size() > 0) this.buttons.add(new AccessoryButton(250, startX + 115, startY + 6));
+        if (slotOrder.size() > 8) this.buttons.add(new AccessoryButton(250, startX + 115, startY + 6));
     }
 
     @Inject(method = "buttonClicked", at = @At("TAIL"))
@@ -56,7 +58,7 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase
                 ((Slot) container.slots.get(i)).y = 1000;
             }
 
-            CustomAccessoryStorage.setCustomSlotsPos((PlayerContainer) container, true);
+            showOverflowSlots((PlayerContainer) this.container);
         }
     }
 
@@ -69,6 +71,12 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase
         int texOffsetX = 7, texOffsetY = 7;
         int topSizeX = 154, topSizeY = 72;
 
+        if (AccessoryMod.leftArmourSlots)
+        {
+            texOffsetX += 72;
+            topSizeX -= 72;
+        }
+
         int startX = (this.width - this.containerWidth) / 2;
         int startY = (this.height - this.containerHeight) / 2;
         this.blit(startX + texOffsetX, startY + texOffsetY, texOffsetX, texOffsetY, topSizeX, topSizeY);
@@ -79,61 +87,23 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase
         //this.minecraft.player.inventory.armour[]
 
         // blank tile (first inventory slot, bottom left)
-        int blankX = 81, blankY = 142;
+        int blankX = 176, blankY = 79;
 
-        for (int i = 0; i < 3; i++)
+        int start = container.slots.size() - slotOrder.size();
+        int end = container.slots.size();
+        int extra = (slotOrder.size() > 8 ? slotOrder.size() - 8 : 0);
+
+        for (int i = start + (!extended ? extra : 0); i < end; i++)
         {
-            if (!(this.minecraft.player.inventory.armour[4 + i] == null))
+            Slot slot = (Slot) container.slots.get(i);
+            AccessorySlotStorage.PreservedSlot info = slotOrder.get(i - start);
+            this.minecraft.textureManager.bindTexture(var2);
+            this.blit(startX + slot.x - 1, startY + slot.y - 1, blankX, blankY, 18, 18);
+            if (!slot.hasItem())
             {
-                this.blit(startX + 80, startY + 8 + 18 * i, blankX, blankY, 16, 16);
-            }
-        }
-
-        if (!(this.minecraft.player.inventory.armour[7] == null))
-            this.blit(startX + 98, startY + 44, blankX, blankY, 16, 16);
-
-
-        for (int i = 0; i < 2; i++)
-        {
-            if (!(this.minecraft.player.inventory.armour[8 + i] == null))
-            {
-                this.blit(startX + 98, startY + 8 + 18 * i, blankX, blankY, 16, 16);
-            }
-        }
-
-        for (int i = 0; i < 2; i++)
-        {
-            if (!(this.minecraft.player.inventory.armour[10 + i] == null))
-            {
-                this.blit(startX + 80 + 18 * i, startY + 62, blankX, blankY, 16, 16);
-            }
-        }
-
-        if (extended)
-        {
-            int start = container.slots.size() - slotOrder.size();
-            int end = container.slots.size();
-
-            for (int i = start; i < end; i++)
-            {
-                Slot slot = (Slot) container.slots.get(i);
-                this.blit(startX + slot.x - 1, startY + slot.y - 1, blankX - 1, blankY - 1, 18, 18);
-            }
-
-            for (int i = start; i < end; i++)
-            {
-                Slot slot = (Slot) container.slots.get(i);
-                CustomAccessoryStorage.PreservedSlot info = slotOrder.get(end - i - 1);
-
-                if (slot.getItem() == null)
-                {
-                    if (!info.texture.equals(""))
-                    {
-                        int slot_tex = this.minecraft.textureManager.getTextureId(info.texture);
-                        this.minecraft.textureManager.bindTexture(slot_tex);
-                        this.blit(startX + slot.x, startY + slot.y, info.tx, info.ty, 16, 16);
-                    }
-                }
+                int slot_tex = this.minecraft.textureManager.getTextureId(info.texture);
+                this.minecraft.textureManager.bindTexture(slot_tex);
+                this.blit(startX + slot.x, startY + slot.y, info.tx, info.ty, 16, 16);
             }
         }
     }
@@ -151,6 +121,12 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase
     @Redirect(method = "renderContainerBackground", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glTranslatef(FFF)V"))
     public void translateAetherPlayerModel(float x, float y, float z)
     {
+        if (AccessoryMod.leftArmourSlots)
+        {
+            GL11.glTranslatef(x, y, z);
+            return;
+        }
+
         if (x != 0.f)
         {
             GL11.glTranslatef(x - 18, y - 50, z);
@@ -160,9 +136,17 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase
     @Redirect(method = "renderContainerBackground", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/player/AbstractClientPlayer;yaw:F", opcode = Opcodes.PUTFIELD, ordinal = 0))
     private void injected(AbstractClientPlayer instance, float value)
     {
-        float var9 = (float) (wpx + 33) - this.mouseX;
-        instance.field_1012 = (float) Math.atan(var9 / 40.0F) * 20.0F;
-        instance.yaw = (float) Math.atan(var9 / 40.0F) * 40.0F;
+        float newValue;
+        if (AccessoryMod.leftArmourSlots)
+        {
+            newValue = value;
+        }
+        else
+        {
+            float var9 = (float) (wpx + 33) - this.mouseX;
+            newValue = (float) Math.atan(var9 / 40.0F) * 40.0F;
+        }
+        instance.yaw = newValue;
     }
 
     @Redirect(method = "renderForeground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/TextRenderer;drawText(Ljava/lang/String;III)V", ordinal = 0))

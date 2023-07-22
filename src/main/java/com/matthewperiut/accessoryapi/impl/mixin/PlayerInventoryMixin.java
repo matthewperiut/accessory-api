@@ -1,7 +1,7 @@
 package com.matthewperiut.accessoryapi.impl.mixin;
 
 import com.matthewperiut.accessoryapi.api.Accessory;
-import com.matthewperiut.accessoryapi.impl.extended.CustomAccessoryStorage;
+import com.matthewperiut.accessoryapi.impl.slot.AccessorySlotStorage;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemInstance;
@@ -30,13 +30,13 @@ public class PlayerInventoryMixin
     @Inject(method = "<init>", at = @At("TAIL"))
     public void setNewSize(PlayerBase par1, CallbackInfo ci)
     {
-        armour = new ItemInstance[12 + CustomAccessoryStorage.slotInfo.size()];
+        armour = new ItemInstance[12 + AccessorySlotStorage.slotInfo.size()];
     }
 
     @ModifyConstant(method = "fromTag", constant = @Constant(intValue = 4), require = 1)
     private int modifyArmourSize(int original)
     {
-        return 12 + CustomAccessoryStorage.slotInfo.size();
+        return 12 + AccessorySlotStorage.slotInfo.size();
     }
 
     @Inject(method = "fromTag", at = @At("TAIL"))

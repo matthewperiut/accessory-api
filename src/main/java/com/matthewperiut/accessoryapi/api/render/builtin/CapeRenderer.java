@@ -1,23 +1,25 @@
 package com.matthewperiut.accessoryapi.api.render.builtin;
 
 import com.matthewperiut.accessoryapi.api.render.RenderingHelper;
-import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.PlayerRenderer;
 import net.minecraft.client.render.entity.model.Biped;
-import net.minecraft.client.texture.TextureManager;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemInstance;
 import net.minecraft.util.maths.MathHelper;
 import org.lwjgl.opengl.GL11;
 
-public class CapeRenderer extends ConfigurableRenderer {
-    private static final Biped model = new Biped(0.6f);
-    public CapeRenderer(String texture) {
+public class CapeRenderer extends ConfigurableRenderer
+{
+    private static final Biped model = new Biped(0.0f);
+
+    public CapeRenderer(String texture)
+    {
         super(texture);
     }
 
     @Override
-    public void renderThirdPerson(PlayerBase player, PlayerRenderer renderer, ItemInstance itemInstance, double x, double y, double z, float h, float v) {
+    public void renderThirdPerson(PlayerBase player, PlayerRenderer renderer, ItemInstance itemInstance, double x, double y, double z, float h, float v)
+    {
         RenderingHelper.beforeBiped(player, renderer, model, x, y, z, h, v);
         var xAsFloat = (float) x;
 

@@ -1,4 +1,4 @@
-package com.matthewperiut.accessoryapi.impl;
+package com.matthewperiut.accessoryapi.impl.slot;
 
 import com.matthewperiut.accessoryapi.api.Accessory;
 import net.minecraft.container.slot.Slot;
@@ -7,7 +7,7 @@ import net.minecraft.item.ItemInstance;
 
 public class AccessorySlot extends Slot
 {
-    String type = "";
+    String type;
 
     public AccessorySlot(InventoryBase arg, int i, int j, int k, String type)
     {

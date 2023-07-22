@@ -2,18 +2,13 @@ package com.matthewperiut.accessoryapi.impl.mixin.client;
 
 import com.matthewperiut.accessoryapi.api.helper.AccessoryAccess;
 import com.matthewperiut.accessoryapi.api.render.HasCustomRenderer;
-import com.matthewperiut.accessoryapi.impl.AccessoryEntry;
-import com.matthewperiut.accessoryapi.impl.PlayerInfo;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.entity.PlayerRenderer;
-import net.minecraft.client.render.entity.model.Biped;
 import net.minecraft.entity.EntityBase;
-import net.minecraft.entity.Living;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemInstance;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -30,9 +25,11 @@ public class PlayerRendererMixin
             final PlayerRenderer renderer = (PlayerRenderer) (Object) this;
             PlayerBase player = (PlayerBase) d;
 
-            for (ItemInstance item : AccessoryAccess.getAccessories(player)) {
+            for (ItemInstance item : AccessoryAccess.getAccessories(player))
+            {
                 if (item == null) continue;
-                if (item.getType() instanceof HasCustomRenderer itemWithRenderer) {
+                if (item.getType() instanceof HasCustomRenderer itemWithRenderer)
+                {
                     itemWithRenderer.getRenderer().renderThirdPerson(player, renderer, item, x, y, z, h, v);
                 }
             }
@@ -47,9 +44,11 @@ public class PlayerRendererMixin
     private void firstPersonGloveRender(CallbackInfo ci)
     {
         PlayerBase player = ((Minecraft) FabricLoader.getInstance().getGameInstance()).player;
-        for (ItemInstance item : AccessoryAccess.getAccessories(player)) {
+        for (ItemInstance item : AccessoryAccess.getAccessories(player))
+        {
             if (item == null) continue;
-            if (item.getType() instanceof HasCustomRenderer itemWithRenderer) {
+            if (item.getType() instanceof HasCustomRenderer itemWithRenderer)
+            {
                 itemWithRenderer.getRenderer().renderFirstPerson(player, (PlayerRenderer) (Object) this, item);
             }
         }

@@ -7,7 +7,8 @@ import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemInstance;
 import org.lwjgl.opengl.GL11;
 
-public class RenderingHelper {
+public class RenderingHelper
+{
     public static void beforeBiped(PlayerBase player, PlayerRenderer playerRenderer, Biped model, double x, double y, double z, float h, float v)
     {
         final ItemInstance itemstack = player.getHeldItem();

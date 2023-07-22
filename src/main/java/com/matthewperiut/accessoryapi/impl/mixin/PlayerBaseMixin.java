@@ -1,6 +1,5 @@
 package com.matthewperiut.accessoryapi.impl.mixin;
 
-import com.matthewperiut.accessoryapi.api.Accessory;
 import com.matthewperiut.accessoryapi.api.TickableInArmorSlot;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemInstance;
@@ -22,7 +21,8 @@ public abstract class PlayerBaseMixin
             if (item != null)
             {
                 var newItem = ((TickableInArmorSlot) item.getType()).tickWhileWorn(player, item);
-                if (newItem != item) {
+                if (newItem != item)
+                {
                     player.inventory.armour[i] = newItem;
                 }
             }

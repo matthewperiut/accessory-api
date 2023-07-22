@@ -1,6 +1,5 @@
 package com.matthewperiut.accessoryapi.impl.mixin.client;
 
-import com.matthewperiut.accessoryapi.impl.extended.CustomAccessoryStorage;
 import net.minecraft.client.gui.screen.container.ContainerBase;
 import net.minecraft.entity.player.PlayerContainer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -9,6 +8,8 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import static com.matthewperiut.accessoryapi.impl.slot.AccessorySlotStorage.hideOverflowSlots;
 
 @Mixin(ContainerBase.class)
 public class ContainerBaseMixin
@@ -26,9 +27,9 @@ public class ContainerBaseMixin
             pc.getSlot(0).y = 62;
 
             int slot = 1; // skip crafting result
-            for (int x = 0; x < 2; ++x)
+            for (int y = 0; y < 2; ++y)
             {
-                for (int y = 0; y < 2; ++y)
+                for (int x = 0; x < 2; ++x)
                 {
                     pc.getSlot(slot).x = 125 + (18 * x);
                     pc.getSlot(slot).y = 8 + (18 * y);
@@ -36,7 +37,7 @@ public class ContainerBaseMixin
                 }
             }
 
-            CustomAccessoryStorage.setCustomSlotsPos(pc, false);
+            hideOverflowSlots(pc);
         }
     }
 

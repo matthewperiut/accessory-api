@@ -1,6 +1,6 @@
 package com.matthewperiut.testmod;
 
-import com.matthewperiut.accessoryapi.api.CustomAccessoryRegister;
+import com.matthewperiut.accessoryapi.api.AccessoryRegister;
 import net.fabricmc.api.ModInitializer;
 
 public class TestMod implements ModInitializer
@@ -8,23 +8,16 @@ public class TestMod implements ModInitializer
     @Override
     public void onInitialize()
     {
-        CustomAccessoryRegister.add("glove", "glove");
-        CustomAccessoryRegister.add("glove", "glove");
-        CustomAccessoryRegister.add("glove", "glove");
-        CustomAccessoryRegister.add("glove", "glove");
-        CustomAccessoryRegister.add("glove", "glove");
-        CustomAccessoryRegister.add("cape", "cape");
-//        for (int i = 0; i < 3; i++)
-//        {
-//            CustomAccessoryRegister.add("extra" + i, "extra", "assets/testmod/textures/slot/extra.png", 16, 0);
-//        }
-//        CustomAccessoryRegister.add("blob", "cape", "assets/testmod/textures/slot/extra.png", 0, 0);
-//
-//        for (int i = 0; i < 2; i++)
-//        {
-//            CustomAccessoryRegister.add("blank" + i, "blank");
-//        }
-//
-//        CustomAccessoryRegister.add("glove", "glove");
+        AccessoryRegister.add("pendant");
+        AccessoryRegister.add("cape");
+        AccessoryRegister.add("shield");
+        AccessoryRegister.add("misc", 0, 3);
+        AccessoryRegister.add("misc", 1, 3);
+        AccessoryRegister.add("ring");
+        AccessoryRegister.add("ring");
+        AccessoryRegister.add("gloves");
+
+        for (int i = 0; i < 4; i++)
+            AccessoryRegister.add("slime", "assets/testmod/textures/slot/extra.png", 0, 0);
     }
 }

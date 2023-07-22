@@ -1,5 +1,6 @@
 package com.matthewperiut.accessoryapi.api.render;
 
-public interface HasCustomRenderer {
+public interface HasCustomRenderer
+{
     AccessoryRenderer getRenderer();
 }

@@ -7,23 +7,28 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
-public abstract class ConfigurableRenderer implements AccessoryRenderer {
+public abstract class ConfigurableRenderer implements AccessoryRenderer
+{
     protected String texture;
     protected Color color = Color.WHITE;
 
-    public ConfigurableRenderer(String texture) {
+    public ConfigurableRenderer(String texture)
+    {
         super();
         this.texture = texture;
     }
 
-    public ConfigurableRenderer withColor(Color color) {
+    public ConfigurableRenderer withColor(Color color)
+    {
         this.color = color;
         return this;
     }
 
-    protected void bindTextureAndApplyColors(float brightness) {
+    protected void bindTextureAndApplyColors(float brightness)
+    {
         TextureManager textureManager = EntityRenderDispatcher.INSTANCE.textureManager;
-        if (textureManager == null) {
+        if (textureManager == null)
+        {
             System.err.println("The entity texture manager is currently null");
             return;
         }

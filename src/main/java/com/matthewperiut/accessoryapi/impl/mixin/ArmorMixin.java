@@ -5,5 +5,6 @@ import net.minecraft.item.armour.Armour;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(Armour.class)
-public class ArmorMixin implements TickableInArmorSlot {
+public class ArmorMixin implements TickableInArmorSlot
+{
 }
