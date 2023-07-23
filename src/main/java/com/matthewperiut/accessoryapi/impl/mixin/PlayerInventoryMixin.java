@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class PlayerInventoryMixin
 {
     @Shadow
-    public ItemInstance[] main = new ItemInstance[36];
+    public ItemInstance[] main;
 
     @Shadow
     public ItemInstance[] armour;
