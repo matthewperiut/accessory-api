@@ -1,10 +1,12 @@
 package com.matthewperiut.accessoryapi.impl.mixin.client;
 
+import com.matthewperiut.accessoryapi.AccessoryAPIClient;
 import com.matthewperiut.accessoryapi.api.helper.AccessoryAccess;
 import com.matthewperiut.accessoryapi.api.render.HasCustomRenderer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
+import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.PlayerRenderer;
 import net.minecraft.entity.EntityBase;
 import net.minecraft.entity.player.PlayerBase;
@@ -12,15 +14,16 @@ import net.minecraft.item.ItemInstance;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerRenderer.class)
-public class PlayerRendererMixin
+public abstract class PlayerRendererMixin extends EntityRenderer
 {
-
     @Inject(method = "render(Lnet/minecraft/entity/EntityBase;DDDFF)V", at = @At(value = "TAIL"))
     private void thirdPersonRender(EntityBase d, double x, double y, double z, float h, float v, CallbackInfo ci)
     {
+        AccessoryAPIClient.capeEnabled = true;
         if (EntityRenderDispatcher.INSTANCE.textureManager == null) return;
         try
         {
@@ -42,7 +45,22 @@ public class PlayerRendererMixin
         }
     }
 
-    @Inject(method = "method_345", at = @At(value = "TAIL"))
+    @Redirect(
+            method = "method_342(Lnet/minecraft/entity/player/PlayerBase;F)V",
+            at = @At(
+                    value = "FIELD",
+                    target = "Lnet/minecraft/entity/player/PlayerBase;playerCloakUrl:Ljava/lang/String;"
+            )
+    )
+    private String toggleCapeRendering(PlayerBase instance) {
+        if (!AccessoryAPIClient.capeEnabled) {
+            return null;
+        } else {
+            return instance.playerCloakUrl;
+        }
+    }
+
+    @Inject(method = "method_345", at = @At("TAIL"))
     private void firstPersonRender(CallbackInfo ci)
     {
         if (EntityRenderDispatcher.INSTANCE.textureManager == null) return;

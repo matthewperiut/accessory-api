@@ -1,6 +1,8 @@
 package com.matthewperiut.accessoryapi.api.render.builtin;
 
+import com.matthewperiut.accessoryapi.AccessoryAPIClient;
 import com.matthewperiut.accessoryapi.api.render.RenderingHelper;
+import com.matthewperiut.accessoryapi.impl.mixin.client.PlayerRendererMixin;
 import net.minecraft.client.render.entity.PlayerRenderer;
 import net.minecraft.client.render.entity.model.Biped;
 import net.minecraft.entity.player.PlayerBase;
@@ -20,6 +22,8 @@ public class CapeRenderer extends ConfigurableRenderer
     @Override
     public void renderThirdPerson(PlayerBase player, PlayerRenderer renderer, ItemInstance itemInstance, double x, double y, double z, float h, float v)
     {
+        AccessoryAPIClient.capeEnabled = false;
+
         RenderingHelper.beforeBiped(player, renderer, model, x, y, z, h, v);
         var xAsFloat = (float) x;
 

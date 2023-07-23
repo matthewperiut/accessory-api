@@ -18,6 +18,9 @@
     "main": [
       "com.matthewperiut.accessoryapi.AccessoryAPI"
     ],
+    "client": [
+      "com.matthewperiut.accessoryapi.AccessoryAPIClient"
+    ],
     "gcapi:factory_provider": [
       "com.matthewperiut.accessoryapi.config.AccessoryFactoryProvider"
     ],
