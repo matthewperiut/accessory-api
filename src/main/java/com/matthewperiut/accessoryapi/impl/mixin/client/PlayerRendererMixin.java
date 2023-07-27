@@ -51,11 +51,9 @@ public abstract class PlayerRendererMixin extends EntityRenderer
                 if (item == null) continue;
                 if (item.getType() instanceof HasCustomRenderer itemWithRenderer)
                 {
-                    AccessoryRenderer accessoryRenderer = itemWithRenderer.getRenderer();
-                    if (accessoryRenderer != null)
-                        accessoryRenderer.renderThirdPerson(player, renderer, item, x, y, z, h, v);
-                    else
-                        itemWithRenderer.constructRenderer();
+                    itemWithRenderer.getRenderer().ifPresentOrElse(
+                            itemRenderer -> itemRenderer.renderThirdPerson(player, renderer, item, x, y, z, h, v),
+                            itemWithRenderer::constructRenderer);
                 }
             }
         }
@@ -95,11 +93,9 @@ public abstract class PlayerRendererMixin extends EntityRenderer
             if (item == null) continue;
             if (item.getType() instanceof HasCustomRenderer itemWithRenderer)
             {
-                AccessoryRenderer renderer = itemWithRenderer.getRenderer();
-                if (renderer != null)
-                    itemWithRenderer.getRenderer().renderFirstPerson(player, (PlayerRenderer) (Object) this, item);
-                else
-                    itemWithRenderer.constructRenderer();
+                itemWithRenderer.getRenderer().ifPresentOrElse(
+                        itemRenderer -> itemRenderer.renderFirstPerson(player, (PlayerRenderer) (Object) this, item),
+                        itemWithRenderer::constructRenderer);
             }
         }
     }

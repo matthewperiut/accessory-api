@@ -6,6 +6,7 @@ import net.minecraft.item.ItemInstance;
 
 public interface AccessoryRenderer
 {
+    AccessoryRenderer NULL_RENDERER = new AccessoryRenderer() {};
     default void renderThirdPerson(PlayerBase player, PlayerRenderer renderer, ItemInstance itemInstance, double x, double y, double z, float h, float v)
     {
     }

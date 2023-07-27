@@ -8,6 +8,8 @@ import com.matthewperiut.accessoryapi.api.render.builtin.GloveRenderer;
 import com.matthewperiut.accessoryapi.api.render.builtin.NecklaceRenderer;
 import net.modificationstation.stationapi.api.registry.Identifier;
 
+import java.util.Optional;
+
 public class TestAccessoryWithRenderer extends TestAccessory implements HasCustomRenderer
 {
     protected ConfigurableRenderer renderer;
@@ -30,9 +32,9 @@ public class TestAccessoryWithRenderer extends TestAccessory implements HasCusto
     }
 
     @Override
-    public AccessoryRenderer getRenderer()
+    public Optional<AccessoryRenderer> getRenderer()
     {
-        return renderer;
+        return Optional.ofNullable(renderer);
     }
 
     @Override

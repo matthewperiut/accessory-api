@@ -1,5 +1,7 @@
 package com.matthewperiut.accessoryapi.api.render;
 
+import java.util.Optional;
+
 public interface HasCustomRenderer
 {
     /**
@@ -7,7 +9,7 @@ public interface HasCustomRenderer
      *
      * @return renderer currently being used
      */
-    AccessoryRenderer getRenderer();
+    Optional<AccessoryRenderer> getRenderer();
 
     /**
      * This is used to initialize the accessory renderer variable to be used in getRenderer
