@@ -72,7 +72,7 @@ public class AccessoryAccess
      * @param itemType The item you are looking for.
      * @return Whether the player has any items that match the provided item type.
      */
-    private static boolean hasAccessory(PlayerBase player, ItemBase itemType)
+    public static boolean hasAccessory(PlayerBase player, ItemBase itemType)
     {
         for (ItemInstance item : getAccessories(player))
         {
@@ -89,7 +89,7 @@ public class AccessoryAccess
      * @param type   The type of accessory you are looking for.
      * @return Whether the player has any accessories in their inventory that match the type.
      */
-    private static boolean hasAnyAccessoriesOfType(PlayerBase player, String type)
+    public static boolean hasAnyAccessoriesOfType(PlayerBase player, String type)
     {
         for (ItemInstance item : getAccessories(player))
         {
