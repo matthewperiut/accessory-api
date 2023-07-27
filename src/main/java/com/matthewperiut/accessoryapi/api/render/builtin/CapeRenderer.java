@@ -2,7 +2,6 @@ package com.matthewperiut.accessoryapi.api.render.builtin;
 
 import com.matthewperiut.accessoryapi.AccessoryAPIClient;
 import com.matthewperiut.accessoryapi.api.render.RenderingHelper;
-import com.matthewperiut.accessoryapi.impl.mixin.client.PlayerRendererMixin;
 import net.minecraft.client.render.entity.PlayerRenderer;
 import net.minecraft.client.render.entity.model.Biped;
 import net.minecraft.entity.player.PlayerBase;

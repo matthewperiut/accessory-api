@@ -1,14 +1,13 @@
 package com.matthewperiut.testmod.accessory;
 
 import com.matthewperiut.accessoryapi.api.Accessory;
-import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemInstance;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.template.item.TemplateItemBase;
 
 public class TestAccessory extends TemplateItemBase implements Accessory
 {
-    private final String[] types;
+    protected final String[] types;
 
     public TestAccessory(Identifier identifier, String... types)
     {

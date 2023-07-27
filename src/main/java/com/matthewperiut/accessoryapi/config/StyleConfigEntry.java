@@ -17,49 +17,58 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StyleConfigEntry extends ConfigEntry<Style> {
+public class StyleConfigEntry extends ConfigEntry<Style>
+{
     private FancyButton button;
     private List<HasDrawable> drawableList;
 
-    public StyleConfigEntry(String id, String name, String description, Field parentField, Object parentObject, boolean multiplayerSynced, Style value, MaxLength maxLength) {
+    public StyleConfigEntry(String id, String name, String description, Field parentField, Object parentObject, boolean multiplayerSynced, Style value, MaxLength maxLength)
+    {
         super(id, name, description, parentField, parentObject, multiplayerSynced, value, maxLength);
     }
 
     @Override
-    public void init(ScreenBase screenBase, TextRenderer textRenderer) {
+    public void init(ScreenBase screenBase, TextRenderer textRenderer)
+    {
         button = new FancyButton(10, 0, 0, 0, 0, this.value.toString(), CharacterUtils.getIntFromColour(new Color(255, 202, 0, 255)));
-        drawableList = new ArrayList<>() {
+        drawableList = new ArrayList<>()
+        {
             {
                 add(button);
             }
         };
-        if (multiplayerSynced) {
+        if (multiplayerSynced)
+        {
             drawableList.add(new Icon(10, 0, 0, 0, "/assets/gcapi/server_synced.png"));
         }
 
         button.active = !multiplayerLoaded;
     }
 
-    public Style getDrawableValue() {
+    public Style getDrawableValue()
+    {
         return value;
     }
 
-    public void setDrawableValue(Style value) {
+    public void setDrawableValue(Style value)
+    {
         this.value = value;
         button.text = value.name();
     }
 
-    public boolean isValueValid() {
+    public boolean isValueValid()
+    {
         return true;
     }
 
-    public @NotNull List<HasDrawable> getDrawables() {
+    public @NotNull List<HasDrawable> getDrawables()
+    {
         return drawableList;
     }
 
     @Environment(EnvType.CLIENT)
-    public void onClick() {
-        System.out.println("HIII");
+    public void onClick()
+    {
         value = value.nextStyle();
         button.text = value.name();
     }

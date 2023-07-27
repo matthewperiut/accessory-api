@@ -17,7 +17,7 @@ public class RainbowGloveRenderer extends GloveRenderer
     @Override
     public void renderFirstPerson(PlayerBase player, PlayerRenderer renderer, ItemInstance itemInstance)
     {
-        var hue = itemInstance.getStationNBT().getFloat("hue");
+        float hue = (player.field_1645 % 365) / 365.f;
         color = Color.getHSBColor(hue, 1, 1);
         super.renderFirstPerson(player, renderer, itemInstance);
     }
@@ -25,7 +25,7 @@ public class RainbowGloveRenderer extends GloveRenderer
     @Override
     public void renderThirdPerson(PlayerBase player, PlayerRenderer renderer, ItemInstance itemInstance, double x, double y, double z, float h, float v)
     {
-        var hue = itemInstance.getStationNBT().getFloat("hue");
+        float hue = (player.field_1645 % 365) / 365.f;
         color = Color.getHSBColor(hue, 1, 1);
         super.renderThirdPerson(player, renderer, itemInstance, x, y, z, h, v);
     }

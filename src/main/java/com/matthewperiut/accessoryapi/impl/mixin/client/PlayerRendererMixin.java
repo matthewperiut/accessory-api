@@ -2,7 +2,9 @@ package com.matthewperiut.accessoryapi.impl.mixin.client;
 
 import com.matthewperiut.accessoryapi.AccessoryAPIClient;
 import com.matthewperiut.accessoryapi.api.helper.AccessoryAccess;
+import com.matthewperiut.accessoryapi.api.render.AccessoryRenderer;
 import com.matthewperiut.accessoryapi.api.render.HasCustomRenderer;
+import com.matthewperiut.accessoryapi.impl.slot.AccessorySlotStorage;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
@@ -12,14 +14,25 @@ import net.minecraft.entity.EntityBase;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemInstance;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerRenderer.class)
 public abstract class PlayerRendererMixin extends EntityRenderer
 {
+    @Unique
+    PlayerBase player;
+
+    @Inject(method = "method_344", at = @At("HEAD"))
+    protected void method_344(PlayerBase player, int f, float par3, CallbackInfoReturnable<Boolean> cir)
+    {
+        this.player = player;
+    }
+
     @Inject(method = "render(Lnet/minecraft/entity/EntityBase;DDDFF)V", at = @At(value = "TAIL"))
     private void thirdPersonRender(EntityBase d, double x, double y, double z, float h, float v, CallbackInfo ci)
     {
@@ -27,15 +40,22 @@ public abstract class PlayerRendererMixin extends EntityRenderer
         if (EntityRenderDispatcher.INSTANCE.textureManager == null) return;
         try
         {
-            final PlayerRenderer renderer = (PlayerRenderer) (Object) this;
-            PlayerBase player = (PlayerBase) d;
+            if (player == null)
+                return;
 
-            for (ItemInstance item : AccessoryAccess.getAccessories(player))
+            final PlayerRenderer renderer = (PlayerRenderer) (Object) this;
+
+            for (int i = 0; i < AccessorySlotStorage.slotOrder.size() + 4; i++)
             {
+                ItemInstance item = player.inventory.getArmourItem(i);
                 if (item == null) continue;
                 if (item.getType() instanceof HasCustomRenderer itemWithRenderer)
                 {
-                    itemWithRenderer.getRenderer().renderThirdPerson(player, renderer, item, x, y, z, h, v);
+                    AccessoryRenderer accessoryRenderer = itemWithRenderer.getRenderer();
+                    if (accessoryRenderer != null)
+                        accessoryRenderer.renderThirdPerson(player, renderer, item, x, y, z, h, v);
+                    else
+                        itemWithRenderer.constructRenderer();
                 }
             }
         }
@@ -52,10 +72,14 @@ public abstract class PlayerRendererMixin extends EntityRenderer
                     target = "Lnet/minecraft/entity/player/PlayerBase;playerCloakUrl:Ljava/lang/String;"
             )
     )
-    private String toggleCapeRendering(PlayerBase instance) {
-        if (!AccessoryAPIClient.capeEnabled) {
+    private String toggleCapeRendering(PlayerBase instance)
+    {
+        if (!AccessoryAPIClient.capeEnabled)
+        {
             return null;
-        } else {
+        }
+        else
+        {
             return instance.playerCloakUrl;
         }
     }
@@ -71,7 +95,11 @@ public abstract class PlayerRendererMixin extends EntityRenderer
             if (item == null) continue;
             if (item.getType() instanceof HasCustomRenderer itemWithRenderer)
             {
-                itemWithRenderer.getRenderer().renderFirstPerson(player, (PlayerRenderer) (Object) this, item);
+                AccessoryRenderer renderer = itemWithRenderer.getRenderer();
+                if (renderer != null)
+                    itemWithRenderer.getRenderer().renderFirstPerson(player, (PlayerRenderer) (Object) this, item);
+                else
+                    itemWithRenderer.constructRenderer();
             }
         }
     }

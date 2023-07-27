@@ -1,6 +1,10 @@
 package com.matthewperiut.accessoryapi.impl.slot;
 
 import com.matthewperiut.accessoryapi.api.Accessory;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.Minecraft;
 import net.minecraft.container.slot.Slot;
 import net.minecraft.inventory.InventoryBase;
 import net.minecraft.item.ItemInstance;
@@ -25,7 +29,7 @@ public class AccessorySlot extends Slot
 
     public boolean canInsert(ItemInstance item)
     {
-        if (AccessoryButton.time_clicked + MILLISECONDS_DELAY > System.currentTimeMillis())
+        if (cancelSlotButtonInterference())
             return false;
 
         if (item.getType() instanceof Accessory accessory)
@@ -44,9 +48,34 @@ public class AccessorySlot extends Slot
     @Override
     public ItemInstance takeItem(int i)
     {
-        if (AccessoryButton.time_clicked + MILLISECONDS_DELAY > System.currentTimeMillis())
+        if (cancelSlotButtonInterference())
             return null;
-
         return super.takeItem(i);
+    }
+
+    private boolean cancelSlotButtonInterference()
+    {
+        EnvType side = FabricLoader.getInstance().getEnvironmentType();
+        if (side == EnvType.CLIENT)
+        {
+            Minecraft mc = (Minecraft) FabricLoader.getInstance().getGameInstance();
+            if (mc.getNetworkHandler() == null)
+                return !clientCanInsert();
+            else
+                return false;
+            // revert to default behavior if on server,
+            // because I don't want to make a custom packet to sync pressing the button atm
+            // todo: button/slot interference multiplayer fix
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    @Environment(EnvType.CLIENT)
+    private boolean clientCanInsert()
+    {
+        return AccessoryButton.time_clicked + MILLISECONDS_DELAY <= System.currentTimeMillis();
     }
 }

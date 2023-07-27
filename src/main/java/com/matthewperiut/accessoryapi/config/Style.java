@@ -9,23 +9,30 @@ public enum Style
     TRINKETS("style.accessoryapi:trinkets");
 
     final String translationKey;
+
     Style(String translationKey)
     {
         this.translationKey = translationKey;
     }
 
-    public String getTranslationKey() {
+    public String getTranslationKey()
+    {
         return translationKey;
     }
 
-    public String getTranslatedName() {
+    public String getTranslatedName()
+    {
         return TranslationStorage.getInstance().translate(translationKey);
     }
 
-    public Style nextStyle() {
-        if (ordinal() >= values().length) {
+    public Style nextStyle()
+    {
+        if (ordinal() >= values().length)
+        {
             return values()[0];
-        } else {
+        }
+        else
+        {
             return values()[ordinal() + 1];
         }
     }
