@@ -3,9 +3,9 @@
   "id": "accessoryapi",
   "version": "${version}",
   "name": "Accessory API",
-  "description": "Adds inventory slots for various accessories",
+  "description": "Provides an API to add inventory slots for various accessories",
   "authors": [
-    "Slainlight",
+    "matthewperiut",
     "KydZombie"
   ],
   "contact": {

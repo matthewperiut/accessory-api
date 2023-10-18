@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    modImplementation('com.github.matthewperiut:accessory-api:0.4.0') {
+    modImplementation('com.github.matthewperiut:accessory-api:0.5.1') {
         transitive false
     }
 }
@@ -49,6 +49,14 @@ public class ExampleRing extends TemplateItemBase implements Accessory
     // void tickWhileWorn(PlayerBase player, ItemInstance accessory)
     // void onAccessoryAdded(PlayerBase player, ItemInstance accessory)
     // void onAccessoryRemoved(PlayerBase player, ItemInstance accessory)
+
+    // Rendering
+    private YourCustomRenderer renderer;
+    @Override
+    public Optional<AccessoryRenderer> getRenderer()
+    {
+        return Optional.ofNullable(renderer);
+    }
 }
 ```
 
@@ -100,3 +108,4 @@ Built-in AccessoryRenderers:
 `CapeRenderer`  
 `GloveRenderer`  
 `NecklaceRenderer`  
+`ConfigurableRenderer`  

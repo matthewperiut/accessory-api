@@ -30,6 +30,10 @@ sourceSets {
 
 repositories {
     maven {
+        name = 'Froge'
+        url = 'https://maven.minecraftforge.net/'
+    }
+    maven {
         name = 'Babric'
         url = 'https://maven.glass-launcher.net/babric'
     }
@@ -42,11 +46,20 @@ repositories {
         url = 'https://maven.glass-launcher.net/releases'
     }
     maven {
-        name = "Jitpack"
-        url "https://jitpack.io/"
+        name = 'Jitpack'
+        url = 'https://jitpack.io/'
     }
-    maven {
-        url 'https://maven.minecraftforge.net/'
+    mavenCentral()
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
+        }
     }
     jcenter() // for junit
 }
@@ -60,7 +73,7 @@ dependencies {
     implementation "org.apache.logging.log4j:log4j-slf4j18-impl:2.17.2"
 
     // Add testing dependencies
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.1'
     testImplementation 'org.mockito:mockito-core:3.11.2'
 
     modImplementation "net.modificationstation:StationAPI:${project.stapi_version}"
@@ -75,6 +88,10 @@ dependencies {
 
     implementation "blue.endless:jankson:${project.jankson_version}"
     modImplementation("net.glasslauncher:HowManyItems-Fabric-Unofficial:${project.howmanyitems_version}") {
+        transitive false
+    }
+
+    modImplementation("com.github.matthewperiut:spc-babric:${project.spc_version}") {
         transitive false
     }
 }
