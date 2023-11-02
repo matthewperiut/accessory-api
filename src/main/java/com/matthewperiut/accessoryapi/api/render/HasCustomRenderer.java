@@ -2,8 +2,7 @@ package com.matthewperiut.accessoryapi.api.render;
 
 import java.util.Optional;
 
-public interface HasCustomRenderer
-{
+public interface HasCustomRenderer {
     /**
      * Used to provide the accessory renderer variable that you initialized in constructRenderer
      *

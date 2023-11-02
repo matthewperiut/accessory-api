@@ -9,15 +9,13 @@ import net.minecraft.item.ItemInstance;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class AccessoryAccess
-{
+public class AccessoryAccess {
 
     /**
      * @param player The player you are checking.
      * @return The full array of the player's accessories.
      */
-    public static ItemInstance[] getAccessories(PlayerBase player)
-    {
+    public static ItemInstance[] getAccessories(PlayerBase player) {
         return Arrays.copyOfRange(player.inventory.armour, AccessoryAPI.config.armorOffset, player.inventory.armour.length);
     }
 
@@ -26,8 +24,7 @@ public class AccessoryAccess
      * @param slot   The index of the accessory inventory you want to check, DO NOT offset for armour slots.
      * @return The accessory in the specified slot.
      */
-    public static ItemInstance getAccessory(PlayerBase player, int slot)
-    {
+    public static ItemInstance getAccessory(PlayerBase player, int slot) {
         return getAccessories(player)[slot];
     }
 
@@ -36,8 +33,7 @@ public class AccessoryAccess
      * @param slot   The slot you are placing the accessory in.
      * @param item   The item you would like to place.
      */
-    public static void setAccessory(PlayerBase player, int slot, ItemInstance item)
-    {
+    public static void setAccessory(PlayerBase player, int slot, ItemInstance item) {
         player.inventory.armour[slot + AccessoryAPI.config.armorOffset] = item;
     }
 
@@ -46,15 +42,11 @@ public class AccessoryAccess
      * @param type   The type of accessory you are looking for.
      * @return The array of the player's accessories that match the type.
      */
-    public static ItemInstance[] getAccessories(PlayerBase player, String type)
-    {
+    public static ItemInstance[] getAccessories(PlayerBase player, String type) {
         var foundItems = new ArrayList<ItemInstance>();
-        for (ItemInstance item : getAccessories(player))
-        {
-            if (item != null && item.getType() instanceof Accessory accessory)
-            {
-                if (Arrays.asList(accessory.getAccessoryTypes(item)).contains(type))
-                {
+        for (ItemInstance item : getAccessories(player)) {
+            if (item != null && item.getType() instanceof Accessory accessory) {
+                if (Arrays.asList(accessory.getAccessoryTypes(item)).contains(type)) {
                     foundItems.add(item);
                 }
             }
@@ -72,12 +64,9 @@ public class AccessoryAccess
      * @param itemType The item you are looking for.
      * @return Whether the player has any items that match the provided item type.
      */
-    public static boolean hasAccessory(PlayerBase player, ItemBase itemType)
-    {
-        for (ItemInstance item : getAccessories(player))
-        {
-            if (item != null && item.getType() == itemType)
-            {
+    public static boolean hasAccessory(PlayerBase player, ItemBase itemType) {
+        for (ItemInstance item : getAccessories(player)) {
+            if (item != null && item.getType() == itemType) {
                 return true;
             }
         }
@@ -89,14 +78,10 @@ public class AccessoryAccess
      * @param type   The type of accessory you are looking for.
      * @return Whether the player has any accessories in their inventory that match the type.
      */
-    public static boolean hasAnyAccessoriesOfType(PlayerBase player, String type)
-    {
-        for (ItemInstance item : getAccessories(player))
-        {
-            if (item != null && item.getType() instanceof Accessory accessory)
-            {
-                if (Arrays.asList(accessory.getAccessoryTypes(item)).contains(type))
-                {
+    public static boolean hasAnyAccessoriesOfType(PlayerBase player, String type) {
+        for (ItemInstance item : getAccessories(player)) {
+            if (item != null && item.getType() instanceof Accessory accessory) {
+                if (Arrays.asList(accessory.getAccessoryTypes(item)).contains(type)) {
                     return true;
                 }
             }

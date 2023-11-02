@@ -6,14 +6,12 @@ import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.registry.ModID;
 import net.modificationstation.stationapi.api.util.Null;
 
-public class TextureListener
-{
+public class TextureListener {
     @Entrypoint.ModID
     public static final ModID MOD_ID = Null.get();
 
     @EventListener
-    public void registerTextures(TextureRegisterEvent event)
-    {
+    public void registerTextures(TextureRegisterEvent event) {
         ItemListener.testCape.setTexture(MOD_ID.id("item/testcape"));
         ItemListener.rainbowCape.setTexture(MOD_ID.id("item/rainbowcape"));
         ItemListener.testGloves.setTexture(MOD_ID.id("item/testgloves"));

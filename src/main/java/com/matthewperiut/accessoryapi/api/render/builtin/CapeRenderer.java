@@ -9,18 +9,15 @@ import net.minecraft.item.ItemInstance;
 import net.minecraft.util.maths.MathHelper;
 import org.lwjgl.opengl.GL11;
 
-public class CapeRenderer extends ConfigurableRenderer
-{
+public class CapeRenderer extends ConfigurableRenderer {
     private static final Biped model = new Biped(0.0f);
 
-    public CapeRenderer(String texture)
-    {
+    public CapeRenderer(String texture) {
         super(texture);
     }
 
     @Override
-    public void renderThirdPerson(PlayerBase player, PlayerRenderer renderer, ItemInstance itemInstance, double x, double y, double z, float h, float v)
-    {
+    public void renderThirdPerson(PlayerBase player, PlayerRenderer renderer, ItemInstance itemInstance, double x, double y, double z, float h, float v) {
         AccessoryAPIClient.capeEnabled = false;
 
         RenderingHelper.beforeBiped(player, renderer, model, x, y, z, h, v);
@@ -37,24 +34,20 @@ public class CapeRenderer extends ConfigurableRenderer
         final double d4 = MathHelper.sin(f2 * 3.141593f / 180.0f);
         final double d5 = -MathHelper.cos(f2 * 3.141593f / 180.0f);
         float f3 = (float) d2 * 10.0f;
-        if (f3 < -6.0f)
-        {
+        if (f3 < -6.0f) {
             f3 = -6.0f;
         }
-        if (f3 > 32.0f)
-        {
+        if (f3 > 32.0f) {
             f3 = 32.0f;
         }
         float f4 = (float) (d * d4 + d3 * d5) * 100.0f;
         final float f5 = (float) (d * d5 - d3 * d4) * 100.0f;
-        if (f4 < 0.0f)
-        {
+        if (f4 < 0.0f) {
             f4 = 0.0f;
         }
         final float f6 = player.field_524 + (player.field_525 - player.field_524) * xAsFloat;
         f3 += MathHelper.sin((player.field_1634 + (player.field_1635 - player.field_1634) * xAsFloat) * 6.0f) * 32.0f * f6;
-        if (player.method_1373())
-        {
+        if (player.method_1373()) {
             f3 += 25.0f;
         }
         GL11.glRotatef(6.0f + f4 / 2.0f + f3, 1.0f, 0.0f, 0.0f);

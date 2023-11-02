@@ -3,8 +3,7 @@ package com.matthewperiut.accessoryapi.api;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemInstance;
 
-public interface Accessory extends TickableInArmorSlot
-{
+public interface Accessory extends TickableInArmorSlot {
     /**
      * Determines what accessory slots your item goes to
      *
@@ -13,11 +12,9 @@ public interface Accessory extends TickableInArmorSlot
      */
     String[] getAccessoryTypes(ItemInstance item);
 
-    default void onAccessoryAdded(PlayerBase player, ItemInstance accessory)
-    {
+    default void onAccessoryAdded(PlayerBase player, ItemInstance accessory) {
     }
 
-    default void onAccessoryRemoved(PlayerBase player, ItemInstance accessory)
-    {
+    default void onAccessoryRemoved(PlayerBase player, ItemInstance accessory) {
     }
 }

@@ -19,17 +19,14 @@ import static com.matthewperiut.accessoryapi.impl.slot.AccessorySlotStorage.hide
 import static com.matthewperiut.accessoryapi.impl.slot.AccessorySlotStorage.slotOrder;
 
 @Mixin(PlayerContainer.class)
-public abstract class PlayerContainerMixin extends ContainerBase
-{
+public abstract class PlayerContainerMixin extends ContainerBase {
+    @Unique
+    private static final int craft_centering_shift = getCraftingOffset();
     @Unique
     int slotCounter = 0;
 
-    @Unique
-    private static final int craft_centering_shift = getCraftingOffset();
-
     @ModifyArg(method = "<init>(Lnet/minecraft/entity/player/PlayerInventory;Z)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerContainer;addSlot(Lnet/minecraft/container/slot/Slot;)V"), index = 0)
-    private Slot changeTopSlots(Slot par1)
-    {
+    private Slot changeTopSlots(Slot par1) {
 
         if (par1.x == 144) // x of crafting result
         {
@@ -44,8 +41,7 @@ public abstract class PlayerContainerMixin extends ContainerBase
             par1.y -= 18;
         }
 
-        if (AccessoryAPI.config.aetherStyleArmor)
-        {
+        if (AccessoryAPI.config.aetherStyleArmor) {
             if (slotCounter > 4 && slotCounter < 9) // armour
             {
                 par1.x += 54;
@@ -57,14 +53,12 @@ public abstract class PlayerContainerMixin extends ContainerBase
     }
 
     @Inject(method = "<init>(Lnet/minecraft/entity/player/PlayerInventory;Z)V", at = @At(value = "TAIL"))
-    private void addSlots(PlayerInventory inv, boolean par2, CallbackInfo ci)
-    {
+    private void addSlots(PlayerInventory inv, boolean par2, CallbackInfo ci) {
         int slotnum = 40;
 
         AccessorySlotStorage.initializeCustomAccessoryPositions();
 
-        for (AccessorySlotStorage.PreservedSlot slot : slotOrder)
-        {
+        for (AccessorySlotStorage.PreservedSlot slot : slotOrder) {
             addSlot(new AccessorySlot(inv, slotnum, slot.pos.x + 18, slot.pos.z, slot.slotType));
             slotnum++;
         }

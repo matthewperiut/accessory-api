@@ -7,10 +7,8 @@ import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemInstance;
 import org.lwjgl.opengl.GL11;
 
-public class RenderingHelper
-{
-    public static void beforeBiped(PlayerBase player, PlayerRenderer playerRenderer, Biped model, double x, double y, double z, float h, float v)
-    {
+public class RenderingHelper {
+    public static void beforeBiped(PlayerBase player, PlayerRenderer playerRenderer, Biped model, double x, double y, double z, float h, float v) {
         final ItemInstance itemInstance = player.getHeldItem();
         model.field_629 = (itemInstance != null);
         model.field_630 = player.method_1373();
@@ -37,8 +35,7 @@ public class RenderingHelper
         model.setAngles(f8, f7, f5, f3 - f2, f4, f6);
     }
 
-    public static void afterBiped(Biped model)
-    {
+    public static void afterBiped(Biped model) {
         GL11.glDisable(3042);
         GL11.glDisable(32826);
 

@@ -5,12 +5,10 @@ import net.minecraft.item.ItemInstance;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.template.item.TemplateItemBase;
 
-public class TestAccessory extends TemplateItemBase implements Accessory
-{
+public class TestAccessory extends TemplateItemBase implements Accessory {
     protected final String[] types;
 
-    public TestAccessory(Identifier identifier, String... types)
-    {
+    public TestAccessory(Identifier identifier, String... types) {
         super(identifier);
         setTranslationKey(identifier);
         setMaxStackSize(1);
@@ -19,8 +17,7 @@ public class TestAccessory extends TemplateItemBase implements Accessory
     }
 
     @Override
-    public String[] getAccessoryTypes(ItemInstance item)
-    {
+    public String[] getAccessoryTypes(ItemInstance item) {
         return types;
     }
 }

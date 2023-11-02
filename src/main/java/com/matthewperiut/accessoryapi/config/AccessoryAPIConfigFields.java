@@ -4,8 +4,7 @@ import blue.endless.jankson.Comment;
 import net.glasslauncher.mods.api.gcapi.api.ConfigName;
 import net.glasslauncher.mods.api.gcapi.api.MultiplayerSynced;
 
-public class AccessoryAPIConfigFields
-{
+public class AccessoryAPIConfigFields {
     @ConfigName("Aether-Style Armor Slots")
     @Comment("Essentially whether you want armor slots to the right of the player doll.")
     public Boolean aetherStyleArmor = true;

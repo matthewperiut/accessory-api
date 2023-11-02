@@ -3,11 +3,9 @@ package com.matthewperiut.testmod;
 import com.matthewperiut.accessoryapi.api.AccessoryRegister;
 import net.fabricmc.api.ModInitializer;
 
-public class TestMod implements ModInitializer
-{
+public class TestMod implements ModInitializer {
     @Override
-    public void onInitialize()
-    {
+    public void onInitialize() {
         AccessoryRegister.add("pendant");
         AccessoryRegister.add("cape");
         AccessoryRegister.add("shield");

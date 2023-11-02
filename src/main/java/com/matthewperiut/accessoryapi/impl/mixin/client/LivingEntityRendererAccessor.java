@@ -6,8 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(LivingEntityRenderer.class)
-public interface LivingEntityRendererAccessor
-{
+public interface LivingEntityRendererAccessor {
     @Invoker("method_828")
     float invoke828(Living living, float f);
 

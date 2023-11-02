@@ -6,10 +6,8 @@ import com.matthewperiut.accessoryapi.impl.slot.AccessorySlotStorage;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AccessoryRegister
-{
-    private static final Map<String, Integer> defaultTextureMap = new HashMap<>()
-    {{
+public class AccessoryRegister {
+    private static final Map<String, Integer> defaultTextureMap = new HashMap<>() {{
         put("pendant", 0);
         put("cape", 1);
         put("shield", 2);
@@ -17,18 +15,14 @@ public class AccessoryRegister
         put("gloves", 4);
         put("misc", 5);
     }};
+    private static final String defaultTexture = "/assets/accessoryapi/inventory.png";
+    private static final int DEFAULT_ACCESSORY_Y = 72;
 
-    private static int getDefaultTextureId(final String accessoryType)
-    {
+    private static int getDefaultTextureId(final String accessoryType) {
         return defaultTextureMap.getOrDefault(accessoryType, -1);
     }
 
-    private static final String defaultTexture = "/assets/accessoryapi/inventory.png";
-
-    private static final int DEFAULT_ACCESSORY_Y = 72;
-
-    public static void add(String accessoryType)
-    {
+    public static void add(String accessoryType) {
         int d = getDefaultTextureId(accessoryType);
         if (d != -1)
             AccessorySlotStorage.slotInfo.add(new AccessorySlotInfo(accessoryType, defaultTexture, d * 16, DEFAULT_ACCESSORY_Y));
@@ -36,13 +30,11 @@ public class AccessoryRegister
             AccessorySlotStorage.slotInfo.add(new AccessorySlotInfo(accessoryType));
     }
 
-    public static void add(String accessoryType, String texture, int texPosX, int texPosY)
-    {
+    public static void add(String accessoryType, String texture, int texPosX, int texPosY) {
         AccessorySlotStorage.slotInfo.add(new AccessorySlotInfo(accessoryType, texture, texPosX, texPosY));
     }
 
-    public static void add(String accessoryType, int h, int v)
-    {
+    public static void add(String accessoryType, int h, int v) {
         int d = getDefaultTextureId(accessoryType);
         if (d != -1)
             AccessorySlotStorage.slotInfo.add(new AccessorySlotInfo(accessoryType, defaultTexture, d * 16, DEFAULT_ACCESSORY_Y, h, v));
@@ -50,16 +42,13 @@ public class AccessoryRegister
             AccessorySlotStorage.slotInfo.add(new AccessorySlotInfo(accessoryType, h, v));
     }
 
-    public static void add(String accessoryType, String texture, int texPosX, int texPosY, int h, int v)
-    {
+    public static void add(String accessoryType, String texture, int texPosX, int texPosY, int h, int v) {
         AccessorySlotStorage.slotInfo.add(new AccessorySlotInfo(accessoryType, texture, texPosX, texPosY, h, v));
     }
 
-    public static int getNumberOfType(String accessoryType)
-    {
+    public static int getNumberOfType(String accessoryType) {
         int count = 0;
-        for (AccessorySlotInfo slot : AccessorySlotStorage.slotInfo)
-        {
+        for (AccessorySlotInfo slot : AccessorySlotStorage.slotInfo) {
             if (slot.type.equals(accessoryType))
                 count++;
         }

@@ -11,6 +11,7 @@
   ],
   "client": [
     "client.ContainerBaseMixin",
+    "client.InGameGuiMixin",
     "client.LivingEntityRendererAccessor",
     "client.PlayerInventoryGuiMixin",
     "client.PlayerRendererMixin"
