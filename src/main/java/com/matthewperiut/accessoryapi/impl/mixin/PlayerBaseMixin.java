@@ -58,18 +58,6 @@ public abstract class PlayerBaseMixin extends Living implements PlayerExtraHP {
         }
     }
 
-    @Override
-    public void addHealth(int i) {
-        if (this.health > 0) {
-            this.health += i;
-            if (this.health > 20 + extraHP) {
-                this.health = 20 + extraHP;
-            }
-
-            this.field_1613 = this.field_1009 / 2;
-        }
-    }
-
     public int getExtraHP() {
         return extraHP;
     }
