@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Random;
@@ -76,5 +77,22 @@ public class InGameGuiMixin {
     public void renderExtraHud(float bl, boolean i, int j, int par4, CallbackInfo ci) {
         InGame instance = (InGame) (Object) this;
         renderHearts(instance);
+    }
+
+    public void moveBubblesUpDependingOnExtraHP(InGame instance, int a, int b, int c, int d, int e, int f)
+    {
+        int multiplier = (((PlayerExtraHP) minecraft.player).getExtraHP() + 18) / 20;
+        int movement = 10 * multiplier + (multiplier > 0 ? 1 : 0);
+        instance.blit(a,b-movement,c,d,e,f);
+    }
+    @Redirect(method = "renderHud", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/InGame;blit(IIIIII)V", ordinal = 11))
+    public void moveBubblesUpDependingOnExtraHP1(InGame instance, int a, int b, int c, int d, int e, int f)
+    {
+        moveBubblesUpDependingOnExtraHP(instance, a, b, c, d, e, f);
+    }
+    @Redirect(method = "renderHud", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/InGame;blit(IIIIII)V", ordinal = 12))
+    public void moveBubblesUpDependingOnExtraHP2(InGame instance, int a, int b, int c, int d, int e, int f)
+    {
+        moveBubblesUpDependingOnExtraHP(instance, a, b, c, d, e, f);
     }
 }
