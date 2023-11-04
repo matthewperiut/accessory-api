@@ -1,5 +1,6 @@
 package com.matthewperiut.accessoryapi;
 
+import com.matthewperiut.accessoryapi.command.AccessoryAPICommands;
 import com.matthewperiut.accessoryapi.config.AccessoryAPIConfigFields;
 import net.fabricmc.api.ModInitializer;
 import net.glasslauncher.mods.api.gcapi.api.GConfig;
@@ -12,6 +13,6 @@ public class AccessoryAPI implements ModInitializer {
 
     @Override
     public void onInitialize() {
-
+        AccessoryAPICommands.addCommands();
     }
 }

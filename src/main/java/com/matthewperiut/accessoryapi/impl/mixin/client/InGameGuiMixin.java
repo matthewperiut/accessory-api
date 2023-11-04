@@ -73,6 +73,31 @@ public class InGameGuiMixin {
         GL11.glDisable(3042);
     }
 
+    public void blitHeart(InGame instance, int a, int b, int c, int d, int e, int f) {
+        ScreenScaler var5 = new ScreenScaler(this.minecraft.options, this.minecraft.actualWidth, this.minecraft.actualHeight);
+        int var6 = var5.getScaledWidth();
+        int allowedHearts = (((PlayerExtraHP) minecraft.player).getExtraHP() < 0 ? 10 + (((PlayerExtraHP) minecraft.player).getExtraHP() / 2) : 10);
+        int var19 = var6 / 2 - 91 + allowedHearts * 8;
+        if (a < var19)
+            instance.blit(a,b,c,d,e,f);
+    }
+    @Redirect(method = "renderHud", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/InGame;blit(IIIIII)V", ordinal = 6))
+    public void blitHeart0(InGame instance, int a, int b, int c, int d, int e, int f) {
+        blitHeart(instance, a, b, c, d, e, f);
+    }
+    @Redirect(method = "renderHud", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/InGame;blit(IIIIII)V", ordinal = 7))
+    public void blitHeart1(InGame instance, int a, int b, int c, int d, int e, int f) {
+        blitHeart(instance, a, b, c, d, e, f);
+    }
+    @Redirect(method = "renderHud", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/InGame;blit(IIIIII)V", ordinal = 8))
+    public void blitHeart2(InGame instance, int a, int b, int c, int d, int e, int f) {
+        blitHeart(instance, a, b, c, d, e, f);
+    }
+    @Redirect(method = "renderHud", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/InGame;blit(IIIIII)V", ordinal = 9))
+    public void blitHeart3(InGame instance, int a, int b, int c, int d, int e, int f) {
+        blitHeart(instance, a, b, c, d, e, f);
+    }
+
     @Inject(method = "renderHud", at = @At(value = "TAIL"))
     public void renderExtraHud(float bl, boolean i, int j, int par4, CallbackInfo ci) {
         InGame instance = (InGame) (Object) this;

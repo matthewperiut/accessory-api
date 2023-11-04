@@ -85,7 +85,7 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase {
         }
     }
 
-    @Inject(method = "renderContainerBackground", at = @At("TAIL"))
+    @Inject(method = "renderContainerBackground", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glEnable(I)V", ordinal = 0))
     public void bindAetherPlayerGuiTexture(float par1, CallbackInfo ci) {
         int var2 = minecraft.textureManager.getTextureId("/assets/accessoryapi/inventory.png");
         minecraft.textureManager.bindTexture(var2);

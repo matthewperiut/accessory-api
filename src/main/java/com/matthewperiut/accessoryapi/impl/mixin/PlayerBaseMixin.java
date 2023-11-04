@@ -8,15 +8,12 @@ import net.minecraft.item.ItemInstance;
 import net.minecraft.level.Level;
 import net.minecraft.util.io.CompoundTag;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerBase.class)
 public abstract class PlayerBaseMixin extends Living implements PlayerExtraHP {
-    @Unique
-    int extraHP;
 
     public PlayerBaseMixin(Level arg) {
         super(arg);
@@ -38,31 +35,47 @@ public abstract class PlayerBaseMixin extends Living implements PlayerExtraHP {
 
     @Inject(method = "writeCustomDataToTag", at = @At("HEAD"))
     public void writeCustomDataToTag(CompoundTag tag, CallbackInfo ci) {
-        tag.put("ExtraHP", extraHP);
+        tag.put("ExtraHP", getExtraHP());
     }
 
     @Inject(method = "readCustomDataFromTag", at = @At("HEAD"))
     public void readCustomDataFromTag(CompoundTag tag, CallbackInfo ci) {
+
         if (tag.containsKey("ExtraHP")) {
-            extraHP = tag.getInt("ExtraHP");
+            setExtraHP(tag.getInt("ExtraHP"));
         } else {
-            extraHP = 0;
+            setExtraHP(0);
         }
     }
 
     @Inject(method = "updateDespawnCounter", at = @At("HEAD"))
     public void updateDespawnCounter(CallbackInfo ci) {
-        if (this.level.difficulty == 0 && (this.health >= 20 && this.health < 20 + extraHP) && this.field_1645 % 20 * 12 == 0) {
+        if (this.level.difficulty == 0 && (this.health >= 20 && this.health < 20 + getExtraHP()) && this.field_1645 % 20 * 12 == 0) {
             this.health += 1;
             this.field_1613 = this.field_1009 / 2;
         }
     }
 
+    @Inject(method = "initDataTracker", at = @At("TAIL"))
+    public void initDataTracker(CallbackInfo ci)
+    {
+        this.dataTracker.startTracking(31, (int)0);
+
+    }
+
     public int getExtraHP() {
-        return extraHP;
+        return this.dataTracker.getInt(31);
     }
 
     public void setExtraHP(int extraHP) {
-        this.extraHP = extraHP;
+        this.dataTracker.setInt(31, extraHP);
+        if (health > 20 + extraHP)
+        {
+            health = 20 + extraHP;
+        }
+    }
+
+    public void addExtraHP(int extraHP) {
+        setExtraHP(getExtraHP() + extraHP);
     }
 }
