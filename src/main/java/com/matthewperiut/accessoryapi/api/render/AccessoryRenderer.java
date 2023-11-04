@@ -1,6 +1,8 @@
 package com.matthewperiut.accessoryapi.api.render;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.entity.PlayerRenderer;
+import net.minecraft.client.util.ScreenScaler;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemInstance;
 
@@ -12,5 +14,8 @@ public interface AccessoryRenderer {
     }
 
     default void renderFirstPerson(PlayerBase player, PlayerRenderer renderer, ItemInstance itemInstance) {
+    }
+
+    default void renderHUD(PlayerBase player, ItemInstance itemInstance, Minecraft minecraft, ScreenScaler screenScaler, int scaledWidth, int scaledHeight) {
     }
 }

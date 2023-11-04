@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Random;
 
 @Mixin(InGame.class)
-public class InGameGuiMixin {
+public class InGameGuiMixinHearts {
     @Shadow
     private Minecraft minecraft;
 

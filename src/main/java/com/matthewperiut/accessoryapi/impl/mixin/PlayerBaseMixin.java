@@ -25,9 +25,11 @@ public abstract class PlayerBaseMixin extends Living implements PlayerExtraHP {
         for (int i = 0; i < player.inventory.armour.length; i++) {
             ItemInstance item = player.inventory.armour[i];
             if (item != null) {
-                var newItem = ((TickableInArmorSlot) item.getType()).tickWhileWorn(player, item);
-                if (newItem != item) {
-                    player.inventory.armour[i] = newItem;
+                if (item.getType() instanceof TickableInArmorSlot tickable) {
+                    var newItem = tickable.tickWhileWorn(player, item);
+                    if (newItem != item) {
+                        player.inventory.armour[i] = newItem;
+                    }
                 }
             }
         }
