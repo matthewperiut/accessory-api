@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class PlayerBaseMixin extends Living implements PlayerExtraHP, PlayerVisibility
 {
 
-    public PlayerBaseMixin(Level arg) {
+    private PlayerBaseMixin(Level arg) {
         super(arg);
     }
 
@@ -64,7 +64,6 @@ public abstract class PlayerBaseMixin extends Living implements PlayerExtraHP, P
     public void initDataTracker(CallbackInfo ci)
     {
         this.dataTracker.startTracking(31, (int)0);
-
     }
 
     public int getExtraHP() {

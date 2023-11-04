@@ -5,7 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "ArmorMixin",
-    "LivingBase",
+    "LivingBaseMixin",
     "PlayerBaseMixin",
     "PlayerContainerMixin",
     "PlayerInventoryMixin"
@@ -13,7 +13,7 @@
   "client": [
     "client.ContainerBaseMixin",
     "client.InGameGuiMixinHearts",
-    "client.InGameGuiMixinOverlay",
+    "client.InGameGuiMixinHUD",
     "client.LivingEntityRendererAccessor",
     "client.PlayerInventoryGuiMixin",
     "client.PlayerRendererMixin"

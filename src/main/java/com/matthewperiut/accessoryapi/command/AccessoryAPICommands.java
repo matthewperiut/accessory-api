@@ -9,6 +9,7 @@ public class AccessoryAPICommands {
         {
             CommandRegistry.add(new HeartsCommand());
             CommandRegistry.add(new InvisibleCommand());
+            CommandRegistry.add(new BossCommand());
         }
     }
 }
