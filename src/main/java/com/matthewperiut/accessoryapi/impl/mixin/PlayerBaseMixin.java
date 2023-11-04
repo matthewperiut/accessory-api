@@ -1,6 +1,7 @@
 package com.matthewperiut.accessoryapi.impl.mixin;
 
 import com.matthewperiut.accessoryapi.api.PlayerExtraHP;
+import com.matthewperiut.accessoryapi.api.PlayerVisibility;
 import com.matthewperiut.accessoryapi.api.TickableInArmorSlot;
 import net.minecraft.entity.Living;
 import net.minecraft.entity.player.PlayerBase;
@@ -13,7 +14,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerBase.class)
-public abstract class PlayerBaseMixin extends Living implements PlayerExtraHP {
+public abstract class PlayerBaseMixin extends Living implements PlayerExtraHP, PlayerVisibility
+{
 
     public PlayerBaseMixin(Level arg) {
         super(arg);
@@ -79,5 +81,19 @@ public abstract class PlayerBaseMixin extends Living implements PlayerExtraHP {
 
     public void addExtraHP(int extraHP) {
         setExtraHP(getExtraHP() + extraHP);
+    }
+
+    @Override
+    public void setInvisible(boolean invisible)
+    {
+        // setFlag
+        method_1326(7, invisible);
+    }
+
+    @Override
+    public boolean isInvisible()
+    {
+        // isFlagSet
+        return method_1345(7);
     }
 }

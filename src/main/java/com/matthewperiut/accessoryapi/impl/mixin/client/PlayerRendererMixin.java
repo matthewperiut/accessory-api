@@ -1,6 +1,7 @@
 package com.matthewperiut.accessoryapi.impl.mixin.client;
 
 import com.matthewperiut.accessoryapi.AccessoryAPIClient;
+import com.matthewperiut.accessoryapi.api.PlayerVisibility;
 import com.matthewperiut.accessoryapi.api.helper.AccessoryAccess;
 import com.matthewperiut.accessoryapi.api.render.HasCustomRenderer;
 import com.matthewperiut.accessoryapi.impl.slot.AccessorySlotStorage;
@@ -30,8 +31,18 @@ public abstract class PlayerRendererMixin extends EntityRenderer {
         this.player = player;
     }
 
+    @Inject(method = "render(Lnet/minecraft/entity/EntityBase;DDDFF)V", at = @At(value = "HEAD"), cancellable = true)
+    private void thirdPersonRenderHEAD(EntityBase d, double x, double y, double z, float h, float v, CallbackInfo ci)
+    {
+        if (((PlayerVisibility) d).isInvisible())
+            ci.cancel();
+    }
+
     @Inject(method = "render(Lnet/minecraft/entity/EntityBase;DDDFF)V", at = @At(value = "TAIL"))
     private void thirdPersonRender(EntityBase d, double x, double y, double z, float h, float v, CallbackInfo ci) {
+        if (((PlayerVisibility) d).isInvisible())
+            return;
+
         AccessoryAPIClient.capeEnabled = true;
         if (EntityRenderDispatcher.INSTANCE.textureManager == null) return;
         try {

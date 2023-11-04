@@ -8,6 +8,7 @@ public class AccessoryAPICommands {
         if (FabricLoader.getInstance().isModLoaded("spc"))
         {
             CommandRegistry.add(new HeartsCommand());
+            CommandRegistry.add(new InvisibleCommand());
         }
     }
 }
