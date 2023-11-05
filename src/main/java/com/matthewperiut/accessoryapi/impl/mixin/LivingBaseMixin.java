@@ -74,6 +74,10 @@ abstract public class LivingBaseMixin extends EntityBase implements BossLivingEn
         if (maxHP == -1)
         {
             maxHP = health;
+            if ((Object) this instanceof PlayerExtraHP extraHP)
+            {
+                maxHP += extraHP.getExtraHP();
+            }
         }
         return maxHP;
     }
@@ -84,7 +88,7 @@ abstract public class LivingBaseMixin extends EntityBase implements BossLivingEn
         if (parsedBossName.isEmpty())
         {
             if (((Object) this) instanceof PlayerBase player) {
-                parsedBossName = player.name;
+                parsedBossName = player.name + " ";
             }
             else {
                 String input = getStringId();
@@ -98,7 +102,11 @@ abstract public class LivingBaseMixin extends EntityBase implements BossLivingEn
                     output.append(input.charAt(i));
                 }
 
-                parsedBossName = output + " " + getCustomTitle();
+                parsedBossName = output + " ";
+                String customTitle = getCustomTitle();
+                if (!customTitle.isEmpty()) {
+                    parsedBossName += customTitle + " ";
+                }
             }
         }
         return parsedBossName;
