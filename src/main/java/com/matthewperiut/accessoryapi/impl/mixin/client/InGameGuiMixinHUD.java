@@ -70,7 +70,7 @@ public class InGameGuiMixinHUD extends DrawableHelper {
                 }
             }
 
-            if (bosses.size() == 0) {
+            if (bosses.isEmpty()) {
                 boss = null;
             }
             if (bosses.size() == 1) {
@@ -99,7 +99,6 @@ public class InGameGuiMixinHUD extends DrawableHelper {
             final int w = (int)(((BossLivingEntity) boss).getHP() / (float)((BossLivingEntity) boss).getMaxHP() * 256.0f);
             instance.blit(width / 2 - 128, 12, 0, 0, w, 16);
 
-            System.out.println(((BossLivingEntity) boss).getHP() + " | " + ((BossLivingEntity) boss).getMaxHP());
             if (!boss.isAlive())
             {
                 ((BossLivingEntity) boss).setBoss(false);
