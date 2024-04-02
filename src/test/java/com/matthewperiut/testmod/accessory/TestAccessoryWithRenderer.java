@@ -6,7 +6,7 @@ import com.matthewperiut.accessoryapi.api.render.builtin.CapeRenderer;
 import com.matthewperiut.accessoryapi.api.render.builtin.ConfigurableRenderer;
 import com.matthewperiut.accessoryapi.api.render.builtin.GloveRenderer;
 import com.matthewperiut.accessoryapi.api.render.builtin.NecklaceRenderer;
-import net.modificationstation.stationapi.api.registry.Identifier;
+import net.modificationstation.stationapi.api.util.Identifier;
 
 import java.util.Optional;
 

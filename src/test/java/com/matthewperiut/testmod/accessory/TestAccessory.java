@@ -2,10 +2,10 @@ package com.matthewperiut.testmod.accessory;
 
 import com.matthewperiut.accessoryapi.api.Accessory;
 import net.minecraft.item.ItemInstance;
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.template.item.TemplateItemBase;
+import net.modificationstation.stationapi.api.template.item.TemplateItem;
+import net.modificationstation.stationapi.api.util.Identifier;
 
-public class TestAccessory extends TemplateItemBase implements Accessory {
+public class TestAccessory extends TemplateItem implements Accessory {
     protected final String[] types;
 
     public TestAccessory(Identifier identifier, String... types) {

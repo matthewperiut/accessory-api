@@ -6,8 +6,8 @@ import net.glasslauncher.mods.api.gcapi.api.CharacterUtils;
 import net.glasslauncher.mods.api.gcapi.api.HasDrawable;
 import net.glasslauncher.mods.api.gcapi.api.MaxLength;
 import net.glasslauncher.mods.api.gcapi.impl.config.ConfigEntry;
-import net.glasslauncher.mods.api.gcapi.screen.widget.FancyButton;
-import net.glasslauncher.mods.api.gcapi.screen.widget.Icon;
+import net.glasslauncher.mods.api.gcapi.screen.widget.FancyButtonWidget;
+import net.glasslauncher.mods.api.gcapi.screen.widget.IconWidget;
 import net.minecraft.client.gui.screen.ScreenBase;
 import net.minecraft.client.render.TextRenderer;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StyleConfigEntry extends ConfigEntry<Style> {
-    private FancyButton button;
+    private FancyButtonWidget button;
     private List<HasDrawable> drawableList;
 
     public StyleConfigEntry(String id, String name, String description, Field parentField, Object parentObject, boolean multiplayerSynced, Style value, MaxLength maxLength) {
@@ -27,14 +27,14 @@ public class StyleConfigEntry extends ConfigEntry<Style> {
 
     @Override
     public void init(ScreenBase screenBase, TextRenderer textRenderer) {
-        button = new FancyButton(10, 0, 0, 0, 0, this.value.toString(), CharacterUtils.getIntFromColour(new Color(255, 202, 0, 255)));
+        button = new FancyButtonWidget(10, 0, 0, 0, 0, this.value.toString(), CharacterUtils.getIntFromColour(new Color(255, 202, 0, 255)));
         drawableList = new ArrayList<>() {
             {
                 add(button);
             }
         };
         if (multiplayerSynced) {
-            drawableList.add(new Icon(10, 0, 0, 0, "/assets/gcapi/server_synced.png"));
+            drawableList.add(new IconWidget(10, 0, 0, 0, "/assets/gcapi/server_synced.png"));
         }
 
         button.active = !multiplayerLoaded;

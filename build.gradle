@@ -1,5 +1,5 @@
 plugins {
-    id 'babric-loom' version '1.1-SNAPSHOT'
+    id 'babric-loom' version '1.4.2'
     id 'maven-publish'
     id 'java'
     id 'eclipse'
@@ -16,6 +16,9 @@ version = project.mod_version
 group = project.maven_group
 
 loom {
+    mixin {
+        useLegacyMixinAp = true
+    }
     gluedMinecraftJar()
     customMinecraftManifest.set("https://babric.github.io/manifest-polyfill/${minecraft_version}.json")
     intermediaryUrl.set("https://maven.glass-launcher.net/babric/babric/intermediary/%1\$s/intermediary-%1\$s-v2.jar")
@@ -82,14 +85,14 @@ dependencies {
     modImplementation("com.github.calmilamsy:ModMenu:${project.modmenu_version}") {
         transitive false
     }
+    modImplementation "blue.endless:jankson:${project.jankson_version}"
     modImplementation("net.glasslauncher.mods:GlassConfigAPI:${project.gcapi_version}") {
         transitive false
     }
-
-    implementation "blue.endless:jankson:${project.jankson_version}"
+/*
     modImplementation("net.glasslauncher:HowManyItems-Fabric-Unofficial:${project.howmanyitems_version}") {
         transitive false
-    }
+    }*/
 
     modImplementation("com.github.matthewperiut:spc-babric:${project.spc_version}") {
         transitive false
@@ -152,9 +155,4 @@ loom {
             server()
         }
     }
-}
-
-task testJar(type: Jar) {
-    from sourceSets.test.output
-    classifier 'test'
 }

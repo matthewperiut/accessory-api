@@ -4,11 +4,12 @@ import com.matthewperiut.accessoryapi.api.PlayerExtraHP;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemInstance;
 import net.minecraft.level.Level;
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.template.item.TemplateItemBase;
+import net.modificationstation.stationapi.api.template.item.TemplateItem;
+import net.modificationstation.stationapi.api.util.Identifier;
+import org.jetbrains.annotations.NotNull;
 
-public class HealthItem extends TemplateItemBase {
-    public HealthItem(Identifier identifier) {
+public class HealthItem extends TemplateItem {
+    public HealthItem(@NotNull Identifier identifier) {
         super(identifier);
     }
 

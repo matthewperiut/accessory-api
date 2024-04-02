@@ -3,6 +3,7 @@ package com.matthewperiut.accessoryapi;
 import com.matthewperiut.accessoryapi.command.AccessoryAPICommands;
 import com.matthewperiut.accessoryapi.config.AccessoryAPIConfigFields;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 import net.glasslauncher.mods.api.gcapi.api.GConfig;
 
 public class AccessoryAPI implements ModInitializer {
@@ -13,6 +14,8 @@ public class AccessoryAPI implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        AccessoryAPICommands.addCommands();
+        if (FabricLoader.getInstance().isModLoaded("spc")) {
+            AccessoryAPICommands.addCommands();
+        }
     }
 }
