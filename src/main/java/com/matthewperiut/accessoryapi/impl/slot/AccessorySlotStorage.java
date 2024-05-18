@@ -1,5 +1,6 @@
 package com.matthewperiut.accessoryapi.impl.slot;
 
+import com.matthewperiut.accessoryapi.AccessoryAPI;
 import net.minecraft.container.slot.Slot;
 import net.minecraft.entity.player.PlayerContainer;
 import net.minecraft.util.maths.Vec2i;
@@ -89,6 +90,8 @@ public class AccessorySlotStorage {
 
         if (slotOrder.size() > 8)
             extraSlots = slotOrder.size() - 8;
+        if (slotOrder.isEmpty())
+            AccessoryAPI.noSlotsAdded = true;
     }
 
     public static void showOverflowSlots(PlayerContainer container) {

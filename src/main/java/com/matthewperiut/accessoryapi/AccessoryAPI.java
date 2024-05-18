@@ -11,6 +11,7 @@ public class AccessoryAPI implements ModInitializer {
 
     @GConfig(value = "config", visibleName = "Accessory API Config")
     public static AccessoryAPIConfigFields config = new AccessoryAPIConfigFields();
+    public static boolean noSlotsAdded = false;
 
     @Override
     public void onInitialize() {

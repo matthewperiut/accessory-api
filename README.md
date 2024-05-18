@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    modImplementation('com.github.matthewperiut:accessory-api:0.5.1') {
+    modImplementation('com.github.matthewperiut:accessory-api:0.6.3') {
         transitive false
     }
 }

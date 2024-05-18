@@ -1,5 +1,6 @@
 package com.matthewperiut.accessoryapi.impl.slot;
 
+import com.matthewperiut.accessoryapi.AccessoryAPI;
 import net.minecraft.entity.player.PlayerContainer;
 
 import static com.matthewperiut.accessoryapi.impl.slot.AccessorySlotStorage.hideOverflowSlots;
@@ -17,6 +18,9 @@ public class AccessoryInventoryPlacement {
     }
 
     public static void resetPlayerInv(net.minecraft.container.ContainerBase container) {
+        if (AccessoryAPI.noSlotsAdded)
+            return;
+
         if (container instanceof PlayerContainer pc) {
             int crafting_offset_x = getCraftingOffset();
 

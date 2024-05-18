@@ -97,6 +97,8 @@ dependencies {
     modImplementation("com.github.matthewperiut:spc-babric:${project.spc_version}") {
         transitive false
     }
+    modRuntimeOnly ("com.github.matthewperiut:gambac:e2ded011b0") { transitive false }
+
 }
 
 // add test tasks

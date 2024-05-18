@@ -87,6 +87,9 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase {
 
     @Inject(method = "renderContainerBackground", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glEnable(I)V", ordinal = 0))
     public void bindAetherPlayerGuiTexture(float par1, CallbackInfo ci) {
+        if (AccessoryAPI.noSlotsAdded)
+            return;
+
         int var2 = minecraft.textureManager.getTextureId("/assets/accessoryapi/inventory.png");
         minecraft.textureManager.bindTexture(var2);
 
@@ -137,7 +140,7 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase {
 
     @Redirect(method = "renderContainerBackground", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glTranslatef(FFF)V"))
     public void translateAetherPlayerModel(float x, float y, float z) {
-        if (!AccessoryAPI.config.aetherStyleArmor) {
+        if (!AccessoryAPI.config.aetherStyleArmor || AccessoryAPI.noSlotsAdded) {
             GL11.glTranslatef(x, y, z);
             return;
         }
@@ -150,7 +153,7 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase {
     @Redirect(method = "renderContainerBackground", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/player/AbstractClientPlayer;yaw:F", opcode = Opcodes.PUTFIELD, ordinal = 0))
     private void injected(AbstractClientPlayer instance, float value) {
         float newValue;
-        if (!AccessoryAPI.config.aetherStyleArmor) {
+        if (!AccessoryAPI.config.aetherStyleArmor || AccessoryAPI.noSlotsAdded) {
             newValue = value;
         } else {
             float var9 = (float) (wpx + 33) - mouseX;

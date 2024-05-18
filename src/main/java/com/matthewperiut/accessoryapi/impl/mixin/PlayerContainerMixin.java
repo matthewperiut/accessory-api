@@ -27,6 +27,9 @@ public abstract class PlayerContainerMixin extends ContainerBase {
 
     @ModifyArg(method = "<init>(Lnet/minecraft/entity/player/PlayerInventory;Z)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerContainer;addSlot(Lnet/minecraft/container/slot/Slot;)V"), index = 0)
     private Slot changeTopSlots(Slot par1) {
+        AccessorySlotStorage.initializeCustomAccessoryPositions();
+        if (AccessoryAPI.noSlotsAdded)
+            return par1;
 
         if (par1.x == 144) // x of crafting result
         {
@@ -54,9 +57,10 @@ public abstract class PlayerContainerMixin extends ContainerBase {
 
     @Inject(method = "<init>(Lnet/minecraft/entity/player/PlayerInventory;Z)V", at = @At(value = "TAIL"))
     private void addSlots(PlayerInventory inv, boolean par2, CallbackInfo ci) {
-        int slotnum = 40;
+        if (AccessoryAPI.noSlotsAdded)
+            return;
 
-        AccessorySlotStorage.initializeCustomAccessoryPositions();
+        int slotnum = 40;
 
         for (AccessorySlotStorage.PreservedSlot slot : slotOrder) {
             addSlot(new AccessorySlot(inv, slotnum, slot.pos.x + 18, slot.pos.z, slot.slotType));
