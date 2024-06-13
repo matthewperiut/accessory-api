@@ -3,6 +3,7 @@
 ## Workspace
 
 Add Accessory API to your `build.gradle`
+
 ```gradle
 repositories {
     maven {
@@ -20,13 +21,15 @@ dependencies {
 
 ## Recommendation
 
-If you want to quickly see how to use this API, clone the repo (in an ide preferably) and navigate to src/test/java/com/matthewperiut/testmod.  
-Also view API javadocs / documentation  
+If you want to quickly see how to use this API, clone the repo (in an ide preferably) and navigate to
+src/test/java/com/matthewperiut/testmod.  
+Also view API javadocs / documentation
 
 ## Implementation
 
 Implement "Accessory" inside your item class
 (with STAPI, will work with any API/mixins)
+
 ```java
 public class ExampleRing extends TemplateItemBase implements Accessory
 {
@@ -53,9 +56,9 @@ public class ExampleRing extends TemplateItemBase implements Accessory
     // Rendering
     private YourCustomRenderer renderer;
     @Override
-    public Optional<AccessoryRenderer> getRenderer()
+    public @Nullable AccessoryRenderer getRenderer()
     {
-        return Optional.ofNullable(renderer);
+        return renderer;
     }
 }
 ```
@@ -77,18 +80,20 @@ This provides the slot information to see if it is compatible with it.
 `String[] getAccessoryTypes(ItemInstance item)`
 
 This is called in the tick function of the associated player, passing the item that is being ticked on which player.  
-`void tickWhileWorn(PlayerBase player, ItemInstance item)`  
+`void tickWhileWorn(PlayerBase player, ItemInstance item)`
 
 This is called when the inventory relating to the accessory has an item added/removed.  
 The function provides what player added/removed an accessory as well as the item that was added/removed.  
 `void onAccessoryAdded(PlayerBase player, ItemInstance accessory)`  
-`void onAccessoryRemoved(PlayerBase player, ItemInstance accessory)`  
+`void onAccessoryRemoved(PlayerBase player, ItemInstance accessory)`
 
 Provide rendering functions with getRenderer:  
 `public AccessoryRenderer getRenderer()`
 
 ## Creating Accessory Renderer
+
 example:
+
 ```java
 public class CustomRenderer implements AccessoryRenderer {
     void renderThirdPerson(PlayerBase player, PlayerRenderer renderer, ItemInstance itemInstance, double x, double y, double z, float h, float v)
@@ -102,7 +107,8 @@ public class CustomRenderer implements AccessoryRenderer {
    }
 }
 ```
-Similar usage as EntityRenderers  
+
+Similar usage as EntityRenderers
 
 Built-in AccessoryRenderers:  
 `CapeRenderer`  

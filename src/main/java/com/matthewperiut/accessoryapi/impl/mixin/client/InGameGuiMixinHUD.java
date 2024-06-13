@@ -26,12 +26,16 @@ import java.util.List;
 
 @Mixin(InGame.class)
 public class InGameGuiMixinHUD extends DrawableHelper {
-    @Shadow private Minecraft minecraft;
+    @Shadow
+    private Minecraft minecraft;
 
-    @Unique boolean pumpkin = false;
+    @Unique
+    boolean pumpkin = false;
 
-    @Unique Living boss = null;
-    @Unique int frames = 0;
+    @Unique
+    Living boss = null;
+    @Unique
+    int frames = 0;
 
     @Inject(method = "renderHud", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerInventory;getArmourItem(I)Lnet/minecraft/item/ItemInstance;"))
     public void renderHud(float bl, boolean i, int j, int par4, CallbackInfo ci) {
@@ -48,22 +52,17 @@ public class InGameGuiMixinHUD extends DrawableHelper {
             List<Living> entities = player.level.getEntities(Living.class, Box.create(player.x - 20, player.y - 20, player.z - 20, player.x + 20, player.y + 20, player.z + 20));
 
             Vec3f start = Vec3f.from(player.x, player.y, player.z);
-            for (Living entity : entities)
-            {
-                if (entity instanceof BossLivingEntity check)
-                {
+            for (Living entity : entities) {
+                if (entity instanceof BossLivingEntity check) {
                     if (check.isBoss()) {
                         if (entity.equals(player))
                             continue;
 
                         Vec3f end = Vec3f.from(entity.x, entity.y, entity.z);
                         HitResult hitResult = player.level.method_161(start, end, false);
-                        if (hitResult == null)
-                        {
+                        if (hitResult == null) {
                             bosses.add(entity);
-                        }
-                        else if (hitResult.type == HitType.field_790)
-                        {
+                        } else if (hitResult.type == HitType.field_790) {
                             bosses.add(entity);
                         }
                     }
@@ -75,8 +74,7 @@ public class InGameGuiMixinHUD extends DrawableHelper {
             }
             if (bosses.size() == 1) {
                 boss = bosses.get(0);
-            }
-            else if (bosses.size() > 1) {
+            } else if (bosses.size() > 1) {
                 Living closest = bosses.get(0);
                 for (Living b : bosses) {
                     if (player.distanceTo(b) > closest.distanceTo(player)) {
@@ -96,19 +94,17 @@ public class InGameGuiMixinHUD extends DrawableHelper {
             GL11.glColor3f(1.0f, 1.0f, 1.0f);
             GL11.glDisable(3042);
             instance.blit(width / 2 - 128, 12, 0, 16, 256, 32);
-            final int w = (int)(((BossLivingEntity) boss).getHP() / (float)((BossLivingEntity) boss).getMaxHP() * 256.0f);
+            final int w = (int) (((BossLivingEntity) boss).getHP() / (float) ((BossLivingEntity) boss).getMaxHP() * 256.0f);
             instance.blit(width / 2 - 128, 12, 0, 0, w, 16);
 
-            if (!boss.isAlive())
-            {
+            if (!boss.isAlive()) {
                 ((BossLivingEntity) boss).setBoss(false);
                 boss = null;
             }
         }
 
 
-        if (pumpkin)
-        {
+        if (pumpkin) {
             pumpkin = false;
             return;
         }
@@ -117,9 +113,8 @@ public class InGameGuiMixinHUD extends DrawableHelper {
             if (item == null)
                 continue;
             if (item.getType() instanceof HasCustomRenderer customRenderer) {
-                if (customRenderer.getRenderer().isPresent())
-                {
-                    customRenderer.getRenderer().get().renderHUD(minecraft.player, item, minecraft, scaler, width, height);
+                if (customRenderer.getRenderer() != null) {
+                    customRenderer.getRenderer().renderHUD(minecraft.player, item, minecraft, scaler, width, height);
                 }
             }
         }
@@ -127,8 +122,7 @@ public class InGameGuiMixinHUD extends DrawableHelper {
     }
 
     @Inject(method = "renderHud", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/InGame;renderPumpkinOverlay(II)V"))
-    public void setPumpkin(float bl, boolean i, int j, int par4, CallbackInfo ci)
-    {
+    public void setPumpkin(float bl, boolean i, int j, int par4, CallbackInfo ci) {
         pumpkin = true;
     }
 }

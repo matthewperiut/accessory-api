@@ -32,8 +32,7 @@ public abstract class PlayerRendererMixin extends EntityRenderer {
     }
 
     @Inject(method = "render(Lnet/minecraft/entity/EntityBase;DDDFF)V", at = @At(value = "HEAD"), cancellable = true)
-    private void thirdPersonRenderHEAD(EntityBase d, double x, double y, double z, float h, float v, CallbackInfo ci)
-    {
+    private void thirdPersonRenderHEAD(EntityBase d, double x, double y, double z, float h, float v, CallbackInfo ci) {
         if (((PlayerVisibility) d).isInvisible())
             ci.cancel();
     }
@@ -55,9 +54,11 @@ public abstract class PlayerRendererMixin extends EntityRenderer {
                 ItemInstance item = player.inventory.getArmourItem(i);
                 if (item == null) continue;
                 if (item.getType() instanceof HasCustomRenderer itemWithRenderer) {
-                    itemWithRenderer.getRenderer().ifPresentOrElse(
-                            itemRenderer -> itemRenderer.renderThirdPerson(player, renderer, item, x, y, z, h, v),
-                            itemWithRenderer::constructRenderer);
+                    if (itemWithRenderer.getRenderer() == null) {
+                        itemWithRenderer.constructRenderer();
+                    } else {
+                        itemWithRenderer.getRenderer().renderThirdPerson(player, renderer, item, x, y, z, h, v);
+                    }
                 }
             }
         } catch (Exception ex) {
@@ -88,9 +89,11 @@ public abstract class PlayerRendererMixin extends EntityRenderer {
         for (ItemInstance item : AccessoryAccess.getAccessories(player)) {
             if (item == null) continue;
             if (item.getType() instanceof HasCustomRenderer itemWithRenderer) {
-                itemWithRenderer.getRenderer().ifPresentOrElse(
-                        itemRenderer -> itemRenderer.renderFirstPerson(player, (PlayerRenderer) (Object) this, item),
-                        itemWithRenderer::constructRenderer);
+                if (itemWithRenderer.getRenderer() == null) {
+                    itemWithRenderer.constructRenderer();
+                } else {
+                    itemWithRenderer.getRenderer().renderFirstPerson(player, (PlayerRenderer) (Object) this, item);
+                }
             }
         }
     }

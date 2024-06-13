@@ -6,19 +6,17 @@ import net.fabricmc.api.ModInitializer;
 public class TestMod implements ModInitializer {
     @Override
     public void onInitialize() {
-        AccessoryRegister.add("pendant");
-        AccessoryRegister.add("cape");
-        AccessoryRegister.add("shield");
+        AccessoryRegister.requestSlot("pendant", 1);
+        AccessoryRegister.requestSlot("cape", 1);
+        AccessoryRegister.requestSlot("shield", 1);
         AccessoryRegister.add("misc", 0, 3);
         AccessoryRegister.add("misc", 1, 3);
-        AccessoryRegister.add("ring");
-        AccessoryRegister.add("ring");
-        AccessoryRegister.add("gloves");
+        AccessoryRegister.requestSlot("ring", 2);
+        AccessoryRegister.requestSlot("gloves", 1);
 
         for (int i = 0; i < 4; i++)
             AccessoryRegister.add("slime", "assets/testmod/textures/slot/extra.png", 0, 0);
 
-        for (int i = 0; i < 8; i++)
-            AccessoryRegister.add("nope");
+        AccessoryRegister.requestSlot("none", 8);
     }
 }

@@ -22,6 +22,15 @@ public class AccessoryRegister {
         return defaultTextureMap.getOrDefault(accessoryType, -1);
     }
 
+    public static void requestSlot(String accessoryType, int count) {
+        int existingCount = getNumberOfType(accessoryType);
+        if (existingCount < count) {
+            for (int i = existingCount; i < count; i++) {
+                add(accessoryType);
+            }
+        }
+    }
+
     public static void add(String accessoryType) {
         int d = getDefaultTextureId(accessoryType);
         if (d != -1)
