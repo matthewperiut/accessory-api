@@ -1,6 +1,6 @@
 package com.matthewperiut.accessoryapi.command;
 
-import com.matthewperiut.spc.api.CommandRegistry;
+import com.matthewperiut.retrocommands.api.CommandRegistry;
 
 public class AccessoryAPICommands {
     public static void addCommands() {

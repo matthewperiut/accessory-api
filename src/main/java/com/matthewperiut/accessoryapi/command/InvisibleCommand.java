@@ -1,8 +1,8 @@
 package com.matthewperiut.accessoryapi.command;
 
 import com.matthewperiut.accessoryapi.api.PlayerVisibility;
-import com.matthewperiut.spc.api.Command;
-import com.matthewperiut.spc.util.SharedCommandSource;
+import com.matthewperiut.retrocommands.api.Command;
+import com.matthewperiut.retrocommands.util.SharedCommandSource;
 import net.minecraft.entity.player.PlayerBase;
 
 public class InvisibleCommand implements Command {

@@ -1,8 +1,8 @@
 package com.matthewperiut.accessoryapi.command;
 
 import com.matthewperiut.accessoryapi.api.BossLivingEntity;
-import com.matthewperiut.spc.api.Command;
-import com.matthewperiut.spc.util.SharedCommandSource;
+import com.matthewperiut.retrocommands.api.Command;
+import com.matthewperiut.retrocommands.util.SharedCommandSource;
 import net.minecraft.entity.EntityBase;
 import net.minecraft.entity.Living;
 import net.minecraft.entity.player.PlayerBase;
