@@ -1,7 +1,7 @@
 package com.matthewperiut.accessoryapi.api;
 
-import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.item.ItemInstance;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 
 public interface Accessory extends TickableInArmorSlot {
     /**
@@ -10,11 +10,11 @@ public interface Accessory extends TickableInArmorSlot {
      * @param item The instance being accessed specifically.
      * @return Accessory Type String array
      */
-    String[] getAccessoryTypes(ItemInstance item);
+    String[] getAccessoryTypes(ItemStack item);
 
-    default void onAccessoryAdded(PlayerBase player, ItemInstance accessory) {
+    default void onAccessoryAdded(PlayerEntity player, ItemStack accessory) {
     }
 
-    default void onAccessoryRemoved(PlayerBase player, ItemInstance accessory) {
+    default void onAccessoryRemoved(PlayerEntity player, ItemStack accessory) {
     }
 }

@@ -3,12 +3,12 @@ package com.matthewperiut.accessoryapi.command;
 import com.matthewperiut.accessoryapi.api.PlayerVisibility;
 import com.matthewperiut.retrocommands.api.Command;
 import com.matthewperiut.retrocommands.util.SharedCommandSource;
-import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.entity.player.PlayerEntity;
 
 public class InvisibleCommand implements Command {
     @Override
     public void command(SharedCommandSource commandSource, String[] parameters) {
-        PlayerBase player = commandSource.getPlayer();
+        PlayerEntity player = commandSource.getPlayer();
         if (player == null)
         {
             commandSource.sendFeedback("This command can only be run by a player");

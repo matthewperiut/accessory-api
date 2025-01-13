@@ -1,7 +1,7 @@
 package com.matthewperiut.testmod.accessory;
 
 import com.matthewperiut.accessoryapi.api.Accessory;
-import net.minecraft.item.ItemInstance;
+import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.template.item.TemplateItem;
 import net.modificationstation.stationapi.api.util.Identifier;
 
@@ -11,13 +11,13 @@ public class TestAccessory extends TemplateItem implements Accessory {
     public TestAccessory(Identifier identifier, String... types) {
         super(identifier);
         setTranslationKey(identifier);
-        setMaxStackSize(1);
-        setDurability(100);
+        setMaxCount(1);
+        setMaxDamage(100);
         this.types = types;
     }
 
     @Override
-    public String[] getAccessoryTypes(ItemInstance item) {
+    public String[] getAccessoryTypes(ItemStack item) {
         return types;
     }
 }

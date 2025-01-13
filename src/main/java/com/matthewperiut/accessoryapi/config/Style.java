@@ -18,7 +18,7 @@ public enum Style {
     }
 
     public String getTranslatedName() {
-        return TranslationStorage.getInstance().translate(translationKey);
+        return TranslationStorage.getInstance().get(translationKey);
     }
 
     public Style nextStyle() {

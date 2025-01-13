@@ -5,29 +5,29 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
-import net.minecraft.container.slot.Slot;
-import net.minecraft.inventory.InventoryBase;
-import net.minecraft.item.ItemInstance;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.screen.slot.Slot;
 
 public class AccessorySlot extends Slot {
     // delay while pressing accessory slot button to prevent taking / inserting item
     private static final long MILLISECONDS_DELAY = 50;
     String type;
 
-    public AccessorySlot(InventoryBase arg, int i, int j, int k, String type) {
+    public AccessorySlot(Inventory arg, int i, int j, int k, String type) {
         super(arg, i, j, k);
         this.type = type;
     }
 
-    public int getMaxStackCount() {
+    public int getMaxItemCount() {
         return 1;
     }
 
-    public boolean canInsert(ItemInstance item) {
+    public boolean canInsert(ItemStack item) {
         if (cancelSlotButtonInterference())
             return false;
 
-        if (item.getType() instanceof Accessory accessory) {
+        if (item.getItem() instanceof Accessory accessory) {
             for (String type : accessory.getAccessoryTypes(item)) {
                 if (type.equals(this.type)) {
                     return true;
@@ -38,10 +38,10 @@ public class AccessorySlot extends Slot {
     }
 
     @Override
-    public ItemInstance takeItem(int i) {
+    public ItemStack takeStack(int i) {
         if (cancelSlotButtonInterference())
             return null;
-        return super.takeItem(i);
+        return super.takeStack(i);
     }
 
     private boolean cancelSlotButtonInterference() {

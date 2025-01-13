@@ -3,13 +3,13 @@ package com.matthewperiut.accessoryapi.impl.mixin.client;
 import com.matthewperiut.accessoryapi.AccessoryAPI;
 import com.matthewperiut.accessoryapi.impl.slot.AccessoryButton;
 import com.matthewperiut.accessoryapi.impl.slot.AccessorySlotStorage;
-import net.minecraft.client.gui.screen.container.ContainerBase;
-import net.minecraft.client.gui.screen.container.PlayerInventory;
-import net.minecraft.client.gui.widgets.Button;
-import net.minecraft.client.render.TextRenderer;
-import net.minecraft.container.slot.Slot;
-import net.minecraft.entity.player.AbstractClientPlayer;
-import net.minecraft.entity.player.PlayerContainer;
+import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
+import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.entity.player.ClientPlayerEntity;
+import net.minecraft.screen.PlayerScreenHandler;
+import net.minecraft.screen.slot.Slot;
 import org.lwjgl.opengl.GL11;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,8 +23,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static com.matthewperiut.accessoryapi.impl.slot.AccessoryInventoryPlacement.resetPlayerInv;
 import static com.matthewperiut.accessoryapi.impl.slot.AccessorySlotStorage.*;
 
-@Mixin(value = PlayerInventory.class)
-public abstract class PlayerInventoryGuiMixin extends ContainerBase {
+@Mixin(value = InventoryScreen.class)
+public abstract class PlayerInventoryGuiMixin extends HandledScreen {
     // uses the aether-style armour slot by having the armour slots on the right of the player rendering
     @Unique
     private static final int AETHER_U = 0, AETHER_V = 0, AETHER_W = 154, AETHER_H = 72;
@@ -45,23 +45,23 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase {
     int wpx = 0;
     @Shadow
     private float mouseX;
-    public PlayerInventoryGuiMixin(net.minecraft.container.ContainerBase arg) {
+    public PlayerInventoryGuiMixin(net.minecraft.screen.ScreenHandler arg) {
         super(arg);
     }
 
     @Inject(method = "init", at = @At("TAIL"))
     public void init(CallbackInfo ci) {
-        int startX = (width - containerWidth) / 2;
-        int startY = (height - containerHeight) / 2;
+        int startX = (width - backgroundWidth) / 2;
+        int startY = (height - backgroundHeight) / 2;
 
         if (slotOrder.size() > 8) buttons.add(new AccessoryButton(250, startX + 115, startY + 6));
     }
 
     @Inject(method = "buttonClicked", at = @At("TAIL"))
-    protected void buttonClicked(Button button, CallbackInfo ci) {
+    protected void buttonClicked(ButtonWidget button, CallbackInfo ci) {
         if (button.id == 250) {
-            int startX = (width - containerWidth) / 2;
-            int startY = (height - containerHeight) / 2;
+            int startX = (width - backgroundWidth) / 2;
+            int startY = (height - backgroundHeight) / 2;
             extended = !extended;
             ((AccessoryButton) button).goBack = extended;
 
@@ -72,12 +72,12 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase {
 
                 button.x = startX + 165;
                 button.y = startY + 1;
-                showOverflowSlots((PlayerContainer) container);
+                showOverflowSlots((PlayerScreenHandler) container);
             } else {
                 resetPlayerInv(container);
                 button.x = startX + 115;
                 button.y = startY + 6;
-                hideOverflowSlots((PlayerContainer) container);
+                hideOverflowSlots((PlayerScreenHandler) container);
             }
 
 
@@ -85,7 +85,7 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase {
         }
     }
 
-    @Inject(method = "renderContainerBackground", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glEnable(I)V", ordinal = 0))
+    @Inject(method = "drawBackground", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glEnable(I)V", ordinal = 0))
     public void bindAetherPlayerGuiTexture(float par1, CallbackInfo ci) {
         if (AccessoryAPI.noSlotsAdded)
             return;
@@ -93,13 +93,13 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase {
         int var2 = minecraft.textureManager.getTextureId("/assets/accessoryapi/inventory.png");
         minecraft.textureManager.bindTexture(var2);
 
-        int startX = (width - containerWidth) / 2;
-        int startY = (height - containerHeight) / 2;
+        int startX = (width - backgroundWidth) / 2;
+        int startY = (height - backgroundHeight) / 2;
         if (AccessoryAPI.config.aetherStyleArmor) {
             //blit(startX + texOffsetX, startY + texOffsetY, texOffsetX, texOffsetY, topSizeX, topSizeY);
-            blit(startX + CORNER_INSET, startY + CORNER_INSET, AETHER_U, AETHER_V, AETHER_W, AETHER_H);
+            drawTexture(startX + CORNER_INSET, startY + CORNER_INSET, AETHER_U, AETHER_V, AETHER_W, AETHER_H);
         } else {
-            blit(startX + CORNER_INSET + REGULAR_U, startY + CORNER_INSET + REGULAR_V, REGULAR_U, REGULAR_V, REGULAR_W, REGULAR_H);
+            drawTexture(startX + CORNER_INSET + REGULAR_U, startY + CORNER_INSET + REGULAR_V, REGULAR_U, REGULAR_V, REGULAR_W, REGULAR_H);
         }
 
         int craft_centering_shift = 0;
@@ -109,7 +109,7 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase {
             craft_centering_shift -= 9;
 
         if (!extended)
-            blit(startX + CRAFT_X + CORNER_INSET + craft_centering_shift, startY + CORNER_INSET, CRAFT_U, CRAFT_V, CRAFT_W, CRAFT_H);
+            drawTexture(startX + CRAFT_X + CORNER_INSET + craft_centering_shift, startY + CORNER_INSET, CRAFT_U, CRAFT_V, CRAFT_W, CRAFT_H);
 
         // blank tile (first inventory slot, bottom left)
 
@@ -121,24 +121,24 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase {
             Slot slot = (Slot) container.slots.get(i);
             AccessorySlotStorage.PreservedSlot info = slotOrder.get(i - start);
             minecraft.textureManager.bindTexture(var2);
-            blit(startX + slot.x - 1, startY + slot.y - 1, SLOT_U, SLOT_V, SLOT_W, SLOT_H);
-            if (!slot.hasItem()) {
+            drawTexture(startX + slot.x - 1, startY + slot.y - 1, SLOT_U, SLOT_V, SLOT_W, SLOT_H);
+            if (!slot.hasStack()) {
                 if (!info.texture.isEmpty()) {
                     int slot_tex = minecraft.textureManager.getTextureId(info.texture);
                     minecraft.textureManager.bindTexture(slot_tex);
-                    blit(startX + slot.x, startY + slot.y, info.tx, info.ty, 16, 16);
+                    drawTexture(startX + slot.x, startY + slot.y, info.tx, info.ty, 16, 16);
                 }
             }
         }
     }
 
-    @Redirect(method = "renderContainerBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/container/PlayerInventory;blit(IIIIII)V"))
-    public void blitButCaptureWindowPos(PlayerInventory instance, int i, int j, int k, int l, int m, int n) {
-        instance.blit(i, j, k, l, m, n);
+    @Redirect(method = "drawBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/InventoryScreen;drawTexture(IIIIII)V"))
+    public void blitButCaptureWindowPos(InventoryScreen instance, int i, int j, int k, int l, int m, int n) {
+        instance.drawTexture(i, j, k, l, m, n);
         wpx = i; // window pos x
     }
 
-    @Redirect(method = "renderContainerBackground", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glTranslatef(FFF)V"))
+    @Redirect(method = "drawBackground", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glTranslatef(FFF)V"))
     public void translateAetherPlayerModel(float x, float y, float z) {
         if (!AccessoryAPI.config.aetherStyleArmor || AccessoryAPI.noSlotsAdded) {
             GL11.glTranslatef(x, y, z);
@@ -150,8 +150,8 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase {
         }
     }
 
-    @Redirect(method = "renderContainerBackground", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/player/AbstractClientPlayer;yaw:F", opcode = Opcodes.PUTFIELD, ordinal = 0))
-    private void injected(AbstractClientPlayer instance, float value) {
+    @Redirect(method = "drawBackground", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/player/ClientPlayerEntity;yaw:F", opcode = Opcodes.PUTFIELD, ordinal = 0))
+    private void injected(ClientPlayerEntity instance, float value) {
         float newValue;
         if (!AccessoryAPI.config.aetherStyleArmor || AccessoryAPI.noSlotsAdded) {
             newValue = value;
@@ -162,7 +162,7 @@ public abstract class PlayerInventoryGuiMixin extends ContainerBase {
         instance.yaw = newValue;
     }
 
-    @Redirect(method = "renderForeground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/TextRenderer;drawText(Ljava/lang/String;III)V", ordinal = 0))
+    @Redirect(method = "drawForeground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/TextRenderer;draw(Ljava/lang/String;III)V", ordinal = 0))
     // net.minecraft.client.gui.screen.container.ContainerBase
     public void renderForeground(TextRenderer instance, String i, int j, int k, int color) {
 

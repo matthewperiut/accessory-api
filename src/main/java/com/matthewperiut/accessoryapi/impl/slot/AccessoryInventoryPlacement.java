@@ -1,7 +1,7 @@
 package com.matthewperiut.accessoryapi.impl.slot;
 
 import com.matthewperiut.accessoryapi.AccessoryAPI;
-import net.minecraft.entity.player.PlayerContainer;
+import net.minecraft.screen.PlayerScreenHandler;
 
 import static com.matthewperiut.accessoryapi.impl.slot.AccessorySlotStorage.hideOverflowSlots;
 import static com.matthewperiut.accessoryapi.impl.slot.AccessorySlotStorage.slotInfo;
@@ -17,11 +17,11 @@ public class AccessoryInventoryPlacement {
         return craft_centering_shift;
     }
 
-    public static void resetPlayerInv(net.minecraft.container.ContainerBase container) {
+    public static void resetPlayerInv(net.minecraft.screen.ScreenHandler container) {
         if (AccessoryAPI.noSlotsAdded)
             return;
 
-        if (container instanceof PlayerContainer pc) {
+        if (container instanceof PlayerScreenHandler pc) {
             int crafting_offset_x = getCraftingOffset();
 
             // crafting result pos ( for aether )

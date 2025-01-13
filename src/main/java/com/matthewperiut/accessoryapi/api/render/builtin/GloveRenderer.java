@@ -1,33 +1,33 @@
 package com.matthewperiut.accessoryapi.api.render.builtin;
 
 import com.matthewperiut.accessoryapi.api.render.RenderingHelper;
-import net.minecraft.client.render.entity.PlayerRenderer;
-import net.minecraft.client.render.entity.model.Biped;
-import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.item.ItemInstance;
+import net.minecraft.client.render.entity.PlayerEntityRenderer;
+import net.minecraft.client.render.entity.model.BipedEntityModel;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 
 public class GloveRenderer extends ConfigurableRenderer {
-    private static final Biped model = new Biped(0.6f);
+    private static final BipedEntityModel model = new BipedEntityModel(0.6f);
 
     public GloveRenderer(String texture) {
         super(texture);
     }
 
     @Override
-    public void renderThirdPerson(PlayerBase player, PlayerRenderer renderer, ItemInstance itemInstance, double x, double y, double z, float h, float v) {
+    public void renderThirdPerson(PlayerEntity player, PlayerEntityRenderer renderer, ItemStack itemStack, double x, double y, double z, float h, float v) {
         RenderingHelper.beforeBiped(player, renderer, model, x, y, z, h, v);
         bindTextureAndApplyColors(player.getBrightnessAtEyes(h));
-        model.field_623.method_1815(0.0625f);
-        model.field_622.method_1815(0.0625f);
+        model.leftArm.render(0.0625f);
+        model.rightArm.render(0.0625f);
         RenderingHelper.afterBiped(model);
     }
 
     @Override
-    public void renderFirstPerson(PlayerBase player, PlayerRenderer renderer, ItemInstance itemInstance) {
+    public void renderFirstPerson(PlayerEntity player, PlayerEntityRenderer renderer, ItemStack itemStack) {
         bindTextureAndApplyColors(player.getBrightnessAtEyes(1.0f));
 
         model.handSwingProgress = 0.0f;
         model.setAngles(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0625f);
-        model.field_622.method_1815(0.0625f);
+        model.rightArm.render(0.0625f);
     }
 }

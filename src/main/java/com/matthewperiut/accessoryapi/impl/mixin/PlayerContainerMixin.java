@@ -3,10 +3,10 @@ package com.matthewperiut.accessoryapi.impl.mixin;
 import com.matthewperiut.accessoryapi.AccessoryAPI;
 import com.matthewperiut.accessoryapi.impl.slot.AccessorySlot;
 import com.matthewperiut.accessoryapi.impl.slot.AccessorySlotStorage;
-import net.minecraft.container.ContainerBase;
-import net.minecraft.container.slot.Slot;
-import net.minecraft.entity.player.PlayerContainer;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.screen.PlayerScreenHandler;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.slot.Slot;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,14 +18,14 @@ import static com.matthewperiut.accessoryapi.impl.slot.AccessoryInventoryPlaceme
 import static com.matthewperiut.accessoryapi.impl.slot.AccessorySlotStorage.hideOverflowSlots;
 import static com.matthewperiut.accessoryapi.impl.slot.AccessorySlotStorage.slotOrder;
 
-@Mixin(PlayerContainer.class)
-public abstract class PlayerContainerMixin extends ContainerBase {
+@Mixin(PlayerScreenHandler.class)
+public abstract class PlayerContainerMixin extends ScreenHandler {
     @Unique
     private static final int craft_centering_shift = getCraftingOffset();
     @Unique
     int slotCounter = 0;
 
-    @ModifyArg(method = "<init>(Lnet/minecraft/entity/player/PlayerInventory;Z)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerContainer;addSlot(Lnet/minecraft/container/slot/Slot;)V"), index = 0)
+    @ModifyArg(method = "<init>(Lnet/minecraft/entity/player/PlayerInventory;Z)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/screen/PlayerScreenHandler;addSlot(Lnet/minecraft/screen/slot/Slot;)V"), index = 0)
     private Slot changeTopSlots(Slot par1) {
         AccessorySlotStorage.initializeCustomAccessoryPositions();
         if (AccessoryAPI.noSlotsAdded)
@@ -67,6 +67,6 @@ public abstract class PlayerContainerMixin extends ContainerBase {
             slotnum++;
         }
 
-        hideOverflowSlots((PlayerContainer) (Object) this);
+        hideOverflowSlots((PlayerScreenHandler) (Object) this);
     }
 }

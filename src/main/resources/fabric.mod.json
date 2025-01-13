@@ -22,10 +22,7 @@
     "client": [
       "com.matthewperiut.accessoryapi.AccessoryAPIClient"
     ],
-    "gcapi:factory_provider": [
-      "com.matthewperiut.accessoryapi.config.AccessoryFactoryProvider"
-    ],
-    "gcapi": [
+    "gcapi3": [
       "com.matthewperiut.accessoryapi.AccessoryAPI"
     ]
   },

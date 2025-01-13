@@ -2,10 +2,10 @@ package com.matthewperiut.accessoryapi.impl.mixin;
 
 import com.matthewperiut.accessoryapi.api.BossLivingEntity;
 import com.matthewperiut.accessoryapi.api.PlayerExtraHP;
-import net.minecraft.entity.EntityBase;
-import net.minecraft.entity.Living;
-import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.level.Level;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -13,20 +13,20 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = Living.class, priority = 900)
-abstract public class LivingBaseMixin extends EntityBase implements BossLivingEntity
+@Mixin(value = LivingEntity.class, priority = 900)
+abstract public class LivingBaseMixin extends Entity implements BossLivingEntity
 {
-    @Shadow public int field_1009;
+    @Shadow public int maxHealth;
 
     @Shadow public int health;
     @Unique int maxHP = -1;
     @Unique String parsedBossName = "";
 
-    private LivingBaseMixin(Level arg) {
+    private LivingBaseMixin(World arg) {
         super(arg);
     }
 
-    @Inject(method = "addHealth", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "heal", at = @At("HEAD"), cancellable = true)
     public void addHealth(int health, CallbackInfo ci)
     {
         int extraHP = 0;
@@ -41,7 +41,7 @@ abstract public class LivingBaseMixin extends EntityBase implements BossLivingEn
                 this.health = 20 + extraHP;
             }
 
-            this.field_1613 = this.field_1009 / 2;
+            this.hearts = this.maxHealth / 2;
         }
 
         ci.cancel();
@@ -51,8 +51,8 @@ abstract public class LivingBaseMixin extends EntityBase implements BossLivingEn
     public void setBoss(boolean boss)
     {
         // setFlag
-        method_1326(6, boss);
-        dataTracker.setInt(30, health);
+        setFlag(6, boss);
+        dataTracker.set(30, health);
         prevHP = health;
     }
 
@@ -60,7 +60,7 @@ abstract public class LivingBaseMixin extends EntityBase implements BossLivingEn
     public boolean isBoss()
     {
         // isFlagSet
-        return method_1345(6);
+        return getFlag(6);
     }
 
     @Override
@@ -87,11 +87,11 @@ abstract public class LivingBaseMixin extends EntityBase implements BossLivingEn
     {
         if (parsedBossName.isEmpty())
         {
-            if (((Object) this) instanceof PlayerBase player) {
+            if (((Object) this) instanceof PlayerEntity player) {
                 parsedBossName = player.name + " ";
             }
             else {
-                String input = getStringId();
+                String input = getRegistryEntry();
                 StringBuilder output = new StringBuilder();
                 for (int i = 0; i < input.length(); i++)
                 {
@@ -126,7 +126,7 @@ abstract public class LivingBaseMixin extends EntityBase implements BossLivingEn
                 prevHP = health;
             } else {
                 if (health != prevHP) {
-                    dataTracker.setInt(30, health);
+                    dataTracker.set(30, health);
                     prevHP = health;
                 }
             }

@@ -2,8 +2,8 @@ package com.matthewperiut.testmod.accessory;
 
 import com.matthewperiut.testmod.client.RainbowCapeRenderer;
 import com.matthewperiut.testmod.client.RainbowGloveRenderer;
-import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.item.ItemInstance;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.util.Identifier;
 
 public class RainbowAccessory extends TestAccessoryWithRenderer {
@@ -12,15 +12,15 @@ public class RainbowAccessory extends TestAccessoryWithRenderer {
     }
 
     @Override
-    public ItemInstance tickWhileWorn(PlayerBase player, ItemInstance itemInstance) {
-        var hue = itemInstance.getStationNbt().getFloat("hue");
+    public ItemStack tickWhileWorn(PlayerEntity player, ItemStack itemStack) {
+        var hue = itemStack.getStationNbt().getFloat("hue");
         if (hue >= 1) {
             hue = 0;
         } else {
             hue += 1f / 360;
         }
-        itemInstance.getStationNbt().put("hue", (Float) hue);
-        return super.tickWhileWorn(player, itemInstance);
+        itemStack.getStationNbt().putFloat("hue", (Float) hue);
+        return super.tickWhileWorn(player, itemStack);
     }
 
     @Override
