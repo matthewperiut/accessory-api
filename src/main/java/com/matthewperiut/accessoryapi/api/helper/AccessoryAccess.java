@@ -2,12 +2,11 @@ package com.matthewperiut.accessoryapi.api.helper;
 
 import com.matthewperiut.accessoryapi.AccessoryAPI;
 import com.matthewperiut.accessoryapi.api.Accessory;
-import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.item.ItemBase;
-import net.minecraft.item.ItemInstance;
-
 import java.util.ArrayList;
 import java.util.Arrays;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 public class AccessoryAccess {
 
@@ -15,8 +14,8 @@ public class AccessoryAccess {
      * @param player The player you are checking.
      * @return The full array of the player's accessories.
      */
-    public static ItemInstance[] getAccessories(PlayerBase player) {
-        return Arrays.copyOfRange(player.inventory.armour, AccessoryAPI.config.armorOffset, player.inventory.armour.length);
+    public static ItemStack[] getAccessories(PlayerEntity player) {
+        return Arrays.copyOfRange(player.inventory.armor, AccessoryAPI.config.armorOffset, player.inventory.armor.length);
     }
 
     /**
@@ -24,7 +23,7 @@ public class AccessoryAccess {
      * @param slot   The index of the accessory inventory you want to check, DO NOT offset for armour slots.
      * @return The accessory in the specified slot.
      */
-    public static ItemInstance getAccessory(PlayerBase player, int slot) {
+    public static ItemStack getAccessory(PlayerEntity player, int slot) {
         return getAccessories(player)[slot];
     }
 
@@ -33,8 +32,8 @@ public class AccessoryAccess {
      * @param slot   The slot you are placing the accessory in.
      * @param item   The item you would like to place.
      */
-    public static void setAccessory(PlayerBase player, int slot, ItemInstance item) {
-        player.inventory.armour[slot + AccessoryAPI.config.armorOffset] = item;
+    public static void setAccessory(PlayerEntity player, int slot, ItemStack item) {
+        player.inventory.armor[slot + AccessoryAPI.config.armorOffset] = item;
     }
 
     /**
@@ -42,16 +41,16 @@ public class AccessoryAccess {
      * @param type   The type of accessory you are looking for.
      * @return The array of the player's accessories that match the type.
      */
-    public static ItemInstance[] getAccessories(PlayerBase player, String type) {
-        var foundItems = new ArrayList<ItemInstance>();
-        for (ItemInstance item : getAccessories(player)) {
-            if (item != null && item.getType() instanceof Accessory accessory) {
+    public static ItemStack[] getAccessories(PlayerEntity player, String type) {
+        var foundItems = new ArrayList<ItemStack>();
+        for (ItemStack item : getAccessories(player)) {
+            if (item != null && item.getItem() instanceof Accessory accessory) {
                 if (Arrays.asList(accessory.getAccessoryTypes(item)).contains(type)) {
                     foundItems.add(item);
                 }
             }
         }
-        return foundItems.toArray(ItemInstance[]::new);
+        return foundItems.toArray(ItemStack[]::new);
     }
 
     /*
@@ -64,9 +63,9 @@ public class AccessoryAccess {
      * @param itemType The item you are looking for.
      * @return Whether the player has any items that match the provided item type.
      */
-    public static boolean hasAccessory(PlayerBase player, ItemBase itemType) {
-        for (ItemInstance item : getAccessories(player)) {
-            if (item != null && item.getType() == itemType) {
+    public static boolean hasAccessory(PlayerEntity player, Item itemType) {
+        for (ItemStack item : getAccessories(player)) {
+            if (item != null && item.getItem() == itemType) {
                 return true;
             }
         }
@@ -78,9 +77,9 @@ public class AccessoryAccess {
      * @param type   The type of accessory you are looking for.
      * @return Whether the player has any accessories in their inventory that match the type.
      */
-    public static boolean hasAnyAccessoriesOfType(PlayerBase player, String type) {
-        for (ItemInstance item : getAccessories(player)) {
-            if (item != null && item.getType() instanceof Accessory accessory) {
+    public static boolean hasAnyAccessoriesOfType(PlayerEntity player, String type) {
+        for (ItemStack item : getAccessories(player)) {
+            if (item != null && item.getItem() instanceof Accessory accessory) {
                 if (Arrays.asList(accessory.getAccessoryTypes(item)).contains(type)) {
                     return true;
                 }

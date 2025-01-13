@@ -3,19 +3,18 @@ package com.matthewperiut.accessoryapi.command;
 import com.matthewperiut.accessoryapi.api.BossLivingEntity;
 import com.matthewperiut.retrocommands.api.Command;
 import com.matthewperiut.retrocommands.util.SharedCommandSource;
-import net.minecraft.entity.EntityBase;
-import net.minecraft.entity.Living;
-import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.util.maths.Box;
-
 import java.util.List;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.Box;
 
 public class BossCommand implements Command {
     @Override
     public void command(SharedCommandSource commandSource, String[] parameters) {
-        PlayerBase player = commandSource.getPlayer();
+        PlayerEntity player = commandSource.getPlayer();
         if (player == null)
         {
             commandSource.sendFeedback("This command can only be run by a player");
@@ -29,10 +28,10 @@ public class BossCommand implements Command {
 
         String requestedBoss = parameters[1];
 
-        Living bossEntity = null;
+        LivingEntity bossEntity = null;
 
-        for (Object o : player.level.players) {
-            PlayerBase p = (PlayerBase) o;
+        for (Object o : player.world.players) {
+            PlayerEntity p = (PlayerEntity) o;
             if (p.name.equals(requestedBoss)) {
                 bossEntity = p;
             }
@@ -47,9 +46,9 @@ public class BossCommand implements Command {
             return;
         }
 
-        for (Object o : player.level.entities) {
-            if (o instanceof Living e)
-                if (e.entityId == bossId)
+        for (Object o : player.world.entities) {
+            if (o instanceof LivingEntity e)
+                if (e.id == bossId)
                     bossEntity = e;
         }
 
@@ -74,14 +73,14 @@ public class BossCommand implements Command {
     @Override
     public String[] suggestion(SharedCommandSource source, int parameterNum, String currentInput, String totalInput) {
         if (parameterNum == 1) {
-            PlayerBase p = source.getPlayer();
-            List<EntityBase> entities = p.level.getEntities(EntityBase.class, Box.create(p.x-20, p.y-20, p.z-20, p.x+20, p.y+20, p.z+20));
+            PlayerEntity p = source.getPlayer();
+            List<Entity> entities = p.world.collectEntitiesByClass(Entity.class, Box.create(p.x-20, p.y-20, p.z-20, p.x+20, p.y+20, p.z+20));
 
             // Use TreeMap to keep entries in order based on the distance
-            TreeMap<Double, EntityBase> distanceMap = new TreeMap<>();
+            TreeMap<Double, Entity> distanceMap = new TreeMap<>();
 
-            for (EntityBase entity : entities) {
-                double distance = p.distanceTo(entity);
+            for (Entity entity : entities) {
+                double distance = p.getDistance(entity);
                 // Handle potential duplicates (unlikely but possible)
                 while (distanceMap.containsKey(distance)) {
                     distance += 0.0001;  // Small offset to handle entities at almost same distance
@@ -93,10 +92,10 @@ public class BossCommand implements Command {
             // If entity is a PlayerBase, use getName() instead
             List<String> sortedEntityIDs = distanceMap.values().stream()
                     .map(entity -> {
-                        if (entity instanceof PlayerBase) {
-                            return ((PlayerBase) entity).name;
+                        if (entity instanceof PlayerEntity) {
+                            return ((PlayerEntity) entity).name;
                         } else {
-                            return Integer.toString(entity.entityId);
+                            return Integer.toString(entity.id);
                         }
                     })
                     .collect(Collectors.toList());

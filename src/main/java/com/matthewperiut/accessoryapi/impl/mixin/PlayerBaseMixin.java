@@ -3,60 +3,60 @@ package com.matthewperiut.accessoryapi.impl.mixin;
 import com.matthewperiut.accessoryapi.api.PlayerExtraHP;
 import com.matthewperiut.accessoryapi.api.PlayerVisibility;
 import com.matthewperiut.accessoryapi.api.TickableInArmorSlot;
-import net.minecraft.entity.Living;
-import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.item.ItemInstance;
-import net.minecraft.level.Level;
-import net.minecraft.util.io.CompoundTag;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(PlayerBase.class)
-public abstract class PlayerBaseMixin extends Living implements PlayerExtraHP, PlayerVisibility
+@Mixin(PlayerEntity.class)
+public abstract class PlayerBaseMixin extends LivingEntity implements PlayerExtraHP, PlayerVisibility
 {
 
-    private PlayerBaseMixin(Level arg) {
+    private PlayerBaseMixin(World arg) {
         super(arg);
     }
 
     @Inject(method = "tick", at = @At("TAIL"))
     public void tick(CallbackInfo ci) {
-        PlayerBase player = (PlayerBase) ((Object) this);
-        for (int i = 0; i < player.inventory.armour.length; i++) {
-            ItemInstance item = player.inventory.armour[i];
+        PlayerEntity player = (PlayerEntity) ((Object) this);
+        for (int i = 0; i < player.inventory.armor.length; i++) {
+            ItemStack item = player.inventory.armor[i];
             if (item != null) {
-                if (item.getType() instanceof TickableInArmorSlot tickable) {
+                if (item.getItem() instanceof TickableInArmorSlot tickable) {
                     var newItem = tickable.tickWhileWorn(player, item);
                     if (newItem != item) {
-                        player.inventory.armour[i] = newItem;
+                        player.inventory.armor[i] = newItem;
                     }
                 }
             }
         }
     }
 
-    @Inject(method = "writeCustomDataToTag", at = @At("HEAD"))
-    public void writeCustomDataToTag(CompoundTag tag, CallbackInfo ci) {
-        tag.put("ExtraHP", getExtraHP());
+    @Inject(method = "writeNbt", at = @At("HEAD"))
+    public void writeCustomDataToTag(NbtCompound tag, CallbackInfo ci) {
+        tag.putInt("ExtraHP", getExtraHP());
     }
 
-    @Inject(method = "readCustomDataFromTag", at = @At("HEAD"))
-    public void readCustomDataFromTag(CompoundTag tag, CallbackInfo ci) {
+    @Inject(method = "readNbt", at = @At("HEAD"))
+    public void readCustomDataFromTag(NbtCompound tag, CallbackInfo ci) {
 
-        if (tag.containsKey("ExtraHP")) {
+        if (tag.contains("ExtraHP")) {
             setExtraHP(tag.getInt("ExtraHP"));
         } else {
             setExtraHP(0);
         }
     }
 
-    @Inject(method = "updateDespawnCounter", at = @At("HEAD"))
+    @Inject(method = "tickMovement", at = @At("HEAD"))
     public void updateDespawnCounter(CallbackInfo ci) {
-        if (this.level.difficulty == 0 && (this.health >= 20 && this.health < 20 + getExtraHP()) && this.field_1645 % 20 * 12 == 0) {
+        if (this.world.difficulty == 0 && (this.health >= 20 && this.health < 20 + getExtraHP()) && this.age % 20 * 12 == 0) {
             this.health += 1;
-            this.field_1613 = this.field_1009 / 2;
+            this.hearts = this.maxHealth / 2;
         }
     }
 
@@ -71,7 +71,7 @@ public abstract class PlayerBaseMixin extends Living implements PlayerExtraHP, P
     }
 
     public void setExtraHP(int extraHP) {
-        this.dataTracker.setInt(31, extraHP);
+        this.dataTracker.set(31, extraHP);
         if (health > 20 + extraHP)
         {
             health = 20 + extraHP;
@@ -86,13 +86,13 @@ public abstract class PlayerBaseMixin extends Living implements PlayerExtraHP, P
     public void setInvisible(boolean invisible)
     {
         // setFlag
-        method_1326(7, invisible);
+        setFlag(7, invisible);
     }
 
     @Override
     public boolean isInvisible()
     {
         // isFlagSet
-        return method_1345(7);
+        return getFlag(7);
     }
 }

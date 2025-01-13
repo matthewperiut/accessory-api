@@ -1,12 +1,11 @@
 package com.matthewperiut.accessoryapi.impl.slot;
 
 import com.matthewperiut.accessoryapi.AccessoryAPI;
-import net.minecraft.container.slot.Slot;
-import net.minecraft.entity.player.PlayerContainer;
-import net.minecraft.util.maths.Vec2i;
-
 import java.util.ArrayList;
 import java.util.Collections;
+import net.minecraft.screen.PlayerScreenHandler;
+import net.minecraft.screen.slot.Slot;
+import net.minecraft.util.math.ChunkPos;
 
 public class AccessorySlotStorage {
     private static final int startX = 62;
@@ -27,7 +26,7 @@ public class AccessorySlotStorage {
                 boolean available = true;
                 int h = a.h;
                 int v = a.v;
-                Vec2i pos = new Vec2i(startX + h * 18, startY + v * 18);
+                ChunkPos pos = new ChunkPos(startX + h * 18, startY + v * 18);
                 for (PreservedSlot slot : taken) {
                     if (slot.pos.equals(pos)) {
                         available = false;
@@ -38,7 +37,7 @@ public class AccessorySlotStorage {
                 if (!available) {
                     for (int x = 0; x < 6; x++) {
                         available = true;
-                        pos = new Vec2i(startX + x * 18, startY + v * 18);
+                        pos = new ChunkPos(startX + x * 18, startY + v * 18);
                         for (PreservedSlot slot : taken) {
                             if (slot.pos.equals(pos)) {
                                 available = false;
@@ -77,7 +76,7 @@ public class AccessorySlotStorage {
                 if (available) {
                     if (info.size() > 0) {
                         AccessorySlotInfo accessory = info.get(0);
-                        slotOrder.add(new PreservedSlot(accessory.type, new Vec2i(startX + h * 18, startY + v * 18)));
+                        slotOrder.add(new PreservedSlot(accessory.type, new ChunkPos(startX + h * 18, startY + v * 18)));
                         slotOrder.get(slotOrder.size() - 1).texture = accessory.texture;
                         slotOrder.get(slotOrder.size() - 1).tx = accessory.tx;
                         slotOrder.get(slotOrder.size() - 1).ty = accessory.ty;
@@ -94,7 +93,7 @@ public class AccessorySlotStorage {
             AccessoryAPI.noSlotsAdded = true;
     }
 
-    public static void showOverflowSlots(PlayerContainer container) {
+    public static void showOverflowSlots(PlayerScreenHandler container) {
         int start = container.slots.size() - slotOrder.size();
         int end = container.slots.size();
 
@@ -106,7 +105,7 @@ public class AccessorySlotStorage {
         }
     }
 
-    public static void hideOverflowSlots(PlayerContainer container) {
+    public static void hideOverflowSlots(PlayerScreenHandler container) {
         int start = container.slots.size() - slotOrder.size();
         int end = container.slots.size();
 
@@ -123,9 +122,9 @@ public class AccessorySlotStorage {
         public String texture = "";
         public int tx;
         public int ty;
-        public Vec2i pos;
+        public ChunkPos pos;
 
-        public PreservedSlot(String slotType, Vec2i pos) {
+        public PreservedSlot(String slotType, ChunkPos pos) {
             this.slotType = slotType;
             this.pos = pos;
         }

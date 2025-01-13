@@ -3,7 +3,7 @@ package com.matthewperiut.testmod;
 import com.matthewperiut.testmod.accessory.*;
 import com.matthewperiut.testmod.item.HealthItem;
 import net.mine_diver.unsafeevents.listener.EventListener;
-import net.minecraft.item.ItemBase;
+import net.minecraft.item.Item;
 import net.modificationstation.stationapi.api.event.registry.ItemRegistryEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.util.Namespace;
@@ -12,10 +12,10 @@ import net.modificationstation.stationapi.api.util.Null;
 public class ItemListener {
     @Entrypoint.Namespace
     public static final Namespace MOD_ID = Null.get();
-    public static ItemBase testCape, rainbowCape, testGloves, rainbowGloves, testMisc, testPendant, testRing, testShield, testAll;
-    public static ItemBase slime, blueSlime;
-    public static ItemBase healthAdder;
-    public static ItemBase visibilityTest;
+    public static Item testCape, rainbowCape, testGloves, rainbowGloves, testMisc, testPendant, testRing, testShield, testAll;
+    public static Item slime, blueSlime;
+    public static Item healthAdder;
+    public static Item visibilityTest;
 
     @EventListener
     public void registerItems(ItemRegistryEvent event) {
@@ -34,6 +34,6 @@ public class ItemListener {
         blueSlime = new TestAccessory(MOD_ID.id("test_blue"), "slime");
 
         healthAdder = new HealthItem(MOD_ID.id("health_adder")).setTranslationKey(MOD_ID, "health_adder");
-        visibilityTest = new VisiblityTest(MOD_ID.id("visibility_test")).setTranslationKey(MOD_ID, "visibility_test");
+        //visibilityTest = new VisiblityTest(MOD_ID.id("visibility_test")).setTranslationKey(MOD_ID, "visibility_test");
     }
 }

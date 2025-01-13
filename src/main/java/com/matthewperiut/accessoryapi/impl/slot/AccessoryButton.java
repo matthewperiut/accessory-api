@@ -1,10 +1,10 @@
 package com.matthewperiut.accessoryapi.impl.slot;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.widgets.Button;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import org.lwjgl.opengl.GL11;
 
-public class AccessoryButton extends Button {
+public class AccessoryButton extends ButtonWidget {
     public static long time_clicked = 0;
     public boolean goBack = false;
 
@@ -23,8 +23,8 @@ public class AccessoryButton extends Button {
             int tpx = hovered ? 30 : 10; // texture position x
             int tpy = goBack ? 10 : 0; // texture position y
 
-            blit(x, y, tpx, tpy, 10, 10);
-            postRender(minecraft, i, j);
+            drawTexture(x, y, tpx, tpy, 10, 10);
+            renderBackground(minecraft, i, j);
         }
     }
 }

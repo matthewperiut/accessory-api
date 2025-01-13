@@ -3,14 +3,13 @@ package com.matthewperiut.accessoryapi.command;
 import com.matthewperiut.accessoryapi.api.PlayerExtraHP;
 import com.matthewperiut.retrocommands.api.Command;
 import com.matthewperiut.retrocommands.util.SharedCommandSource;
-import net.minecraft.entity.player.PlayerBase;
-
 import java.util.ArrayList;
+import net.minecraft.entity.player.PlayerEntity;
 
 public class HeartsCommand implements Command {
     @Override
     public void command(SharedCommandSource commandSource, String[] parameters) {
-        PlayerBase player = commandSource.getPlayer();
+        PlayerEntity player = commandSource.getPlayer();
         if (player == null)
         {
             commandSource.sendFeedback("This command can only be run by a player");

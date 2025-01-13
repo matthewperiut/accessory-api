@@ -1,27 +1,22 @@
 plugins {
-    id 'babric-loom' version '1.4.2'
+	id 'fabric-loom' version '1.8.12'
+	id 'babric-loom-extension' version '1.8.9'
     id 'maven-publish'
     id 'java'
     id 'eclipse'
     id 'idea'
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
 loom {
-    mixin {
-        useLegacyMixinAp = true
-    }
-    gluedMinecraftJar()
-    customMinecraftManifest.set("https://babric.github.io/manifest-polyfill/${minecraft_version}.json")
-    intermediaryUrl.set("https://maven.glass-launcher.net/babric/babric/intermediary/%1\$s/intermediary-%1\$s-v2.jar")
+	customMinecraftManifest.set("https://babric.github.io/manifest-polyfill/${minecraft_version}.json")
+	intermediaryUrl.set("https://maven.glass-launcher.net/babric/babric/intermediary/%1\$s/intermediary-%1\$s-v2.jar")
 }
 
 sourceSets {
@@ -69,38 +64,57 @@ repositories {
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.glasslauncher:bin:${project.yarn_mappings}"
+    mappings "net.glasslauncher:biny:${project.yarn_mappings}:v2"
     modImplementation "babric:fabric-loader:${project.loader_version}"
-
-    implementation "org.slf4j:slf4j-api:1.8.0-beta4"
-    implementation "org.apache.logging.log4j:log4j-slf4j18-impl:2.17.2"
-    implementation("io.github.llamalad7:mixinextras-fabric:${mixinextras_version}")
-    annotationProcessor("io.github.llamalad7:mixinextras-fabric:${mixinextras_version}")
 
     // Add testing dependencies
     testImplementation 'junit:junit:4.13.1'
     testImplementation 'org.mockito:mockito-core:3.11.2'
+    //implementation("io.github.llamalad7:mixinextras-fabric:${mixinextras_version}")
+    //annotationProcessor("io.github.llamalad7:mixinextras-fabric:${mixinextras_version}")
 
-    modImplementation "net.modificationstation:StationAPI:${project.stapi_version}"
+	implementation "com.google.guava:guava:33.2.1-jre"
+	implementation "com.google.code.gson:gson:2.9.0"
+	implementation "org.slf4j:slf4j-api:1.8.0-beta4"
+	implementation 'org.apache.logging.log4j:log4j-slf4j18-impl:2.17.2'
+	implementation(include("me.carleslc:Simple-Yaml:1.8.4") as Dependency)
 
-    // Optional, but convenient mods for mod creators and users alike.
-    modImplementation("com.github.calmilamsy:ModMenu:${project.modmenu_version}") {
-        transitive false
-    }
-    modImplementation "blue.endless:jankson:${project.jankson_version}"
-    modImplementation("net.glasslauncher.mods:GlassConfigAPI:${project.gcapi_version}") {
-        transitive false
-    }
-/*
-    modImplementation("net.glasslauncher:HowManyItems-Fabric-Unofficial:${project.howmanyitems_version}") {
-        transitive false
-    }*/
+	// Optional, but convenient mods for mod creators and users alike.
+	modImplementation("net.glasslauncher.mods:ModMenu:${project.modmenu_version}") {
+		transitive false
+	}
 
-    modImplementation("com.github.matthewperiut:retrocommands:${project.retrocommands_version}") {
-        transitive false
-    }
-    modRuntimeOnly ("com.github.matthewperiut:gambac:e2ded011b0") { transitive false }
+	modImplementation("net.glasslauncher.mods:glass-networking:${project.glass_networking_version}") {
+		transitive false
+	}
 
+	modImplementation("net.glasslauncher.mods:GlassConfigAPI:${project.gcapi_version}") {
+		transitive false
+	}
+
+	modImplementation("com.github.matthewperiut:retrocommands:${project.retrocommands_version}") {
+		transitive false
+	}
+
+	// StationAPI dependency
+	modImplementation "net.modificationstation:StationAPI:${project.stapi_version}"
+
+	// StationAPI development mods
+	modImplementation("net.glasslauncher.mods:AlwaysMoreItems:${project.alwaysmoreitems_version}") {
+		transitive false
+	}
+
+	modImplementation("com.github.paulevsGitch:BHCreative:${project.bhcreative_version}"){
+		transitive false
+	}
+
+	modImplementation("net.danygames2014:spawneggs:${project.spawneggs_version}") {
+		transitive false
+	}
+
+	modRuntimeOnly ("maven.modrinth:fast-stapi-intro:${project.stapi_fast_intro_version}") {
+		transitive false
+	}
 }
 
 // add test tasks

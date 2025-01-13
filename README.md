@@ -31,7 +31,7 @@ Implement "Accessory" inside your item class
 (with STAPI, will work with any API/mixins)
 
 ```java
-public class ExampleRing extends TemplateItemBase implements Accessory
+public class ExampleRing extends TemplateItem implements Accessory
 {
     public Pendant(Identifier identifier)
     {
@@ -40,7 +40,7 @@ public class ExampleRing extends TemplateItemBase implements Accessory
     
     // To define trinket slots that your item can go into:
     @Override
-    public String[] getAccessoryTypes(ItemInstance item)
+    public String[] getAccessoryTypes(ItemStack item)
     {
         return new String[]{ "ring" };
         // return new String[0]; // returns no slots
@@ -49,9 +49,9 @@ public class ExampleRing extends TemplateItemBase implements Accessory
     }
 
     // other methods you can use, use @Override
-    // void tickWhileWorn(PlayerBase player, ItemInstance accessory)
-    // void onAccessoryAdded(PlayerBase player, ItemInstance accessory)
-    // void onAccessoryRemoved(PlayerBase player, ItemInstance accessory)
+    // void tickWhileWorn(PlayerEntity player, ItemStack accessory)
+    // void onAccessoryAdded(PlayerEntity player, ItemStack accessory)
+    // void onAccessoryRemoved(PlayerEntity player, ItemStack accessory)
 
     // Rendering
     private YourCustomRenderer renderer;
@@ -77,15 +77,15 @@ or use your own custom accessory type
 
 This is called when an accessory slot is clicked on with an item, the item is passed to the function.  
 This provides the slot information to see if it is compatible with it.  
-`String[] getAccessoryTypes(ItemInstance item)`
+`String[] getAccessoryTypes(ItemStack item)`
 
 This is called in the tick function of the associated player, passing the item that is being ticked on which player.  
-`void tickWhileWorn(PlayerBase player, ItemInstance item)`
+`void tickWhileWorn(PlayerEntity player, ItemStack item)`
 
 This is called when the inventory relating to the accessory has an item added/removed.  
 The function provides what player added/removed an accessory as well as the item that was added/removed.  
-`void onAccessoryAdded(PlayerBase player, ItemInstance accessory)`  
-`void onAccessoryRemoved(PlayerBase player, ItemInstance accessory)`
+`void onAccessoryAdded(PlayerEntity player, ItemStack accessory)`  
+`void onAccessoryRemoved(PlayerEntity player, ItemStack accessory)`
 
 Provide rendering functions with getRenderer:  
 `public AccessoryRenderer getRenderer()`
@@ -96,12 +96,12 @@ example:
 
 ```java
 public class CustomRenderer implements AccessoryRenderer {
-    void renderThirdPerson(PlayerBase player, PlayerRenderer renderer, ItemInstance itemInstance, double x, double y, double z, float h, float v)
+    void renderThirdPerson(PlayerEntity player, PlayerEntityRenderer renderer, ItemStack itemStack, double x, double y, double z, float h, float v)
     {
         // do entity rendering magic
     }
 
-   void renderFirstPerson(PlayerBase player, PlayerRenderer renderer, ItemInstance itemInstance)
+   void renderFirstPerson(PlayerEntity player, PlayerEntityRenderer renderer, ItemStack itemStack)
    {
        // do entity first person rendering magic
    }

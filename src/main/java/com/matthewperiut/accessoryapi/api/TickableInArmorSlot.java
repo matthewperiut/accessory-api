@@ -1,10 +1,10 @@
 package com.matthewperiut.accessoryapi.api;
 
-import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.item.ItemInstance;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 
 public interface TickableInArmorSlot {
-    default ItemInstance tickWhileWorn(PlayerBase player, ItemInstance itemInstance) {
-        return itemInstance;
+    default ItemStack tickWhileWorn(PlayerEntity player, ItemStack ItemStack) {
+        return ItemStack;
     }
 }
