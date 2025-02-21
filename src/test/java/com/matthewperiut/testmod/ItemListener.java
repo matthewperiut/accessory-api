@@ -11,7 +11,7 @@ import net.modificationstation.stationapi.api.util.Null;
 
 public class ItemListener {
     @Entrypoint.Namespace
-    public static final Namespace MOD_ID = Null.get();
+    public static Namespace MOD_ID = Null.get();
     public static Item testCape, rainbowCape, testGloves, rainbowGloves, testMisc, testPendant, testRing, testShield, testAll;
     public static Item slime, blueSlime;
     public static Item healthAdder;

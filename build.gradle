@@ -100,17 +100,17 @@ dependencies {
 	modImplementation "net.modificationstation:StationAPI:${project.stapi_version}"
 
 	// StationAPI development mods
-	modImplementation("net.glasslauncher.mods:AlwaysMoreItems:${project.alwaysmoreitems_version}") {
-		transitive false
-	}
+//	modImplementation("net.glasslauncher.mods:AlwaysMoreItems:${project.alwaysmoreitems_version}") {
+//		transitive false
+//	}
 
 	modImplementation("com.github.paulevsGitch:BHCreative:${project.bhcreative_version}"){
 		transitive false
 	}
 
-	modImplementation("net.danygames2014:spawneggs:${project.spawneggs_version}") {
-		transitive false
-	}
+//	modImplementation("net.danygames2014:spawneggs:${project.spawneggs_version}") {
+//		transitive false
+//	}
 
 	modRuntimeOnly ("maven.modrinth:fast-stapi-intro:${project.stapi_fast_intro_version}") {
 		transitive false
