@@ -85,6 +85,10 @@ dependencies {
     mappings "net.glasslauncher:biny:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
+    // Add testing dependencies
+    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'org.mockito:mockito-core:3.11.2'
+
     implementation "com.google.guava:guava:33.2.1-jre"
     implementation "com.google.code.gson:gson:2.9.0"
     implementation "org.slf4j:slf4j-api:1.8.0-beta4"
@@ -157,7 +161,7 @@ java {
 
 jar {
     from("LICENSE") {
-        rename { "${it}_${project.archivesBaseName}"}
+        rename { "${it}_${project.archivesBaseName}" }
     }
 }
 
