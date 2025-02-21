@@ -76,6 +76,7 @@ repositories {
         }
     }
     mavenCentral()
+    jcenter() // for junit
 }
 
 dependencies {
