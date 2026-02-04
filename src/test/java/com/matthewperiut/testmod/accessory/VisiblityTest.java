@@ -1,4 +1,4 @@
-//package com.matthewperiut.testmod.accessory;
+package com.matthewperiut.testmod.accessory;//package com.matthewperiut.testmod.accessory;
 //
 //import net.minecraft.entity.Entity;
 //import net.minecraft.entity.player.PlayerEntity;

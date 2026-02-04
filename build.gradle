@@ -1,128 +1,73 @@
 plugins {
     id 'maven-publish'
-    id 'java'
-    id 'eclipse'
-    id 'idea'
-    id 'fabric-loom' version '1.9.2'
-    id 'babric-loom-extension' version '1.9.4'
+    id 'net.fabricmc.fabric-loom-remap' version '1.15.+'
+    id 'ploceus' version '1.15-SNAPSHOT'
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
-
-archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
-loom {
-    customMinecraftManifest.set("https://babric.github.io/manifest-polyfill/${minecraft_version}.json")
-    intermediaryUrl.set("https://maven.glass-launcher.net/babric/babric/intermediary/%1\$s/intermediary-%1\$s-v2.jar")
-}
-
-sourceSets {
-    test {
-        compileClasspath += main.compileClasspath + main.output
-        runtimeClasspath += main.runtimeClasspath + main.output
-    }
+ploceus {
+    setIntermediaryGeneration(2)
 }
 
 repositories {
-    // Add repositories to retrieve artifacts from in here.
-    // You should only use this when depending on other mods because
-    // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-    // See https://docs.gradle.org/current/userguide/declaring_repositories.html
-    // for more information about repositories.
-
-    // Used for the fabric toolchain in this project.
-    maven {
-        name = 'Babric'
-        url = 'https://maven.glass-launcher.net/babric'
-    }
-    // Used for mappings.
-    maven {
-        name = 'Glass Releases'
-        url = 'https://maven.glass-launcher.net/releases'
-    }
-    // Used for StationAPI and HowManyItems.
-    maven {
-        name = 'Glass Snapshots'
-        url = 'https://maven.glass-launcher.net/snapshots'
-    }
-    // Used for a StationAPI dependency.
-    maven {
-        name = 'Froge'
-        url 'https://maven.minecraftforge.net/'
-    }
-    // Used for projects that do not have a maven repository, but do have a GitHub repository with working build scripts.
-    maven {
-        name = 'Jitpack'
-        url = 'https://jitpack.io'
-    }
-    // Used for SpawnEggs
-    maven {
-        name = "NyaRepo"
-        url = "https://maven.fildand.cz/releases"
-    }
-    // Used for another StationAPI dependency
+    mavenLocal()
+    maven { url = 'https://mvn.devos.one/releases' }
+    maven { url = "https://maven.glass-launcher.net/releases" }
+    maven { url = "https://maven.glass-launcher.net/babric" }
+    maven { url = "https://maven.glass-launcher.net/snapshots" }
+    maven { url = "https://maven.ornithemc.net/releases" }
+    maven { url = "https://matthewperiut.github.io/repository" }
+    maven { url = "https://jitpack.io/" }
+    mavenCentral()
     exclusiveContent {
         forRepository {
-            maven {
-                name = "Modrinth"
-                url = "https://api.modrinth.com/maven"
-            }
+            maven{ url = "https://api.modrinth.com/maven" }
         }
         filter {
-            includeGroup "maven.modrinth"
+            includeGroup("maven.modrinth")
         }
     }
-    mavenCentral()
-    jcenter() // for junit
 }
 
 dependencies {
     // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.glasslauncher:biny:${project.yarn_mappings}:v2"
+    mappings(ploceus.mappings("net.glasslauncher:biny-ornithe:b1.7.3+build.${project.biny_mappings}:mergedv2"))
+
+
+    clientExceptions ploceus.raven(project.client_raven_build, 'client')
+    serverExceptions ploceus.raven(project.server_raven_build, 'server')
+    clientSignatures ploceus.sparrow(project.client_sparrow_build, 'client')
+    serverSignatures ploceus.sparrow(project.server_sparrow_build, 'server')
+    "clientNests"("net.glasslauncher:biny-nests:b1.7.3-client+build.2")
+    "serverNests"("net.glasslauncher:biny-nests:b1.7.3-server+build.2")
+
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     // Add testing dependencies
     testImplementation 'junit:junit:4.13.1'
     testImplementation 'org.mockito:mockito-core:3.11.2'
-
-    implementation "com.google.guava:guava:33.2.1-jre"
-    implementation "com.google.code.gson:gson:2.9.0"
-    implementation "org.slf4j:slf4j-api:1.8.0-beta4"
-    implementation 'org.apache.logging.log4j:log4j-slf4j18-impl:2.17.2'
-    implementation(include("me.carleslc:Simple-Yaml:1.8.4") as Dependency)
+//
+//    implementation "com.google.guava:guava:33.2.1-jre"
+//    implementation "com.google.code.gson:gson:2.9.0"
+//    implementation "org.slf4j:slf4j-api:1.8.0-beta4"
+//    implementation 'org.apache.logging.log4j:log4j-slf4j18-impl:2.17.2'
+//    implementation(include("me.carleslc:Simple-Yaml:1.8.4") as Dependency)
 
     // Optional, but convenient mods for mod creators and users alike.
-    modImplementation("net.glasslauncher.mods:ModMenu:${project.modmenu_version}") {
-        transitive false
-    }
-
-    modImplementation("net.glasslauncher.mods:glass-networking:${project.glass_networking_version}") {
-        transitive false
-    }
 
     modImplementation("net.glasslauncher.mods:GlassConfigAPI:${project.gcapi_version}") {
         transitive false
     }
 
-    modImplementation("maven.modrinth:retrocommands:${project.retrocommands_version}") {
-        transitive false
-    }
+//    modImplementation("maven.modrinth:retrocommands:${project.retrocommands_version}") {
+//        transitive false
+//    }
 
     // StationAPI dependency
     modImplementation "net.modificationstation:StationAPI:${project.stapi_version}"
-
-    // StationAPI development mods
-    modRuntimeOnly ("maven.modrinth:fast-stapi-intro:${project.stapi_fast_intro_version}") {
-        transitive false
-    }
-
-    modImplementation("com.github.paulevsGitch:BHCreative:${project.bhcreative_version}"){
-        transitive false
-    }
 
 //	modImplementation("net.glasslauncher.mods:AlwaysMoreItems:${project.alwaysmoreitems_version}") {
 //		transitive false
@@ -131,6 +76,13 @@ dependencies {
 //	modImplementation("net.danygames2014:spawneggs:${project.spawneggs_version}") {
 //		transitive false
 //	}
+
+    modImplementation "com.periut:starac:1.2.0+mcb1.7.3+gen2"
+}
+
+// Exclude Legacy Fabric LWJGL 2 wrapper (starac provides LWJGL 3)
+configurations.configureEach {
+    exclude group: 'org.lwjgl.lwjgl'
 }
 
 // add test tasks

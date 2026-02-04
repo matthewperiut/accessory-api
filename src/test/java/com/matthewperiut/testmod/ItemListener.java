@@ -1,6 +1,9 @@
 package com.matthewperiut.testmod;
 
-import com.matthewperiut.testmod.accessory.*;
+import com.matthewperiut.testmod.accessory.RainbowAccessory;
+import com.matthewperiut.testmod.accessory.TestAccessory;
+import com.matthewperiut.testmod.accessory.TestAccessoryWithRenderer;
+import com.matthewperiut.testmod.accessory.TestShield;
 import com.matthewperiut.testmod.item.HealthItem;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.item.Item;

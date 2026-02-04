@@ -67,17 +67,17 @@ public abstract class PlayerInventoryGuiMixin extends HandledScreen {
 
             if (extended) {
                 for (int i = 0; i < 5; i++) {
-                    ((Slot) container.slots.get(i)).y = 1000;
+                    ((Slot) handler.slots.get(i)).y = 1000;
                 }
 
                 button.x = startX + 165;
                 button.y = startY + 1;
-                showOverflowSlots((PlayerScreenHandler) container);
+                showOverflowSlots((PlayerScreenHandler) handler);
             } else {
-                resetPlayerInv(container);
+                resetPlayerInv(handler);
                 button.x = startX + 115;
                 button.y = startY + 6;
-                hideOverflowSlots((PlayerScreenHandler) container);
+                hideOverflowSlots((PlayerScreenHandler) handler);
             }
 
 
@@ -113,13 +113,13 @@ public abstract class PlayerInventoryGuiMixin extends HandledScreen {
 
         // blank tile (first inventory slot, bottom left)
 
-        int start = container.slots.size() - slotOrder.size();
-        int end = container.slots.size();
+        int start = handler.slots.size() - slotOrder.size();
+        int end = handler.slots.size();
         int extra = (slotOrder.size() > 8 ? slotOrder.size() - 8 : 0);
 
         for (int i = start + (!extended ? extra : 0); i < end; i++) {
-            Slot slot = (Slot) container.slots.get(i);
-            AccessorySlotStorage.PreservedSlot info = slotOrder.get(i - start);
+            Slot slot = (Slot) handler.slots.get(i);
+            PreservedSlot info = slotOrder.get(i - start);
             minecraft.textureManager.bindTexture(var2);
             drawTexture(startX + slot.x - 1, startY + slot.y - 1, SLOT_U, SLOT_V, SLOT_W, SLOT_H);
             if (!slot.hasStack()) {
