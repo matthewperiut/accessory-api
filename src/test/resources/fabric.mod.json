@@ -15,13 +15,13 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.matthewperiut.testmod.TestMod"
+      "com.periut.testmod.TestMod"
     ],
     "stationapi:event_bus": [
-      "com.matthewperiut.testmod.ItemListener"
+      "com.periut.testmod.ItemListener"
     ],
     "stationapi:event_bus_client": [
-      "com.matthewperiut.testmod.TextureListener"
+      "com.periut.testmod.TextureListener"
     ]
   },
   "mixins": [
