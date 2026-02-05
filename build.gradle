@@ -58,7 +58,7 @@ dependencies {
 }
 
 // Don't fail test task when no tests are discovered (these are mod test classes, not unit tests)
-tasks.withType<Test> {
+tasks.withType(Test) {
     failOnNoDiscoveredTests = false
 }
 
