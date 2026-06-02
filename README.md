@@ -115,3 +115,6 @@ Built-in AccessoryRenderers:
 `GloveRenderer`  
 `NecklaceRenderer`  
 `ConfigurableRenderer`  
+
+# Migration to 0.8.0+
+![img.png](doc/img.png)
