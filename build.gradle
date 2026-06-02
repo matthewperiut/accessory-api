@@ -7,6 +7,13 @@ plugins {
     id 'babric-loom-extension' version '1.9.4'
 }
 
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
 
 loom {
     customMinecraftManifest.set("https://babric.github.io/manifest-polyfill/${minecraft_version}.json")
