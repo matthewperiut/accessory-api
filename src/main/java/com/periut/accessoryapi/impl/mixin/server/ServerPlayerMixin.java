@@ -23,6 +23,13 @@ public class ServerPlayerMixin {
     // the '1' is representing the held item.
     @ModifyConstant(method = "tick()V", constant = @Constant(intValue = 5), require = 1)
     private int modifyShownItemSize(int original) {
-        return 1 + AccessoryAPI.config.armorOffset + AccessorySlotStorage.slotInfo.size();
+        int desired = 1 + AccessoryAPI.config.armorOffset + AccessorySlotStorage.slotInfo.size();
+        // Guard: the tick loop both reads and writes this.equipment[i], so we must never
+        // iterate past the actual length of that array. The @Shadow initializer above is NOT
+        // applied to the target class (Mixin ignores shadow-field initializers), so equipment
+        // keeps the vanilla length of 5. If a mod registers a custom slot after that, `desired`
+        // would exceed the array and the server tick would crash with an
+        // ArrayIndexOutOfBoundsException. Clamp to the real array size to stay in bounds.
+        return Math.min(desired, equipment.length);
     }
 }
