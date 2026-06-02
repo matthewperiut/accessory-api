@@ -13,7 +13,7 @@ import net.minecraft.client.gui.screen.ingame.HandledScreen;
 @Mixin(HandledScreen.class)
 public class ContainerBaseMixin {
     @Shadow
-    public net.minecraft.screen.ScreenHandler handler;
+    public net.minecraft.screen.ScreenHandler container;
 
     @Inject(
             method = "keyPressed",
@@ -23,7 +23,7 @@ public class ContainerBaseMixin {
             )
     )
     protected void keyPressed(char i, int par2, CallbackInfo ci) {
-        resetPlayerInv(handler);
+        resetPlayerInv(container);
     }
 
     @Inject(
@@ -34,6 +34,6 @@ public class ContainerBaseMixin {
             )
     )
     public void onClose(CallbackInfo ci) {
-        resetPlayerInv(handler);
+        resetPlayerInv(container);
     }
 }
