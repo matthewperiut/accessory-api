@@ -27,9 +27,9 @@ public class RainbowAccessory extends TestAccessoryWithRenderer {
     public void constructRenderer() {
         if (types.length > 0) {
             if (types[0].equals("cape")) {
-                renderer = new RainbowCapeRenderer("assets/testmod/textures/capes/cape.png");
+                renderer = new RainbowCapeRenderer("/assets/testmod/textures/capes/cape.png");
             } else if (types[0].equals("gloves")) {
-                renderer = new RainbowGloveRenderer("assets/testmod/textures/armour/test.png");
+                renderer = new RainbowGloveRenderer("/assets/testmod/textures/armour/test.png");
             }
         }
     }
