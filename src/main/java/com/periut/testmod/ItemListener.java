@@ -22,9 +22,9 @@ public class ItemListener {
 
     @EventListener
     public void registerItems(ItemRegistryEvent event) {
-        testCape = new TestAccessoryWithRenderer(MOD_ID.id("test_cape"), "assets/testmod/textures/capes/cape.png", new String[]{"cape"});
-        testGloves = new TestAccessoryWithRenderer(MOD_ID.id("test_gloves"), "assets/testmod/textures/armour/test.png", new String[]{"gloves"});
-        testPendant = new TestAccessoryWithRenderer(MOD_ID.id("test_pendant"), "assets/testmod/textures/armour/test.png", new String[]{"pendant"});
+        testCape = new TestAccessoryWithRenderer(MOD_ID.id("test_cape"), "/assets/testmod/textures/capes/cape.png", new String[]{"cape"});
+        testGloves = new TestAccessoryWithRenderer(MOD_ID.id("test_gloves"), "/assets/testmod/textures/armour/test.png", new String[]{"gloves"});
+        testPendant = new TestAccessoryWithRenderer(MOD_ID.id("test_pendant"), "/assets/testmod/textures/armour/test.png", new String[]{"pendant"});
         rainbowCape = new RainbowAccessory(MOD_ID.id("rainbow_cape"), "cape");
         rainbowGloves = new RainbowAccessory(MOD_ID.id("rainbow_gloves"), "gloves");
 

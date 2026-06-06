@@ -15,7 +15,7 @@ public class TestMod implements ModInitializer {
         AccessoryRegister.requestSlot("gloves", 1);
 
         for (int i = 0; i < 4; i++)
-            AccessoryRegister.add("slime", "assets/testmod/textures/slot/extra.png", 0, 0);
+            AccessoryRegister.add("slime", "/assets/testmod/textures/slot/extra.png", 0, 0);
 
         AccessoryRegister.requestSlot("none", 8);
     }

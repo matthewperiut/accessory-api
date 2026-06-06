@@ -15,7 +15,7 @@ public class AccessoryButton extends ButtonWidget {
     @Override
     public void render(Minecraft minecraft, int i, int j) {
         if (visible) {
-            GL11.glBindTexture(3553, minecraft.textureManager.getTextureId("assets/accessoryapi/buttons.png"));
+            GL11.glBindTexture(3553, minecraft.textureManager.getTextureId("/assets/accessoryapi/buttons.png"));
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
             boolean hovered = i >= x && j >= y && i < x + width && j < y + height;
