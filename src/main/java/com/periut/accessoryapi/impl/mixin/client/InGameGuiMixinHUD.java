@@ -1,6 +1,7 @@
 package com.periut.accessoryapi.impl.mixin.client;
 
 import com.periut.accessoryapi.api.BossLivingEntity;
+import com.periut.accessoryapi.api.helper.AccessoryAccess;
 import com.periut.accessoryapi.api.render.HasCustomRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.DrawContext;
@@ -110,15 +111,23 @@ public class InGameGuiMixinHUD extends DrawContext {
         }
 
         for (ItemStack item : minecraft.player.inventory.armor) {
-            if (item == null)
-                continue;
-            if (item.getItem() instanceof HasCustomRenderer customRenderer) {
-                if (customRenderer.getRenderer() != null) {
-                    customRenderer.getRenderer().renderHUD(minecraft.player, item, minecraft, scaler, width, height);
-                }
-            }
+            accessoryapi$renderItemHud(item, scaler, width, height);
+        }
+        for (ItemStack item : AccessoryAccess.getAccessories(minecraft.player)) {
+            accessoryapi$renderItemHud(item, scaler, width, height);
         }
 
+    }
+
+    @Unique
+    private void accessoryapi$renderItemHud(ItemStack item, ScreenScaler scaler, int width, int height) {
+        if (item == null)
+            return;
+        if (item.getItem() instanceof HasCustomRenderer customRenderer) {
+            if (customRenderer.getRenderer() != null) {
+                customRenderer.getRenderer().renderHUD(minecraft.player, item, minecraft, scaler, width, height);
+            }
+        }
     }
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderPumpkinOverlay(II)V"))

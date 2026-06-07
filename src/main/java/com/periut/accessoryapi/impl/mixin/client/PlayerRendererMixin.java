@@ -4,7 +4,6 @@ import com.periut.accessoryapi.AccessoryAPIClient;
 import com.periut.accessoryapi.api.PlayerVisibility;
 import com.periut.accessoryapi.api.helper.AccessoryAccess;
 import com.periut.accessoryapi.api.render.HasCustomRenderer;
-import com.periut.accessoryapi.impl.slot.AccessorySlotStorage;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
@@ -50,19 +49,26 @@ public abstract class PlayerRendererMixin extends EntityRenderer {
 
             final PlayerEntityRenderer renderer = (PlayerEntityRenderer) (Object) this;
 
-            for (int i = 0; i < AccessorySlotStorage.slotOrder.size() + 4; i++) {
-                ItemStack item = player.inventory.getArmorStack(i);
-                if (item == null) continue;
-                if (item.getItem() instanceof HasCustomRenderer itemWithRenderer) {
-                    if (itemWithRenderer.getRenderer() == null) {
-                        itemWithRenderer.constructRenderer();
-                    } else {
-                        itemWithRenderer.getRenderer().renderThirdPerson(player, renderer, item, x, y, z, h, v);
-                    }
-                }
+            for (int i = 0; i < player.inventory.armor.length; i++) {
+                accessoryapi$renderThirdPerson(player, renderer, player.inventory.armor[i], x, y, z, h, v);
+            }
+            for (ItemStack item : AccessoryAccess.getAccessories(player)) {
+                accessoryapi$renderThirdPerson(player, renderer, item, x, y, z, h, v);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+    @Unique
+    private void accessoryapi$renderThirdPerson(PlayerEntity player, PlayerEntityRenderer renderer, ItemStack item, double x, double y, double z, float h, float v) {
+        if (item == null) return;
+        if (item.getItem() instanceof HasCustomRenderer itemWithRenderer) {
+            if (itemWithRenderer.getRenderer() == null) {
+                itemWithRenderer.constructRenderer();
+            } else {
+                itemWithRenderer.getRenderer().renderThirdPerson(player, renderer, item, x, y, z, h, v);
+            }
         }
     }
 

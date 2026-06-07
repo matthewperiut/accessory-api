@@ -8,13 +8,17 @@
     "LivingBaseMixin",
     "PlayerBaseMixin",
     "PlayerContainerMixin",
-    "PlayerInventoryMixin"
+    "PlayerInventoryMixin",
+    "WorldAccessor",
+    "WorldStorageAccessor"
   ],
   "client": [
+    "client.ArmorSlotMixin",
     "client.ContainerBaseMixin",
     "client.InGameGuiMixinHearts",
     "client.InGameGuiMixinHUD",
     "client.LivingEntityRendererAccessor",
+    "client.OtherPlayerEntityMixin",
     "client.PlayerInventoryGuiMixin",
     "client.PlayerRendererMixin"
   ],

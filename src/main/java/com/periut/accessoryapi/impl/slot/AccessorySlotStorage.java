@@ -14,6 +14,19 @@ public class AccessorySlotStorage {
     public static ArrayList<PreservedSlot> slotOrder = new ArrayList<>();
     public static int extraSlots = 0;
 
+    /** Builds slotOrder from the registered slots if that hasn't happened yet. */
+    public static void ensureInitialized() {
+        if (slotOrder.isEmpty() && !slotInfo.isEmpty()) {
+            initializeCustomAccessoryPositions();
+        }
+    }
+
+    /** Number of usable accessory slots (the size of every player's AccessoryInventory). */
+    public static int getSlotCount() {
+        ensureInitialized();
+        return slotOrder.size();
+    }
+
     public static void initializeCustomAccessoryPositions() {
         // This whole function is a little slow, but it's called once per world run, so it's okay
         slotOrder.clear();

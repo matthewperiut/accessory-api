@@ -11,7 +11,7 @@ public class AccessoryAPIConfigFields {
 
     @ConfigEntry(
             name = "Armor offset",
-            description = "If you don't know what this does, don't touch it!",
+            description = "Only used to migrate saves from old versions that stored accessories in the armor array. If you don't know what this does, don't touch it!",
             multiplayerSynced = true
     )
     public Integer armorOffset = 4;

@@ -98,7 +98,11 @@ public class InGameGuiMixinHearts {
         blitHeart(instance, a, b, c, d, e, f);
     }
 
-    @Inject(method = "render", at = @At(value = "TAIL"))
+    // Inject right before the chat section (the only currentScreen access in render)
+    // instead of TAIL: vanilla draws the chat rows at the very end of render, and
+    // hearts drawn after it stamp over the chat. This keeps chat on the top layer
+    // without touching ChatScreen (which other mods mixin heavily).
+    @Inject(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;currentScreen:Lnet/minecraft/client/gui/screen/Screen;"))
     public void renderExtraHud(float bl, boolean i, int j, int par4, CallbackInfo ci) {
         InGameHud instance = (InGameHud) (Object) this;
         renderHearts(instance);

@@ -1,6 +1,8 @@
 package com.periut.accessoryapi.impl.mixin;
 
 import com.periut.accessoryapi.AccessoryAPI;
+import com.periut.accessoryapi.api.AccessoryHolder;
+import com.periut.accessoryapi.api.AccessoryInventory;
 import com.periut.accessoryapi.impl.slot.AccessorySlot;
 import com.periut.accessoryapi.impl.slot.AccessorySlotStorage;
 import net.minecraft.entity.player.PlayerInventory;
@@ -60,10 +62,13 @@ public abstract class PlayerContainerMixin extends ScreenHandler {
         if (AccessoryAPI.noSlotsAdded)
             return;
 
-        int slotnum = 40;
+        // accessory slots are backed by the player's own AccessoryInventory,
+        // not by extra indices grafted onto the vanilla armor array
+        AccessoryInventory accessories = ((AccessoryHolder) inv.player).getAccessoryInventory();
+        int slotnum = 0;
 
         for (AccessorySlotStorage.PreservedSlot slot : slotOrder) {
-            addSlot(new AccessorySlot(inv, slotnum, slot.pos.x + 18, slot.pos.z, slot.slotType));
+            addSlot(new AccessorySlot(accessories, slotnum, slot.pos.x + 18, slot.pos.z, slot.slotType));
             slotnum++;
         }
 
