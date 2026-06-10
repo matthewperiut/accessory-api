@@ -6,20 +6,19 @@ import com.periut.accessoryapi.api.render.builtin.CapeRenderer;
 import com.periut.accessoryapi.api.render.builtin.ConfigurableRenderer;
 import com.periut.accessoryapi.api.render.builtin.GloveRenderer;
 import com.periut.accessoryapi.api.render.builtin.NecklaceRenderer;
-import net.modificationstation.stationapi.api.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 public class TestAccessoryWithRenderer extends TestAccessory implements HasCustomRenderer {
     protected ConfigurableRenderer renderer;
     private String texture;
 
-    public TestAccessoryWithRenderer(Identifier identifier, String texture, String[] types) {
-        super(identifier, types);
+    public TestAccessoryWithRenderer(int id, String texture, String[] types) {
+        super(id, types);
         this.texture = texture;
     }
 
-    public TestAccessoryWithRenderer(Identifier identifier, String[] types) {
-        super(identifier, types);
+    public TestAccessoryWithRenderer(int id, String[] types) {
+        super(id, types);
     }
 
     @Override

@@ -1,131 +1,155 @@
 plugins {
-    id 'maven-publish'
-    id 'net.fabricmc.fabric-loom-remap' version '1.15.+'
-    id 'ploceus' version '1.15-SNAPSHOT'
+	id 'java'
+	id 'maven-publish'
+	id 'net.fabricmc.fabric-loom-remap' version '1.16.3'
+	id 'ploceus' version '1.16.1'
+	// Also builds a babric variant of your mod (build/libs/<name>-babric.jar) so you can
+	// share it to babric users too. Run `./gradlew build`; the babric jar appears alongside.
+	id 'com.periut.retroconvert' version '1.0.0'
 }
 
-version = project.mod_version
+base {
+	archivesName = project.archives_base_name
+}
+version = "${project.version}+mc${project.minecraft_version}"
 group = project.maven_group
 
 ploceus {
-    setIntermediaryGeneration(2)
+	setIntermediaryGeneration(2)
+}
+
+loom {
+	// Gives the testmod its own mod* dependency configurations (modTestImplementation etc.)
+	// so retroapi/OSL stay off the main mod's published dependencies.
+	createRemapConfigurations(sourceSets.test)
 }
 
 repositories {
-    mavenLocal()
-    maven { url = 'https://mvn.devos.one/releases' }
-    maven { url = "https://maven.glass-launcher.net/releases" }
-    maven { url = "https://maven.glass-launcher.net/babric" }
-    maven { url = "https://maven.glass-launcher.net/snapshots" }
-    maven { url = "https://maven.ornithemc.net/releases" }
-    maven { url = "https://matthewperiut.github.io/repository" }
-    maven { url = "https://jitpack.io/" }
-    mavenCentral()
-    exclusiveContent {
-        forRepository {
-            maven{ url = "https://api.modrinth.com/maven" }
-        }
-        filter {
-            includeGroup("maven.modrinth")
-        }
-    }
+	// Add repositories to retrieve artifacts from in here.
+	// You should only use this when depending on other mods because
+	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
+	// for more information about repositories.
+	mavenLocal()
+	maven { url = 'https://matthewperiut.github.io/repository' } // gen2 mod deps (StationAPI, retrocommands, starac)
+	maven { url = 'https://maven.glass-launcher.net/releases/' } // biny, GCAPI
+	// Simple-Yaml (GCAPI dependency) — only jitpack hosts the real artifact.
+	exclusiveContent {
+		forRepository {
+			maven { url = 'https://jitpack.io' }
+		}
+		filter {
+			includeGroup 'me.carleslc.Simple-Yaml'
+		}
+	}
 }
+
 
 dependencies {
-    // To change the versions see the gradle.properties file
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings(ploceus.mappings("net.glasslauncher:biny-ornithe:b1.7.3+build.${project.biny_mappings}:mergedv2"))
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    clientExceptions ploceus.raven(project.client_raven_build, 'client')
-    serverExceptions ploceus.raven(project.server_raven_build, 'server')
-    clientSignatures ploceus.sparrow(project.client_sparrow_build, 'client')
-    serverSignatures ploceus.sparrow(project.server_sparrow_build, 'server')
-    "clientNests"("net.glasslauncher:biny-nests:b1.7.3-client+build.2")
-    "serverNests"("net.glasslauncher:biny-nests:b1.7.3-server+build.2")
+	mappings ploceus.mappings("net.glasslauncher:biny-ornithe:b1.7.3+build.${project.biny_mappings}:mergedv2")
 
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	clientExceptions ploceus.raven(project.client_raven_build, 'client')
+	serverExceptions ploceus.raven(project.server_raven_build, 'server')
+	clientSignatures ploceus.sparrow(project.client_sparrow_build, 'client')
+	serverSignatures ploceus.sparrow(project.server_sparrow_build, 'server')
+	clientNests "net.glasslauncher:biny-nests:b1.7.3-client+build.${project.biny_nests_build}"
+	serverNests "net.glasslauncher:biny-nests:b1.7.3-server+build.${project.biny_nests_build}"
 
-    testImplementation 'junit:junit:4.13.1'
-    testImplementation 'org.mockito:mockito-core:3.11.2'
+	// Testmod-only: the main mod must not depend on retroapi or OSL.
+	ploceus.dependOsl('modTestImplementation', project.osl_version, net.ornithemc.ploceus.api.GameSide.MERGED)
+	modTestImplementation "com.periut:retroapi:${project.retroapi_version}"
 
-    modImplementation("net.glasslauncher.mods:GlassConfigAPI:${project.gcapi_version}") {
-        transitive false
-    }
+	modImplementation("net.glasslauncher.mods:GlassConfigAPI:${project.gcapi_version}") {
+		transitive false
+	}
+	// GCAPI bundles these as jar-in-jar for production, but they don't make it
+	// onto the dev runtime classpath, so provide them explicitly for runClient.
+	runtimeOnly "me.carleslc.Simple-Yaml:Simple-Yaml:1.8.4"
+	runtimeOnly "com.google.guava:guava:33.2.1-jre"
 
-    modImplementation "net.modificationstation:StationAPI:${project.stapi_version}"
+	modImplementation("com.periut:retrocommands:${project.retrocommands_version}") {
+		exclude group: 'net.modificationstation'
+		exclude group: 'net.glasslauncher.mods'
+		exclude group: 'com.github.GeyserMC'
+	}
+	// starac brings LWJGL 3, which would clash with vanilla
+	// Minecraft's LWJGL 2 API, so keep it off the compile classpath.
+	modRuntimeOnly "com.periut:starac:${project.starac_version}"
 
-    modImplementation "com.periut:starac:${project.starac_verion}"
+	testImplementation 'junit:junit:4.13.1'
+	testImplementation 'org.mockito:mockito-core:3.11.2'
 }
 
-// Don't fail test task when no tests are discovered (these are mod test classes, not unit tests)
-tasks.withType(Test) {
-    failOnNoDiscoveredTests = false
+// Exclude the Legacy Fabric LWJGL 2 wrapper at RUNTIME only (starac provides LWJGL 3).
+// It must stay on the compile/minecraft classpath so Condor (Ploceus LVT generator)
+// can resolve org.lwjgl.* classes referenced by b1.7.3 — a blanket exclude here
+// strips LWJGL 2 from minecraftCompileLibraries and crashes LVT generation.
+configurations.matching { it.name.toLowerCase().contains('runtime') }.configureEach {
+	exclude group: 'org.lwjgl.lwjgl'
 }
 
-// Exclude Legacy Fabric LWJGL 2 wrapper (starac provides LWJGL 3)
-configurations.configureEach {
-    exclude group: 'org.lwjgl.lwjgl'
-}
-
-// add test tasks
+// The "test" source set is a testmod, not a JUnit suite — don't fail when no tests are found.
 test {
-    useJUnit()
+	useJUnit()
+	failOnNoDiscoveredTests = false
 }
 
 processResources {
-    inputs.property "version", project.version
+	inputs.property 'version', version
 
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version
-    }
+	filesMatching('fabric.mod.json') {
+		expand 'version': version
+	}
 }
 
 tasks.withType(JavaCompile).configureEach {
-    // Loom requires J21.
-    it.options.release = 21
+	it.options.encoding = 'UTF-8'
+	it.options.release = 21
 }
 
 java {
-    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-    // if it is present.
-    // If you remove this line, sources will not be generated.
-    withSourcesJar()
+	// Still required by IDEs such as Eclipse and Visual Studio Code
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
+
+	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task if it is present.
+	// If you remove this line, sources will not be generated.
+	withSourcesJar()
 }
 
 jar {
-    from("LICENSE") {
-        rename { "${it}_${project.name}" }
-    }
+	from('LICENSE') {
+		rename { "${it}_${base.archivesName.get()}" }
+	}
 }
 
 // configure the maven publication
 publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+	}
 
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        // Add repositories to publish to here.
-        // Notice: This block does NOT have the same function as the block in the top level.
-        // The repositories here will be used for publishing your artifact, not for
-        // retrieving dependencies.
-    }
+	repositories {
+		// Add repositories to publish to here (jitpack builds use the default).
+	}
 }
 
 loom {
-    runs {
-        register("runTestmodClient") {
-            source("test")
-            //noinspection GroovyImplicitNullArgumentCall
-            client()
-        }
-        register("runTestmodServer") {
-            source("test")
-            //noinspection GroovyImplicitNullArgumentCall
-            server()
-        }
-    }
+	runs {
+		register("runTestmodClient") {
+			source("test")
+			//noinspection GroovyImplicitNullArgumentCall
+			client()
+		}
+		register("runTestmodServer") {
+			source("test")
+			//noinspection GroovyImplicitNullArgumentCall
+			server()
+		}
+	}
 }

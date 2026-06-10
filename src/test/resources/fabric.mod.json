@@ -16,20 +16,15 @@
   "entrypoints": {
     "main": [
       "com.periut.testmod.TestMod"
-    ],
-    "stationapi:event_bus": [
-      "com.periut.testmod.ItemListener"
-    ],
-    "stationapi:event_bus_client": [
-      "com.periut.testmod.TextureListener"
     ]
   },
   "mixins": [
     "testmod.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.13.3",
+    "fabricloader": ">=0.17.3",
     "minecraft": "1.0.0-beta.7.3",
-    "stationapi": "*"
+    "retroapi": ">=0.2.0",
+    "accessoryapi": "*"
   }
 }

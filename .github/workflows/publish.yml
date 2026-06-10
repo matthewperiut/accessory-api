@@ -1,0 +1,190 @@
+# Generic release publishing for mods that ALSO publish to matthewperiut.github.io.
+# Everything from the general publish workflow (GitHub Release always, Modrinth when
+# MODRINTH_TOKEN + MODRINTH_ID are configured), plus a maven publish into the pages repo:
+#
+#   * group/artifact/version are auto-detected (resolved Gradle `group`/`version`, plus the
+#     artifact dir that `publishToMavenLocal` actually wrote into ~/.m2 - falling back to
+#     archives_base_name + build/libs jars with a generated minimal pom if the project has
+#     no maven-publish plugin),
+#   * the artifact is copied into pages repository/, maven-metadata.xml is rewritten,
+#     manifest.json gets its (group, artifact, branch) entry updated (commit/branch/version),
+#     and repository-tree.json is regenerated,
+#   * committed as "actions: update <artifact>".
+#
+# No docs rewriting by default. If this mod's version is referenced in the pages docs +
+# template zips as a gradle.properties key (e.g. starac_version=...), list those keys in
+# DOCS_PROPERTIES below and they will be bumped to the new version too.
+#
+# Required configuration:
+#   * secret   PAGES_TOKEN    - a PAT with write access to matthewperiut/matthewperiut.github.io
+# Optional configuration:
+#   * secret   MODRINTH_TOKEN - a Modrinth PAT with write scope
+#   * variable MODRINTH_ID    - the mod's Modrinth project id or slug
+#
+# The workflow must exist on the default branch for the release event to pick it up.
+name: Publish
+
+on:
+  release:
+    types: [ published ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  # Space-separated gradle.properties keys whose values should be rewritten to the new
+  # version across the pages docs (retroapi/*.html) and the two template zips when this
+  # mod publishes. Leave empty for no docs rewriting. Example: "starac_version"
+  DOCS_PROPERTIES: ""
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build (and publish to Maven Local when the project supports it)
+        run: |
+          chmod +x ./gradlew
+          ./gradlew build
+          if ./gradlew -q tasks --all --console=plain | grep -qE '^publishToMavenLocal'; then
+            ./gradlew publishToMavenLocal
+          else
+            echo "::notice::no publishToMavenLocal task; pages publish will fall back to build/libs jars"
+          fi
+
+      - name: Resolve mod coordinates
+        id: mod
+        run: |
+          props=$(./gradlew properties -q --console=plain)
+          version=$(echo "$props" | awk -F': ' '$1 == "version" { print $2; exit }')
+          group=$(echo "$props" | awk -F': ' '$1 == "group" { print $2; exit }')
+          base=$(sed -nE 's/^[[:space:]]*archives_base_name[[:space:]]*=[[:space:]]*//p' gradle.properties | head -1)
+          mc=$(sed -nE 's/^[[:space:]]*minecraft_version[[:space:]]*=[[:space:]]*//p' gradle.properties | head -1)
+          main_jar="build/libs/${base}-${version}.jar"
+          if [ ! -f "$main_jar" ]; then
+            echo "::error::expected mod jar not found: $main_jar (archives_base_name=$base, version=$version)"
+            exit 1
+          fi
+          babric_jar="build/libs/${base}-${version}-babric.jar"
+          [ -f "$babric_jar" ] || babric_jar=""
+          case "$version" in
+            *alpha*) vtype=alpha ;;
+            *beta*)  vtype=beta ;;
+            *)       vtype=release ;;
+          esac
+          {
+            echo "version=$version"
+            echo "group=$group"
+            echo "base=$base"
+            echo "minecraft_version=$mc"
+            echo "main_jar=$main_jar"
+            echo "babric_jar=$babric_jar"
+            echo "version_type=$vtype"
+            echo "release_files<<EOF"
+            echo "$main_jar"
+            if [ -n "$babric_jar" ]; then echo "$babric_jar"; fi
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+          echo "resolved: $group:$base:$version (mc $mc), babric jar: ${babric_jar:-none}"
+
+      # --- GitHub release: always published (idempotent - updates the tag's release) ---
+      - name: Publish to GitHub Releases
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ steps.mod.outputs.release_files }}
+          fail_on_unmatched_files: true
+
+      # --- Maven repository / manifest on matthewperiut.github.io ---
+      # Runs BEFORE Modrinth so a Modrinth duplicate-version rejection on a re-run can't
+      # block the pages auto-update. update_pages.py is idempotent: if this version's jar is
+      # already in the pages maven repo it touches nothing and the commit step is a no-op.
+      - name: Checkout pages repo
+        uses: actions/checkout@v4
+        with:
+          repository: matthewperiut/matthewperiut.github.io
+          token: ${{ secrets.PAGES_TOKEN }}
+          path: pages
+      - name: Update pages (maven repo, manifest, tree)
+        run: |
+          docs_flags=""
+          for p in $DOCS_PROPERTIES; do docs_flags="$docs_flags --docs-property $p"; done
+          python3 .github/scripts/update_pages.py \
+            --pages pages \
+            --group "${{ steps.mod.outputs.group }}" \
+            --artifact-hint "${{ steps.mod.outputs.base }}" \
+            --version "${{ steps.mod.outputs.version }}" \
+            --commit "${{ github.sha }}" \
+            --branch "${{ github.event.release.target_commitish || github.ref_name }}" \
+            --repo "${{ github.repository }}" \
+            $docs_flags
+      - name: Commit & push pages
+        working-directory: pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "no pages changes to commit"
+          else
+            git commit -m "actions: update ${{ steps.mod.outputs.base }}"
+            git push
+          fi
+
+      # --- Modrinth (last: non-idempotent - rejects a duplicate version on re-runs) ---
+      - name: Detect Modrinth configuration
+        id: modrinth
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          MODRINTH_ID: ${{ vars.MODRINTH_ID }}
+        run: |
+          if [ -n "$MODRINTH_TOKEN" ] && [ -n "$MODRINTH_ID" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::MODRINTH_TOKEN secret and/or MODRINTH_ID variable not configured; skipping Modrinth publish"
+          fi
+
+      - name: Publish Ornithe to Modrinth
+        if: steps.modrinth.outputs.enabled == 'true'
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          modrinth-id: ${{ vars.MODRINTH_ID }}
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          files: ${{ steps.mod.outputs.main_jar }}
+          name: ${{ github.event.repository.name }} ${{ steps.mod.outputs.version }} (Ornithe)
+          version: ${{ steps.mod.outputs.version }}
+          version-type: ${{ steps.mod.outputs.version_type }}
+          loaders: ornithe
+          game-versions: ${{ steps.mod.outputs.minecraft_version }}
+          # b1.7.3 is an old_beta; mc-publish's default game-version-filter (releases | min-major |
+          # min-minor) drops it, leaving an empty list -> "At least one game version should be
+          # specified". `any` keeps beta/alpha versions so b1.7.3 survives.
+          game-version-filter: any
+          changelog: ${{ github.event.release.body }}
+
+      # Babric variant (only if the build produced a -babric jar, e.g. via the retroconvert plugin).
+      - name: Publish Babric to Modrinth
+        if: steps.modrinth.outputs.enabled == 'true' && steps.mod.outputs.babric_jar != ''
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          modrinth-id: ${{ vars.MODRINTH_ID }}
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          files: ${{ steps.mod.outputs.babric_jar }}
+          name: ${{ github.event.repository.name }} ${{ steps.mod.outputs.version }} (Babric)
+          version: ${{ steps.mod.outputs.version }}+babric
+          version-type: ${{ steps.mod.outputs.version_type }}
+          loaders: babric
+          game-versions: ${{ steps.mod.outputs.minecraft_version }}
+          # See the Ornithe step: `any` keeps the old_beta b1.7.3 from being filtered out.
+          game-version-filter: any
+          changelog: ${{ github.event.release.body }}

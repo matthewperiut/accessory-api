@@ -1,9 +1,24 @@
 pluginManagement {
-    repositories {
-        maven{ url = "https://maven.fabricmc.net/"}
-        maven{ url = "https://maven.ornithemc.net/releases"}
-        maven{ url = "https://maven.ornithemc.net/snapshots"}
-        mavenLocal()
-        gradlePluginPortal()
-    }
+	repositories {
+		maven {
+			name = 'Fabric'
+			url = 'https://maven.fabricmc.net/'
+		}
+		maven {
+			name = 'Ornithe Releases'
+			url = 'https://maven.ornithemc.net/releases'
+		}
+		maven {
+			name = 'Ornithe Snapshots'
+			url = 'https://maven.ornithemc.net/snapshots'
+		}
+		// RetroAPI repository — hosts the com.periut.retroconvert plugin.
+		maven {
+			name = 'RetroAPI'
+			url = 'https://matthewperiut.github.io/repository'
+		}
+		mavenCentral()
+		mavenLocal()
+		gradlePluginPortal()
+	}
 }

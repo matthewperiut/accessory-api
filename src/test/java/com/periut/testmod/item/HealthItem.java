@@ -2,15 +2,13 @@ package com.periut.testmod.item;
 
 import com.periut.accessoryapi.api.PlayerExtraHP;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.modificationstation.stationapi.api.template.item.TemplateItem;
-import net.modificationstation.stationapi.api.util.Identifier;
-import org.jetbrains.annotations.NotNull;
 
-public class HealthItem extends TemplateItem {
-    public HealthItem(@NotNull Identifier identifier) {
-        super(identifier);
+public class HealthItem extends Item {
+    public HealthItem(int id) {
+        super(id);
     }
 
     @Override

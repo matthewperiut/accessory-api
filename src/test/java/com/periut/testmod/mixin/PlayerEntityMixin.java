@@ -1,6 +1,6 @@
 package com.periut.testmod.mixin;
 
-import com.periut.testmod.ItemListener;
+import com.periut.testmod.TestMod;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,7 +15,7 @@ public class PlayerEntityMixin {
     @Inject(method = "<init>", at = @At(value = "TAIL"))
     public void onInit(World par1, CallbackInfo ci) {
         PlayerEntity player = (PlayerEntity) (Object) this;
-        Item[] items = {ItemListener.testCape, ItemListener.testGloves, ItemListener.testMisc, ItemListener.testPendant, ItemListener.testRing, ItemListener.testShield, ItemListener.testAll, ItemListener.slime, ItemListener.blueSlime, ItemListener.rainbowGloves, ItemListener.rainbowCape, Item.IRON_CHESTPLATE};
+        Item[] items = {TestMod.testCape, TestMod.testGloves, TestMod.testMisc, TestMod.testPendant, TestMod.testRing, TestMod.testShield, TestMod.testAll, TestMod.slime, TestMod.blueSlime, TestMod.rainbowGloves, TestMod.rainbowCape, Item.IRON_CHESTPLATE};
 
         for (int i = 0; i < items.length; i++) {
             player.inventory.setStack(i, new ItemStack(items[i], 1));

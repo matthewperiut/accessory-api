@@ -1,25 +1,26 @@
 package com.periut.testmod.accessory;
 
+import com.periut.retroapi.component.RetroComponents;
+import com.periut.testmod.TestMod;
 import com.periut.testmod.client.RainbowCapeRenderer;
 import com.periut.testmod.client.RainbowGloveRenderer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.modificationstation.stationapi.api.util.Identifier;
 
 public class RainbowAccessory extends TestAccessoryWithRenderer {
-    public RainbowAccessory(Identifier identifier, String... types) {
-        super(identifier, types);
+    public RainbowAccessory(int id, String... types) {
+        super(id, types);
     }
 
     @Override
     public ItemStack tickWhileWorn(PlayerEntity player, ItemStack itemStack) {
-        var hue = itemStack.getStationNbt().getFloat("hue");
+        float hue = RetroComponents.getOrDefault(itemStack, TestMod.HUE, 0f);
         if (hue >= 1) {
             hue = 0;
         } else {
             hue += 1f / 360;
         }
-        itemStack.getStationNbt().putFloat("hue", (Float) hue);
+        RetroComponents.set(itemStack, TestMod.HUE, hue);
         return super.tickWhileWorn(player, itemStack);
     }
 
